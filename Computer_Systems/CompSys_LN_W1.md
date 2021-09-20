@@ -49,3 +49,53 @@ An **address** is a name which encodes some information about the location of th
 > Remark: An IP address is not a pure name, since it can be used to route a packet to the corresponding network interface without you needing to know anything more about the interface.
 
 ## 2.5 Search paths
+
+A **search path** is an ordered list of contexts which are treated as a single context. To look up a name in such a context, each constituent context is tried in turn until a binding for the name is found.
+
+> Remark: The UNIX shell `PATH` variable, for example:
+> `/home/ruben/bin:/usr/bin:/bin:/sbin:/usr/sbin:/etc`
+> - is a search path context for resolving command names: each directory in the search path is tried in turn to looking for a command.
+
+## 2.6 Synonyms and Homonyms
+
+**Synonyms** are different names that ultimately resolve to the same object. **Homonyms** are bindings of the same name to different objects.
+
+> Remark: The existence of synonyms turns a naming hierarchy into a directed, possibly cyclic, graph. For this reason, the UNIX file system disallows most cycles by preventing directories from having synonyms except for `.` and `..` - *only files can have multiple names.*
+
+# Chapter 3 : Classical Operating Systems and the Kernel
+
+## 3.1 The role of the OS
+
+The **operating system** for a unit of computing hardware is that part of the software running on the machine which fulfils three particular roles:
+
+- As a **Referee**, the OS multiplexes the hardware of the machine among different principals (users, programs, etc.), and protects these principals from each other.
+- As an **Illusionist**, the OS provides the illusion of *real* hardware resources to resource principals through *virtualization*.
+- As **Glue**, the OS provides abstractions to tie different resources together, and hides details of the hardware to allow programs portability across different platforms.
+
+## 3.2 Domains
+
+A **domain** is a collection of resources or principals which can be traded as a single uniform unit with respect to some particular property. Some examples are:
+
+- *NUMA domain:* cores sharing a group of memory controllers in a NUMA system.
+- *Coherence domain:* caches which maintain coherence between themselves.
+- *Failure domain:* the collection of computing resources which are assumed to fail together.
+- *Shared memory domain:* cores which share the same physical address space.
+- *Administrative domain:* resources which are all managed by a single central authority or organization.
+- *Trust domain:* a collection of resources which mutually trust each other.
+- *Protection domain:* the set of objects which are all accessible to a particular security principal.
+- *Scheduling domain:* set of processes or threads which are scheduled as a single unit.
+
+## 3.3 OS components
+
+The **kernel** is that part of an OS which executes in privileged mode.
+
+- While most computer systems have a kernel, very small embedded systems do not.
+- The kernel is just a computer program, typically an *event driven server*. It responds to multiple entry points: *system calls, hardware interrupts, and program traps.*
+
+**System libraries** are libraries which are there to support all programs running on the system, performing either common low-level functions or providing a clean interface to the kernel and daemons.
+
+A **daemon** is a user-space process running as part of the operating system.
+
+- Daemons are different from in-kernel threads. They execute OS functionality that can't be in a library, but is better off outside the kernel (for reasons of modularity, fault tolerance, and ease of scheduling).
+
+## 3.4 Operating System models
