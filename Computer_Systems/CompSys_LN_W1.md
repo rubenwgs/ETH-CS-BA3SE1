@@ -16,7 +16,7 @@ A **name** is an identifier used to refer to an object in a system. It might be 
 
 **Resolution** describes the process of, given a name and a context, finding the object to which the name is bound in that context.
 
-> Remark: For a name to designate an object, it must be bound to the onject in some context. In other words, whenever names are being used, there is always a context, even if it's implicit.
+> Remark: For a name to designate an object, it must be bound to the object in some context. In other words, whenever names are being used, there is always a context, even if it's implicit.
 
 ## 2.2 Naming networks
 
@@ -26,7 +26,7 @@ A naming network which is a tree is called a **Naming hierarchy**. Pathnames in 
 
 *Example (UNIX name resolution):* A UNIX filename is a pathname. The UNIX file system is, for the most part, a naming hierarchy of directories which contain references to other directories of files:
 
-- A UNIX filename which stats with `/`, such as `/usr/bin/dc`, is resolved using the root of the file system, i.e. all paths are bound to the current direcotry but `/` has an implicit binding to the root.
+- A UNIX filename which stats with `/`, such as `/usr/bin/dc`, is resolved using the root of the file system, i.e. all paths are bound to the current directory but `/` has an implicit binding to the root.
 - A filename which doesn't start with a `/` is resolved using the current working directory as the first context.
 - Every context (i.e. directory) in the UNIX file system has a binding of the name `.` to the context itself.
 - Each context also has a binding of the name `..`. This is always bound to the parent directory of the context.
@@ -42,9 +42,9 @@ An **indirect entry** is a name which is bound not to an object per se, but inst
 
 A **pure name** encodes no useful information about whatever object it refers to.
 
-> Remarks: The names we have considered so far are arguably pure names - in particular, the only thing we have done with them is to bind them to an object in a context, and look them up in a context to get the object again. Some people use the word *identifier* to mean a pure name.
+> Remark: The names we have considered so far are arguably pure names - in particular, the only thing we have done with them is to bind them to an object in a context, and look them up in a context to get the object again. Some people use the word *identifier* to mean a pure name.
 
-An **address** is a name which encodes some information about the lcoation of the object it refers to.
+An **address** is a name which encodes some information about the location of the object it refers to.
 
 > Remark: An IP address is not a pure name, since it can be used to route a packet to the corresponding network interface without you needing to know anything more about the interface.
 
