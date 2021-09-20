@@ -120,3 +120,23 @@ A **multikernel**-based system targets multiprocessor machines, and runs differe
 - The key characteristic is that the kernels themselves do not share memory or state, but communicate via messages.
 
 ## 3.5 Bootstrap
+
+**Bootstrapping**, or more commonly these day simply **booting**, is the process of starting the operating system when the machine is powered on or reset up to the point where it is running regular processes.
+
+
+The *boot sequence steps* are as follows:
+
+1. When a processor is powered on, it starts executing instructions at a fixed address in memory.
+2. The *Basic Input/Output System* (**BIOS**) starts initializing the hardware.
+3. The BIOS sets up a standard execution environment for the next program to run such that it does not need to know specifics of the system.
+4. The next program is typically the **boot loader**, and its job is to find the operating system kernel itself, load it into memory, and start executing it.
+5. The OS kernel itself, once it is entered, initializes its own data structures and creates the first processes. Finally, it starts this new process executing, and the system is now in regular steady state.
+
+## 3.6 Entering and leaving the kernel
+
+**Mode transfer** is the process of software execution transitioning between different hardware processor modes and one of the *most important pieces of modern OSes*.
+
+> Remarks:
+> - This typically involves switching between user mode and kernel mode.
+> - The key goal of user to kernel mode transfer is to protect the kernel from malicious or buggy user processes.
+> - The kernel is entered from user space as a result of processor exception: either a synchronous trap or an asynchronous fault.
