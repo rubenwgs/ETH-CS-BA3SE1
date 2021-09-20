@@ -99,3 +99,24 @@ A **daemon** is a user-space process running as part of the operating system.
 - Daemons are different from in-kernel threads. They execute OS functionality that can't be in a library, but is better off outside the kernel (for reasons of modularity, fault tolerance, and ease of scheduling).
 
 ## 3.4 Operating System models
+
+A **monolithic kernel**-based OS implements most of the operating systems functionality inside the kernel.
+
+- It can be efficient, since almost all the functionality runs in a single, privileged address space.
+- Containing faults in a monolithic kernel is hard. This results in reduced reliability.
+
+A **microkernel**-based OS implements minimal functionality in the kernel, typically only memory protection, context switching, and inter-process communication. All other OS functionality is moved out into user-space server processes.
+
+- The motivation for microkernels is to make the OS more robust to bugs and failures, since dependencies between components are in theory more controlled.
+- Microkernels can be slower since more kernel-mode transitions are needed to achieve any particular result, increasing overhead. However, the very small size of microkernels can actually improve performance due to much better cache locality.
+
+An **exokernel**-based system moves as much functionality as possible out off the kernel into the system libraries linked into each application.
+
+- Moving OS functionality into application-linked libraries is, at first sight, an odd idea, but greatly simplifies reasoning about security in the system and providing performance guarantees to applications which also need to invoke OS functionality.
+
+A **multikernel**-based system targets multiprocessor machines, and runs different kernels on different cores in the system.
+
+- Multikernels are a relatively new idea.
+- The key characteristic is that the kernels themselves do not share memory or state, but communicate via messages.
+
+## 3.5 Bootstrap
