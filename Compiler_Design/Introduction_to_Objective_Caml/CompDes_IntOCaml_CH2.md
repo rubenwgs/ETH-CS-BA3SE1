@@ -97,3 +97,71 @@ In addition, there are several kinds of escape sequences with an alernate syntax
 '\xhh'	(* A hexadecimal escape sequence *)
 ```
 
+Examples:
+
+```ocaml
+# '\120';;
+- : char = 'x'
+# Char.code 'x';;
+- : int = 120
+# '\x7e';;
+- : char = '~'
+```
+
+### 2.2.5 `string` : character strings
+
+In OCaml, **character strings** belong to a primitive type `string`. Character strings are not arrays of characters, and they do not use the null-character `'\000'` for termination.
+
+The syntax for strings uses the double quote symbol `"` as a delimiter. Characters in the string may be specified using the same escape sequences used for characters.
+
+The operator `^` performs **string concatenation**:
+
+```ocaml
+# Hello " ^ "world\n";;
+- : string = "Hello world\n"
+# "\072\105";;
+- : string = "Hi"
+```
+
+Strings also support **random access**. The expression `s.[i]` returns the i-th character from string `s`, and the expression `s.[i] <- c` replaces the i-th character in string `s` by `c`, returning a `unit` value.
+
+```ocaml
+# "Hello".[1];;
+- : char = 'e'
+# "Hello".[0] <- 'h';;
+- : unit = ()
+# String.length "Ab\000cd";;
+- : int = 5
+```
+
+### 2.2.6 `bool` : the Boolean values
+
+The `bool` type includes the Boolean values `true` and `false`. Logical negation is done with the `not` function. There are several relations (such as `x = y, x == y, x != y, x <> y, x >= y`, etc), returning `true` if the comparison holds and `false` otherwise.
+
+Examples:
+
+```ocaml
+# 2 + 6 = 8;;
+- : bool = true
+# 1.0 = 1.0;;
+- : bool = true;
+# 1.0 == 1.0;;
+- : bool = false
+# 2 == 1 + 1;;
+- : bool = true
+```
+
+> Remark: The comparison `1.0 == 1.0` in this case returns `false` because the 2 floating-point numbers are represented by different values in memory, but it performs "normal" comparison in `int` values.
+
+There are two **logical operators**: `&&` is *conjunction* (which can also be written as `&`), and `||` is *disjunction* (which can also be written as `or`).
+
+```ocaml
+# 1 < 2 || (1 / 0) > 0;;
+- : bool = true
+# 1 < 2 && (1 / 0) > 0;;
+Exception: Division_by_zero
+```
+
+> Remark: Both operators are the "*short-circuit*" versions: the second clause is not evaluated if the result can be determined from the first clause.
+
+## 2.3 Operator precedences
