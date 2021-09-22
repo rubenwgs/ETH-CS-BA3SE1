@@ -42,8 +42,58 @@ The type `int` is the type of signed integers: ..., -2, -1, 0, 1, 2,... Integers
 
 There are the usual operations on `int`s, including arithmetic and bitwise operations.
 
+Example:
 
+```ocaml
+# 12345 + 1;;
+- : int = 12346
+# 0b1110 lxor 0b1010;;
+- : int = 4
+#0x7fffffff;;
+- : int = -1
+```
 
+### 2.2.3 `float` : the floating-point numbers
 
+The syntax of a **floating point** requires a decimal point, an exponent (base 10) denoted by an `E` or `e`, or both. A digit is required before the decimal point, but not after. Some examples: `0.2, 2e7, 31.4159E-1`
 
+The integer arithmetic operators *do not work* with floating point values. The operators for flaoting-point numbers include a `.` as follows:
+
+```ocaml
+-.x (* or *) ~-.x	(* floating-point negation *)
+x +. x			(* floating-point addition *)
+x -. y			(* floating-point subtraction *)
+x *. y			(* floating-point multiplication *)
+x /. y			(* floating-point division *)
+int_of_float x		(* float to int conversion *)
+float_of_int x		(* int to float conversion *)
+```
+
+Examples:
+
+```ocaml
+# 31.1415E-1;;
+- : float = 3.14159
+# float_of_int 1;;
+- : float = 1.
+# int_of_float 1.2;;
+- : int = 1
+```
+
+### 2.2.2 `char` : the characters
+
+The **character** type specifies characters from the ASCII character set. The syntax for a character constant uses the single quote symbol `'c'`.
+
+In addition, there are several kinds of escape sequences with an alernate syntax. Each escape sequence begins with the backshlash character `\`.
+
+```ocaml
+'\\'	(* The backslash character itself *)
+'\'	(* The single-quote character *)
+'\t'	(* The tab character *)
+'\r'	(* The carriage-return character *)
+'\n'	(* The newline character *)
+'\b'	(* The backspace character *)
+'\ddd'	(* A decimal escape sequence *)
+'\xhh'	(* A hexadecimal escape sequence *)
+```
 
