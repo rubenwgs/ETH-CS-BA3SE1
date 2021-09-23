@@ -180,11 +180,35 @@ The **precedences** of operators on the basic types are as follows, listen in in
 
 ## 2.4 The OCaml type system
 
+The ML languages are **statically and strictly typed**. In addition, every expression has exactly one type. The strictly typed languages are **safe**.
 
+But what is "safety"? An approximate definition is that a valid program will never fault because of an invalid machine operation. All memory accesses will be valid. ML guarantees safety by proving that every program that passes the type checker can never produce a machine fault.
 
+Here are some rules aboute **type checking**:
 
+1. Every expression has exactly one type.
+2. When an expression is evaluated, one of four things may happen:
+	- it may evaluate to a *value* of the same type as the expression
+	- it may raise an exception
+	- it may not terminate
+	- it may exit
 
+One of the important points here is that there are no "*pure commands*". Even assignments produce a value - although it has the trivial `unit` type.
 
+Example:
+
+```ocaml
+% cat -b x.ml
+	1	if 1 < 2 then
+	2		1
+% ocamlc -c x.ml
+"File 'x.ml', line 2, characters 3.4:
+This expression has type int but is here used with type unit"
+```
+
+In this case, the expression 1 is flagged as a type error, becuase it does not have the same type as the omitted `else` branch (which in this case has type `unit`).
+
+## 2.5 Compiling your code
 
 
 
