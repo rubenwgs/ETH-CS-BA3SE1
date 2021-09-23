@@ -178,7 +178,7 @@ The **precedences** of operators on the basic types are as follows, listen in in
 | `lnot`                        | left          |
 | `~- - ~-. -.`                 | right         |
 
-
+## 2.4 The OCaml type system
 
 
 
