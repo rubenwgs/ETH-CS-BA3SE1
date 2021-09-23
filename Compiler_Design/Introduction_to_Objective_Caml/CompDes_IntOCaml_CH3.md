@@ -55,3 +55,18 @@ Example: Consider the following program, where the variable `x` is initially def
 - : int = 10
 ```
 
+## 3.1 Functions
+
+Functions are defined with the keyword `fun`:
+
+```ocaml
+fun v1 v2 ... vn -> expression
+```
+
+The `fun` is followed by a sequence of variables that define the formal parameters of the function, the `->` separator, and then the body of the function `expression`. In ML, functions are values like any other. They may be constructed, passed as arguments, and applied ot arguments, and, like any other value, they may be named by using a `let`:
+
+```ocaml
+# let increment = fun i -> i + 1;;
+val increment : int -> int = <fun>
+```
+
