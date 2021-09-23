@@ -1,4 +1,4 @@
-**Introduction to Objective Caml - Book chapter 1**
+**Introduction to Objective Caml - Book chapter 2**
 
 - Author: Ruben Schenk
 - Date: 22.09.2021
@@ -221,4 +221,3 @@ If you wish to compile your code, you should place it in a file with the `.ml` s
 	```
 
 There is also a **debugger** `ocamldebug` that you can use to debug your programs. The usage is a lot like `gdb`, with one major exception: execution can go backwards. The `back` command will go back one instruction.
-
