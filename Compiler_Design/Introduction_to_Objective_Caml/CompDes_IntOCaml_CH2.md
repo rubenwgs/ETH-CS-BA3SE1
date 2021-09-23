@@ -165,3 +165,42 @@ Exception: Division_by_zero
 > Remark: Both operators are the "*short-circuit*" versions: the second clause is not evaluated if the result can be determined from the first clause.
 
 ## 2.3 Operator precedences
+
+The **precedences** of operators on the basic types are as follows, listen in increasing order:
+
+| Operators                     | Associativity |
+| :---------------------------- | :------------ |
+| `|| &&` 	       	        | left	        |
+| `= == != <> < <= > >=`        | left          |
+| `+ - +. -.`                   | left          |
+| `* / *. /. mod land lor lxor` | left          |
+| `lsl lsr asr`                 | right         |
+| `lnot`                        | left          |
+| `~- - ~-. -.`                 | right         |
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
