@@ -210,21 +210,15 @@ In this case, the expression 1 is flagged as a type error, becuase it does not h
 
 ## 2.5 Compiling your code
 
+If you wish to compile your code, you should place it in a file with the `.ml` suffix. In INRIA OCaml there are two compilers: `ocamlc` compiles to byte-code, and `ocamlopt` compiles to native machine code. The native code is several times faster, but compile times is longer. The doublesemicolon terminators are not necessary in `.ml` source files, you may omit them if the source code is unambiguous.
 
+- To compile a single executable, use `ocamlc -g -c file.ml`. This will produce a file `file.cmo`. The `ocamlopt` program produces a file `file.cmx`. The `-g` option causes debugging information to be included in the output file.
+- To link together several files into a single executable, use `ocamlc` to link the `.cmo` files. Normally, you would also specify the `-o program_file` option to specify the output file. For example, if you have two program files `x.cmo` and `y.cmo`, the command would be:
+	```ocaml
+	% ocamlc -g -o program x.cmo y.cmo
+	% ./program
+	...
+	```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+There is also a **debugger** `ocamldebug` that you can use to debug your programs. The usage is a lot like `gdb`, with one major exception: execution can go backwards. The `back` command will go back one instruction.
 
