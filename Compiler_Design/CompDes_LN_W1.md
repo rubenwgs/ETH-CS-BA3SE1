@@ -74,21 +74,6 @@ When compiling code we might encounter different bugs. We can distinguish them i
 
 ## 1.2 Compiler Structure
 
+The following figure shows a simplified view of the **compiler structure**:
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+![Simplified Compiler Structure](Compiler_Design/Figures/CompDes_Fig_W1_1.PNG)
