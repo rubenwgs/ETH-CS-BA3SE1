@@ -109,3 +109,74 @@ val sum : int -> int -> int = <fun>
 ```
 
 ### 3.1.1 Scoping and nested functions
+
+Functions may be arbitrarily nested. They may also be passed as arguments. The rule for scoping uses static binding: the value of a variable is determined by the code in which a function is defined - not by the code in which a function is evaluated.
+
+To illustrate the scoping rules, let's consider the following definition:
+
+```ocaml
+# let i = 5;;
+val i : int = 5
+# let addi j =
+	i + j;;
+val addi : int -> int = <fun>
+# let i = 7;;
+val i : int = 7
+# addi 3;;
+- : val = 8
+```
+
+In the `addi` function, the previous binding defines `i` as 5. The second definition of `i` has no effect on the definition used for `addi`, and the application of `addi` to the argument 3 results in 3 + 5 = 8.
+
+### 3.1.2 Recursive functions
+
+Suppose we want to define a **recursive function**: that is, a function that is used in its own definition. In functional languages, recursion is used to express repetition or looping. For example, the "power" function that computes `x^i` might be defined as follows:
+
+```ocaml
+# let rec power i x =
+	if i = 0 then
+		1.0
+	else
+		x *. (power (i-1) x);;
+val power : int -> float -> float = <fun>
+# power 5 2.0;;
+- : float = 32.0
+```
+
+Note the use of the `rec` modifier after the `let` keyword. Normally, a function is not defined in its own body.
+
+*Mutually recursive definitions** (functions tha call one another) can be defined using the `and` keyword to connect several `let` definitions:
+
+```ocaml
+# let rec f i j =
+	if i = 0 then
+		j
+	else
+		g (j - 1)
+  and g j =
+  	if j mode 3 = 0 then
+		j
+	else
+		f (j - 1) j;;
+val f : int -> int -> int = <fun>
+val g : int -> int = <fun>
+# g 5;;
+- : int = 3
+```
+
+### 3.1.3 Higher order functions
+
+Lets consider a definition where a function is passed as an argument, and another function is returned as a result.
+
+Example: Given an arbitrary function f on the real numbers, an approximate numerical derivative can be defined as follows:
+
+```ocaml
+# let dx = 1e-10;;
+val dx : float = 1e-10
+# let deriv f =
+	(fun x -> (f (x +. dx) -. f x) /. dx);;
+val deriv : (float -> float) -> float -> float = <fun>
+```
+
+Remember, the *arrow associates* to the right, so another way to write the type is `(float -> float) -> (float -> float)`. That is, the derivative is a function that takes a function as an argument, and returns another function.
+
