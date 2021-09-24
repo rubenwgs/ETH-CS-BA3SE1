@@ -180,3 +180,54 @@ val deriv : (float -> float) -> float -> float = <fun>
 
 Remember, the *arrow associates* to the right, so another way to write the type is `(float -> float) -> (float -> float)`. That is, the derivative is a function that takes a function as an argument, and returns another function.
 
+## 3.2 Variable names
+
+In general, a **variable name** may contain letter (lower and upper case), digits, and the `'` and `_` characters, but it msut begin with a lower case letter or the underscore character, and it may not be an underscore all by itself.
+
+In OCaml, sequences of charactrs from the infix operators, like +, -, *, /, ... are also valid names. Example (Don't use this style in your code):
+
+```ocaml
+# let (+) = ( * )
+  and (-) = (+)
+  and (/) = (-);;
+val + : int -> int -> int = <fun>
+val - : int -> int -> int = <fun>
+val / : int -> int -> int = <fun>
+```
+
+The redefinition of infix operators may make sense in some contexts. For example, a program module that defines arithmetic over complex numbers way wish to redefine the arithmetic operators.
+
+## 3.3 Labeled parameters and arguments
+
+OCaml allows functions to have labeled and optional parameters and arguments. **Labeled parameters** are specified with the syntax `~label: pattern`. **Labeled arguments** are similar, `~label: expression`. Labels have the same syntactic conventions as variables, i.e. the label must begin with a lowercase letter or an underscorde.
+
+Example:
+
+```ocaml
+# let f ~x:i ~y:j = i - j;;
+val f : x:int -> y:int -> int = <fun>
+# f ~y:1 ~x:2;;
+- : int 1
+```
+
+**Optional parameters** are like labeled parameters, using a question mark `?` instead of a tilde `~` and specifying an optional value with the syntax `?(label = expression)`. Optional arguments are specified the same way as labeled arguments, or they may be omitted completely.
+
+Example:
+
+```ocaml
+# let g ?(x = 1) y = x - y;;
+val g : ?x:int -> int -> int = <fun>
+# g 1;;
+- : int = 0
+# g ~x:3 4;;
+- : int = -1
+```
+
+### 3.3.1 Rules of thumb
+
+Labeled, unlabeled, and optional arguments can be mixed in many different combinations. However, there are some rules of thumb to follow:
+
+- An optional parameter should always be followed by a non-optional parameter (usually unlabeled).
+- The order of labeled arguments does not matter, except when a label occurs more than once.
+- Labeled and optional arguments should be specified explicitely for higher-order functions.
+
