@@ -41,3 +41,16 @@ let rec fib = function
 	| i -> fib (i - 2) + fib (i - 1)
 ```
 
+## 4.2 Pattern expressions
+
+Larger patterns can be constructed in several different ways. The vertical bar `|` can be used to define a `choice` pattern (`pattern1 | pattern2`) that matches any value matching `pattern1` or `pattern2`.
+
+Example: We migh write the Fibonacci function somewhat more succinctly by combining the first two cases:
+
+```ocaml
+let rec fib i =
+	match i with
+		(0 | 1) -> i
+		| i -> fib (i - 1) + fib (i - 2)
+```
+
