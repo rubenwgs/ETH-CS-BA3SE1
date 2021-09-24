@@ -1,4 +1,4 @@
-**Introduction to Objective Caml - Book chapter 2**
+**Introduction to Objective Caml - Book chapter 3**
 
 - Author: Ruben Schenk
 - Date: 23.09.2021
@@ -47,7 +47,7 @@ Example: Consider the following program, where the variable `x` is initially def
 
 ```ocaml
 # let x = 7 in
-  let y = 
+  let y =
   	let x = 2 in
 		x + 1
   in
@@ -230,4 +230,3 @@ Labeled, unlabeled, and optional arguments can be mixed in many different combin
 - An optional parameter should always be followed by a non-optional parameter (usually unlabeled).
 - The order of labeled arguments does not matter, except when a label occurs more than once.
 - Labeled and optional arguments should be specified explicitely for higher-order functions.
-
