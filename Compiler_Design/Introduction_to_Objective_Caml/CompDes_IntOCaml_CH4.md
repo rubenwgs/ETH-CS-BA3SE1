@@ -45,7 +45,7 @@ let rec fib = function
 
 Larger patterns can be constructed in several different ways. The vertical bar `|` can be used to define a `choice` pattern (`pattern1 | pattern2`) that matches any value matching `pattern1` or `pattern2`.
 
-Example: We migh write the Fibonacci function somewhat more succinctly by combining the first two cases:
+Example: We might write the Fibonacci function somewhat more succinctly by combining the first two cases:
 
 ```ocaml
 let rec fib i =
@@ -53,4 +53,76 @@ let rec fib i =
 		(0 | 1) -> i
 		| i -> fib (i - 1) + fib (i - 2)
 ```
+
+PAtters can also be qualified by a predicate with the form `pattern when expression`. This matches the same values as the pattern `pattern`, but only when the predicate `expression` evaluates to true. This way, we can get yet another version of our Fibonacci example:
+
+```ocaml
+let rec fib = function
+	  i when i < 2 -> i
+	| i -> fib (i - 1) + fib (i - 2)
+```
+
+## 4.3 Values of other types
+
+Patters can also be used with values having other basic types, like characters, strings, and Boolean values. In addition, multiple patters can be used for a single body.
+
+Together with **pattern ranges** `c1 .. c2`, this allows us to define a simple `is_uppercase` function for example:
+
+```ocaml
+let is_uppercase = function
+	  'A' .. 'Z' -> true
+	| _ -> false
+```
+
+## 4.4 Incomplete matches
+
+One might wonder about what happens if the match expression does not include patterns for all the possible cases.
+
+Example: What happens if we leave off the default case in the `is_uppercase` function?
+
+```ocaml
+# let is_uppercase = function
+	'A' .. 'Z' -> true;;
+"Characters 19-49:
+Warning: this pattern-amtching is not exhaustive.
+Here is an example of a value that is not matched:
+'a'`"
+```
+
+The OCaml compiler and toploop are verbose about inexhaustive patterns. They war when the pattern match is inexhaustive, and even suggest a case that is not matched. Even if we know that a warning is bogus, we should *never ignore a compiler warning*.
+
+Example:
+
+```ocaml
+# let is_odd i =
+	match i mod 2 with
+		  0 -> false
+		| 1 -> true;;
+"Characters 18-69:
+Warning: this pattern-matching is not exhaustive.
+Here is an example of a value that is not matched:
+2
+```
+
+We know that a complete match is not needed, because `i mod 2` is always 0 or 1 - it can't be 2 as the compiler suggest. However, we should still ad a **wildcard** case that raises and exception. The `Invalid_argument` exception is desiigned for this purpose. It takes a string argument that is usually defined to identify the name of the place where the failure occurred:
+
+```ocaml
+let is_odd i =
+	match i mod 2 with
+		  0 -> false
+		| 1 -> true
+		| _ -> raise (Invalid_argument "is odd")
+```
+
+## 4.5 Patterns are everywhere
+
+It may not be obvious at this point, but patters are used in all the binding mechanisms, including the `let` and `fun` constructions. The general forms are:
+
+```bnf
+let pattern = expression
+let identifier pattern ... pattern = expression
+fun pattern -> expression
+```
+
+These forms aren't much use with constants because the pattern match will always be inexhaustive. However, they will be handy when we introduce tuples and records.
 
