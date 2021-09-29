@@ -18,7 +18,7 @@ match expression with
 
 When a `match` expression us evaluated, the expression `expression` to be matched is first evaluated, and its value is compared with the pattern in order. If `patterni` is the first pattern to match the value, then the expression `expressioni` is evaluated and returned as the result of the match.
 
-For example, Fibonacci number can be define succinctly using patternmatching:
+For example, Fibonacci number can be define succinctly using pattern-matching:
 
 ```ocaml
 let rec fib i =
@@ -84,7 +84,7 @@ Example: What happens if we leave off the default case in the `is_uppercase` fun
 # let is_uppercase = function
 	'A' .. 'Z' -> true;;
 "Characters 19-49:
-Warning: this pattern-amtching is not exhaustive.
+Warning: this pattern-matching is not exhaustive.
 Here is an example of a value that is not matched:
 'a'`"
 ```
@@ -104,7 +104,7 @@ Here is an example of a value that is not matched:
 2
 ```
 
-We know that a complete match is not needed, because `i mod 2` is always 0 or 1 - it can't be 2 as the compiler suggest. However, we should still ad a **wildcard** case that raises and exception. The `Invalid_argument` exception is desiigned for this purpose. It takes a string argument that is usually defined to identify the name of the place where the failure occurred:
+We know that a complete match is not needed, because `i mod 2` is always 0 or 1 - it can't be 2 as the compiler suggest. However, we should still ad a **wildcard** case that raises and exception. The `Invalid_argument` exception is designed for this purpose. It takes a string argument that is usually defined to identify the name of the place where the failure occurred:
 
 ```ocaml
 let is_odd i =
@@ -125,4 +125,3 @@ fun pattern -> expression
 ```
 
 These forms aren't much use with constants because the pattern match will always be inexhaustive. However, they will be handy when we introduce tuples and records.
-
