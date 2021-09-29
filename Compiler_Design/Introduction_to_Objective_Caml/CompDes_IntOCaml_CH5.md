@@ -27,7 +27,7 @@ There may be times when the compiler infers a polymorphic type where one wasn't 
 # let identity:int (i : int) = i;;
 val identity_int : int -> int = <fun>
 ```
-If the constraint is for the return type of the function, it can be palced after the final parameter:
+If the constraint is for the return type of the function, it can be placed after the final parameter:
 
 ```ocaml
 # let do_if_int b i j : int = if b then i else j;;
@@ -36,10 +36,10 @@ val do_if_int : bool -> int -> int -> int = <fun>
 
 ### 5.1.1 Value restriction
 
-What happens if we apply the polymorphic `identity` to a value with a polymorhpic function type?
+What happens if we apply the polymorphic `identity` to a value with a polymorphic function type?
 
 ```ocaml
-# let identity' = identity indentity;;
+# let identity' = identity identity;;
 val identity' : '_a -> '_a = <fun>
 # identity' 1;;
 - : int = 1
@@ -47,11 +47,11 @@ val identity' : '_a -> '_a = <fun>
 - : int -> int = <fun>
 ```
 
-Note the type assignment `indentity' : '_a -> '_a`. The type variables `'_a` specify that the `identity'` function takes an argument of *some* (as yet unknown) type, and returns a value of the same type. When we apply the `identity'` function to a number, the type of the `identity'` function becomes `int -> int`, and it is no longer possible to apply it to any other type.
+Note the type assignment `identity' : '_a -> '_a`. The type variables `'_a` specify that the `identity'` function takes an argument of *some* (as yet unknown) type, and returns a value of the same type. When we apply the `identity'` function to a number, the type of the `identity'` function becomes `int -> int`, and it is no longer possible to apply it to any other type.
 
 This behavior is due to the **value restriction**: for an expression to be truly polymorphic, it must be an immutable value, which means 1) it is already fully evaluated, and 2) it can't be modified by an assignment.
 
-The general point of the value restriction is that mutable values are not polymorphic. In addition, function applications are no polymorhpic because evaluating the function might create a mutable value or perform an assignment.
+The general point of the value restriction is that mutable values are not polymorphic. In addition, function applications are no polymorphic because evaluating the function might create a mutable value or perform an assignment.
 
 It is usually easy to get around the value restriction by using a technique called **eta-expansion**. Suppose we have an expression `e` of function type. The expression `(fun x -> e x)` is nearly equivalent - in fact, it is equivalent if `e` does not contain side-effects. Consider this redefinition of the `identity'` function:
 
@@ -62,21 +62,21 @@ val identity' : 'a -> 'a = <fun>
 
 ### 5.1.2 Other kinds of polymorphism
 
-Polymorphism can be a powerful tool. In ML, a single identity function can be defined that works on values of any type. In a non-polymorhpic language like C, a separate identity function would have to be defined for each type.
+Polymorphism can be a powerful tool. In ML, a single identity function can be defined that works on values of any type. In a non-polymorphic language like C, a separate identity function would have to be defined for each type.
 
 #### Overloading
 
 Another kind of polymorphism present in some languages is **overloading**. Overloading allows function definitions to have the same name if they have different paramatery types.
 
-OCaml does not provide overlaoding. There are probably two main reasons. One has to do with a technical difficulty. It is hard to provide both type inference and overlaoding at the same time. Another possible reason for not providing overlaoding is that programs become more difficult to understand.
+OCaml does not provide overloading. There are probably two main reasons. One has to do with a technical difficulty. It is hard to provide both type inference and overloading at the same time. Another possible reason for not providing overloading is that programs become more difficult to understand.
 
 #### Subtype polymorphism and dynamic method dispatch
 
-Subtype polymorphism and dynamic method dispatch are concepts used extensively in object-oriented programs. Both kinds of poylmorphism are fully supported in OCaml.
+Subtype polymorphism and dynamic method dispatch are concepts used extensively in object-oriented programs. Both kinds of polymorphism are fully supported in OCaml.
 
 ## 5.2 Tuples
 
-**Tuples** are the simplest ahhrehate data type. They correspond to the ordered tuples you have seen in mathematics, or in set theory. A tuple is a collection of values of arbitrary types.
+**Tuples** are the simplest aggregate data type. They correspond to the ordered tuples you have seen in mathematics, or in set theory. A tuple is a collection of values of arbitrary types.
 
 The syntax for a tuples is a sequence of expressions separated by commas. Example:
 
@@ -93,7 +93,7 @@ val x : int = 1
 val y : string = "Hello"
 ```
 
-Tuple patterns in a function parameter must be enclosed in parantheses. Example:
+Tuple patterns in a function parameter must be enclosed in parentheses. Example:
 
 ```ocaml
 # let t = 1, "Hello", 2.7;;
@@ -152,9 +152,9 @@ let rec assoc key = function
 
 ## 5.4 Tail recursion
 
-We have seen several examples of recursive functions so far. A function is **recursive** if it calls itself. Recursion is the primary meands for specifying looping and iteration, making it one of the most important concepts in functional programming.
+We have seen several examples of recursive functions so far. A function is **recursive** if it calls itself. Recursion is the primary means for specifying looping and iteration, making it one of the most important concepts in functional programming.
 
-**Tail recursion** is a specific kind of recursion where the value produced by a recursive call is retunred directly by the caller without further computation.
+**Tail recursion** is a specific kind of recursion where the value produced by a recursive call is returned directly by the caller without further computation.
 
 The implementation `fact2` illustrates a standard "trick", where an extra argument, often called an **accumulator**, is used to collect the result of the computation. The function `loop` is *tail-recursive* because the result of the recursive call is returned directly by the caller:
 
@@ -169,7 +169,7 @@ let fact2 i =
 		loop 1
 ```
 
-### 5.4.1 Optimization of tail-recusrion
+### 5.4.1 Optimization of tail-recursion
 
 Tail-recursion is important because it can be optimized effectively by the compiler. In general, a non-tail-recursive function will require stack space linear in the number of recursive calls.
 
@@ -197,7 +197,7 @@ let rec map f = function
 	| [] -> []
 ```
 
-The function is simple, but not tail-recursive. To obtain a tail recursive version, we collect the result in ana rgument `accum`:
+The function is simple, but not tail-recursive. To obtain a tail recursive version, we collect the result in an argument `accum`:
 
 ```ocaml
 let rec rev accum function
@@ -212,4 +212,3 @@ let map f l = rev [] (rev_map f [] l)
 ```
 
 Note that the result is collected in `accum` is in *reverse* order, so it must be reversed (with the function `rev`) at the end of the computation.
-
