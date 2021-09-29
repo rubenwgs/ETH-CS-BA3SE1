@@ -70,7 +70,7 @@ The `fun` is followed by a sequence of variables that define the formal paramete
 val increment : int -> int = <fun>
 ```
 
-Note the type `int -> int` for the function. The arrow `->` stands for a **function type**. The type before the arrow is the type of the funtion's argument, and the type after the arrow is the type of the result.
+Note the type `int -> int` for the function. The arrow `->` stands for a **function type**. The type before the arrow is the type of the function's argument, and the type after the arrow is the type of the result.
 
 Functions may also be defined with *multiple arguments*. For example, a function to compute the sum of two integers might be defined as follows:
 
@@ -95,7 +95,7 @@ The application of a multi-argument function to only one argument is called **pa
 val incr : int -> int = <fun>
 ```
 
-OCaml provides an alternative syntax for functions using a `let` definition. The formal parameters of the function are lsited in a let-definition after the function name, before the equality symbol:
+OCaml provides an alternative syntax for functions using a `let` definition. The formal parameters of the function are listed in a let-definition after the function name, before the equality symbol:
 
 ```ocaml
 let identifier v1 v2 ... vn = expression
@@ -182,9 +182,9 @@ Remember, the *arrow associates* to the right, so another way to write the type 
 
 ## 3.2 Variable names
 
-In general, a **variable name** may contain letter (lower and upper case), digits, and the `'` and `_` characters, but it msut begin with a lower case letter or the underscore character, and it may not be an underscore all by itself.
+In general, a **variable name** may contain letter (lower and upper case), digits, and the `'` and `_` characters, but it must begin with a lower case letter or the underscore character, and it may not be an underscore all by itself.
 
-In OCaml, sequences of charactrs from the infix operators, like +, -, *, /, ... are also valid names. Example (Don't use this style in your code):
+In OCaml, sequences of characters from the infix operators, like +, -, *, /, ... are also valid names. Example (Don't use this style in your code):
 
 ```ocaml
 # let (+) = ( * )
@@ -199,7 +199,7 @@ The redefinition of infix operators may make sense in some contexts. For example
 
 ## 3.3 Labeled parameters and arguments
 
-OCaml allows functions to have labeled and optional parameters and arguments. **Labeled parameters** are specified with the syntax `~label: pattern`. **Labeled arguments** are similar, `~label: expression`. Labels have the same syntactic conventions as variables, i.e. the label must begin with a lowercase letter or an underscorde.
+OCaml allows functions to have labeled and optional parameters and arguments. **Labeled parameters** are specified with the syntax `~label: pattern`. **Labeled arguments** are similar, `~label: expression`. Labels have the same syntactic conventions as variables, i.e. the label must begin with a lowercase letter or an underscore.
 
 Example:
 
@@ -229,4 +229,4 @@ Labeled, unlabeled, and optional arguments can be mixed in many different combin
 
 - An optional parameter should always be followed by a non-optional parameter (usually unlabeled).
 - The order of labeled arguments does not matter, except when a label occurs more than once.
-- Labeled and optional arguments should be specified explicitely for higher-order functions.
+- Labeled and optional arguments should be specified explicitly for higher-order functions.
