@@ -6,7 +6,7 @@
 
 # Chapter 6 : Unions
 
-Dsjoint unions, also called *tagged unions, variant records,* or *algebraic data types*, are an important part of the OCaml type system. A **disjoint union**, or union for short, represents the union of several different types, where each of the parts is given an unique, explicit name.
+Disjoint unions, also called *tagged unions, variant records,* or *algebraic data types*, are an important part of the OCaml type system. A **disjoint union**, or union for short, represents the union of several different types, where each of the parts is given an unique, explicit name.
 
 OCaml allows the definition of *exact* and *open* union types. The following syntax is used for an exact union type:
 
@@ -18,7 +18,7 @@ type typename =
 	| Identifiern of typen
 ```
 
-Let's look at a simple example using unions, where we wish to define a nummeric type that is either a value of type `int` or `float` or a canonical value `Zero`:
+Let's look at a simple example using unions, where we wish to define a numeric type that is either a value of type `int` or `float` or a canonical value `Zero`:
 
 ```ocaml
 # type number =
@@ -48,7 +48,7 @@ Patterns use the constructor name. Example:
 
 ## 6.1 Binary trees
 
-Binary trees are often used for representing collections of data. For our prupose, a **binary tree** is an acyclic graph, where each node has either zero or two nodes called *children*. If `n2` is a child of `n1`, then `n1` is called the *parent* of `n2`. One node, called the *root*, has ni parents. All other nodes have exactly one parent.
+Binary trees are often used for representing collections of data. For our purpose, a **binary tree** is an acyclic graph, where each node has either zero or two nodes called *children*. If `n2` is a child of `n1`, then `n1` is called the *parent* of `n2`. One node, called the *root*, has ni parents. All other nodes have exactly one parent.
 
 The following definition defines the type for a labeled tree:
 
@@ -63,9 +63,9 @@ type 'a tree = | Node of 'a * 'a tree * 'a tree | Leaf
 
 ## 6.5 Open union types
 
-OCaml defines a second kind of union type where the type is open -- that is, subsequent definitions may add more cases to the type. The syntax is similar to the exact definition discussed previously, but the constructor names are prefixed with a back-quote (`'`) symbol, and the type definition is enclsoed in `[> ...]` brackets.
+OCaml defines a second kind of union type where the type is open -- that is, subsequent definitions may add more cases to the type. The syntax is similar to the exact definition discussed previously, but the constructor names are prefixed with a back-quote (`'`) symbol, and the type definition is enclosed in `[> ...]` brackets.
 
-For example, let's build an extensible version of the numbers from the first example in this chapter. Initially, we migh define the implementation for `'Integer` values:
+For example, let's build an extensible version of the numbers from the first example in this chapter. Initially, we might define the implementation for `'Integer` values:
 
 ```ocaml
 # let string_of_number1 n =
@@ -99,7 +99,7 @@ In definition [> 'Integer of int | 'Real of float] as 'a
 the variable 'a is unbound."
 ```
 
-Type theoretically, any function defined over an open type must be polymorphic over the unspecified cases. Technically, this amounts to the same thing as saying that an open type is some type `'a` that includes at least the cases specified in the definition (and more). In order for the type definition to be accepted, we must write the type variable explicitely:
+Type theoretically, any function defined over an open type must be polymorphic over the unspecified cases. Technically, this amounts to the same thing as saying that an open type is some type `'a` that includes at least the cases specified in the definition (and more). In order for the type definition to be accepted, we must write the type variable explicitly:
 
 ```ocaml
 # type 'a number = [> 'Integer of int | 'Real of float] as 'a;;
@@ -143,4 +143,3 @@ type 'a option = | None | Some of 'a
 ```
 
 The `None` case is intended to represent a `NIL` case, while the `Some` case handles non-`NIL` values.
-
