@@ -144,3 +144,77 @@ Example: If we undersample the following `sin` wave, it gets indistinguishable f
 ![](./Figures/VisComp_Fig1-6.PNG)
 
 This effect is what we call **aliasing**, i.e. *"Signals travelling in disguise as other frequencies"*.
+
+## 1.5 Sampling in 2D
+
+**Sampling** in 2D takes a function and returns an array. We allow the array to be infinite dimensional and to have negative as well as positive indices.
+
+Example:
+
+*Function:*
+
+![](./Figures/VisComp_Fig1-7.PNG)
+
+*Sample:*
+
+![](./Figures/VisComp_Fig1-8.PNG)
+
+### Reconstruction
+
+In 2D, a simple way to reconstruct a function from a sample is to use **bilinear interpolation**¨, which works essentially the same as linear interpolation: we calculate two lines in each direction, and then take the intersection of the two lines.
+
+Example:
+
+![](./Figures/VisComp_Fig1-9.PNG)
+
+## 1.6 Nyquist Frequency
+
+We define the **Nyquist Frequency** as half the sampling frequency of a discrete signal processing system. The concept tells us, that if the signal's maximum frequency is at most the Nyquist frequency, then we can reconstruct the signal.
+
+## 1.7 Quantization
+
+When sampling, real valued functions will get digital values, i.e. integer values. This means that **quantization** is lossy: after quantization, the original signal cannot be reconstructed anymore.
+
+This is in contrast to sampling, as a sampled but not qunatized signal *can* be reconstructed.
+
+### Usual quantization intervals
+
+The following are the most widely used quantization intervals:
+
+- Grayscale image: `8 bit = 2^8 = 256` grayvalues
+- Color image RGB (3 channels): `8 bit/channel = 2^24 = 16.7M` colors
+- 12 bit or 16 bit for some sensors
+
+## 1.8 Image Properties
+
+### Image resolution
+
+Simply tells the amount of pixels our pictures has.
+
+### Geometric resolution
+
+*How many pixels per area?*
+
+Tells us how many pixels we have per a given area (e.g. how many pixels per square centimeter of picture).
+
+### Radiometric resolution
+
+*How many bits per pixel?*
+
+Tells us how much information each pixel can store.
+
+## 1.9 Image Noise
+
+A common model is the **additive Gaussian noise**, which means that we measure some signal with our processor but have some deviation/noise in our measurement:
+
+![](./Figures/VisComp_Fig1-10.PNG)
+
+One might also use the much more meaningful assumption of **Poisson noise**:
+
+![](./Figures/VisComp_Fig1-11.PNG)
+
+### SNR
+
+The **signal to noise ration (SNR)** `s` is an index of image quality:
+
+![](./Figures/VisComp_Fig1-12.PNG)
