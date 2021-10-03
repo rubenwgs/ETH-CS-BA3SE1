@@ -6,7 +6,7 @@
 
 # Chapter 2 : Simple Expressions
 
-Most functional programming implementations include a runtime environment and a garbage collector. They often include an evaluator that can be used to interact with the system, called **toploop**. OCaml provides all of those and by default, the toploop is called `ocaml`. Expressions in the toploop are terminated by a double-semicolo `;;`.
+Most functional programming implementations include a runtime environment and a garbage collector. They often include an evaluator that can be used to interact with the system, called **toploop**. OCaml provides all of those and by default, the toploop is called `ocaml`. Expressions in the toploop are terminated by a double-semicolon `;;`.
 
 Example:
 
@@ -57,7 +57,7 @@ Example:
 
 The syntax of a **floating point** requires a decimal point, an exponent (base 10) denoted by an `E` or `e`, or both. A digit is required before the decimal point, but not after. Some examples: `0.2, 2e7, 31.4159E-1`
 
-The integer arithmetic operators *do not work* with floating point values. The operators for flaoting-point numbers include a `.` as follows:
+The integer arithmetic operators *do not work* with floating point values. The operators for floating-point numbers include a `.` as follows:
 
 ```ocaml
 -.x (* or *) ~-.x	(* floating-point negation *)
@@ -84,7 +84,7 @@ Examples:
 
 The **character** type specifies characters from the ASCII character set. The syntax for a character constant uses the single quote symbol `'c'`.
 
-In addition, there are several kinds of escape sequences with an alernate syntax. Each escape sequence begins with the backshlash character `\`.
+In addition, there are several kinds of escape sequences with an alternate syntax. Each escape sequence begins with the backslash character `\`.
 
 ```ocaml
 '\\'	(* The backslash character itself *)
@@ -184,7 +184,7 @@ The ML languages are **statically and strictly typed**. In addition, every expre
 
 But what is "safety"? An approximate definition is that a valid program will never fault because of an invalid machine operation. All memory accesses will be valid. ML guarantees safety by proving that every program that passes the type checker can never produce a machine fault.
 
-Here are some rules aboute **type checking**:
+Here are some rules about **type checking**:
 
 1. Every expression has exactly one type.
 2. When an expression is evaluated, one of four things may happen:
@@ -206,11 +206,11 @@ Example:
 This expression has type int but is here used with type unit"
 ```
 
-In this case, the expression 1 is flagged as a type error, becuase it does not have the same type as the omitted `else` branch (which in this case has type `unit`).
+In this case, the expression 1 is flagged as a type error, because it does not have the same type as the omitted `else` branch (which in this case has type `unit`).
 
 ## 2.5 Compiling your code
 
-If you wish to compile your code, you should place it in a file with the `.ml` suffix. In INRIA OCaml there are two compilers: `ocamlc` compiles to byte-code, and `ocamlopt` compiles to native machine code. The native code is several times faster, but compile times is longer. The doublesemicolon terminators are not necessary in `.ml` source files, you may omit them if the source code is unambiguous.
+If you wish to compile your code, you should place it in a file with the `.ml` suffix. In INRIA OCaml there are two compilers: `ocamlc` compiles to byte-code, and `ocamlopt` compiles to native machine code. The native code is several times faster, but compile times is longer. The double-semicolon terminators are not necessary in `.ml` source files, you may omit them if the source code is unambiguous.
 
 - To compile a single executable, use `ocamlc -g -c file.ml`. This will produce a file `file.cmo`. The `ocamlopt` program produces a file `file.cmx`. The `-g` option causes debugging information to be included in the output file.
 - To link together several files into a single executable, use `ocamlc` to link the `.cmo` files. Normally, you would also specify the `-o program_file` option to specify the output file. For example, if you have two program files `x.cmo` and `y.cmo`, the command would be:

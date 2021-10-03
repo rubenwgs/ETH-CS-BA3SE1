@@ -1,4 +1,4 @@
-**Introduction to Objective Caml - Book chapter 2**
+**Introduction to Objective Caml - Book chapter 3**
 
 - Author: Ruben Schenk
 - Date: 23.09.2021
@@ -47,7 +47,7 @@ Example: Consider the following program, where the variable `x` is initially def
 
 ```ocaml
 # let x = 7 in
-  let y = 
+  let y =
   	let x = 2 in
 		x + 1
   in
@@ -70,3 +70,163 @@ The `fun` is followed by a sequence of variables that define the formal paramete
 val increment : int -> int = <fun>
 ```
 
+Note the type `int -> int` for the function. The arrow `->` stands for a **function type**. The type before the arrow is the type of the function's argument, and the type after the arrow is the type of the result.
+
+Functions may also be defined with *multiple arguments*. For example, a function to compute the sum of two integers might be defined as follows:
+
+```ocaml
+# let sum = fun i j -> i + j;;
+val sum : int -> int -> int = <fun>
+# sum 4 5
+- : int = 9
+```
+
+Strictly speaking, all functions im ML take a single argument. Multiple-argument functions are treated as *nested* functions (this is called "*Currying*"). That is, `sum` is a function that takes a single integer argument, and returns a function that takes another integer argument and returns an integer. The definition of `sum` above is equivalent to:
+
+```ocaml
+# let sum = (fun i -> (fun j -> i + j));;
+val sum : int -> int -> int = <fun>
+```
+
+The application of a multi-argument function to only one argument is called **partial application**:
+
+```ocaml
+# let incr = sum 1;;
+val incr : int -> int = <fun>
+```
+
+OCaml provides an alternative syntax for functions using a `let` definition. The formal parameters of the function are listed in a let-definition after the function name, before the equality symbol:
+
+```ocaml
+let identifier v1 v2 ... vn = expression
+```
+
+For example, the following definition of the `sum` function is equivalent to the ones above:
+
+```ocaml
+# let sum i j = i + j;;
+val sum : int -> int -> int = <fun>
+```
+
+### 3.1.1 Scoping and nested functions
+
+Functions may be arbitrarily nested. They may also be passed as arguments. The rule for scoping uses static binding: the value of a variable is determined by the code in which a function is defined - not by the code in which a function is evaluated.
+
+To illustrate the scoping rules, let's consider the following definition:
+
+```ocaml
+# let i = 5;;
+val i : int = 5
+# let addi j =
+	i + j;;
+val addi : int -> int = <fun>
+# let i = 7;;
+val i : int = 7
+# addi 3;;
+- : val = 8
+```
+
+In the `addi` function, the previous binding defines `i` as 5. The second definition of `i` has no effect on the definition used for `addi`, and the application of `addi` to the argument 3 results in 3 + 5 = 8.
+
+### 3.1.2 Recursive functions
+
+Suppose we want to define a **recursive function**: that is, a function that is used in its own definition. In functional languages, recursion is used to express repetition or looping. For example, the "power" function that computes `x^i` might be defined as follows:
+
+```ocaml
+# let rec power i x =
+	if i = 0 then
+		1.0
+	else
+		x *. (power (i-1) x);;
+val power : int -> float -> float = <fun>
+# power 5 2.0;;
+- : float = 32.0
+```
+
+Note the use of the `rec` modifier after the `let` keyword. Normally, a function is not defined in its own body.
+
+*Mutually recursive definitions** (functions tha call one another) can be defined using the `and` keyword to connect several `let` definitions:
+
+```ocaml
+# let rec f i j =
+	if i = 0 then
+		j
+	else
+		g (j - 1)
+  and g j =
+  	if j mode 3 = 0 then
+		j
+	else
+		f (j - 1) j;;
+val f : int -> int -> int = <fun>
+val g : int -> int = <fun>
+# g 5;;
+- : int = 3
+```
+
+### 3.1.3 Higher order functions
+
+Lets consider a definition where a function is passed as an argument, and another function is returned as a result.
+
+Example: Given an arbitrary function f on the real numbers, an approximate numerical derivative can be defined as follows:
+
+```ocaml
+# let dx = 1e-10;;
+val dx : float = 1e-10
+# let deriv f =
+	(fun x -> (f (x +. dx) -. f x) /. dx);;
+val deriv : (float -> float) -> float -> float = <fun>
+```
+
+Remember, the *arrow associates* to the right, so another way to write the type is `(float -> float) -> (float -> float)`. That is, the derivative is a function that takes a function as an argument, and returns another function.
+
+## 3.2 Variable names
+
+In general, a **variable name** may contain letter (lower and upper case), digits, and the `'` and `_` characters, but it must begin with a lower case letter or the underscore character, and it may not be an underscore all by itself.
+
+In OCaml, sequences of characters from the infix operators, like +, -, *, /, ... are also valid names. Example (Don't use this style in your code):
+
+```ocaml
+# let (+) = ( * )
+  and (-) = (+)
+  and (/) = (-);;
+val + : int -> int -> int = <fun>
+val - : int -> int -> int = <fun>
+val / : int -> int -> int = <fun>
+```
+
+The redefinition of infix operators may make sense in some contexts. For example, a program module that defines arithmetic over complex numbers way wish to redefine the arithmetic operators.
+
+## 3.3 Labeled parameters and arguments
+
+OCaml allows functions to have labeled and optional parameters and arguments. **Labeled parameters** are specified with the syntax `~label: pattern`. **Labeled arguments** are similar, `~label: expression`. Labels have the same syntactic conventions as variables, i.e. the label must begin with a lowercase letter or an underscore.
+
+Example:
+
+```ocaml
+# let f ~x:i ~y:j = i - j;;
+val f : x:int -> y:int -> int = <fun>
+# f ~y:1 ~x:2;;
+- : int 1
+```
+
+**Optional parameters** are like labeled parameters, using a question mark `?` instead of a tilde `~` and specifying an optional value with the syntax `?(label = expression)`. Optional arguments are specified the same way as labeled arguments, or they may be omitted completely.
+
+Example:
+
+```ocaml
+# let g ?(x = 1) y = x - y;;
+val g : ?x:int -> int -> int = <fun>
+# g 1;;
+- : int = 0
+# g ~x:3 4;;
+- : int = -1
+```
+
+### 3.3.1 Rules of thumb
+
+Labeled, unlabeled, and optional arguments can be mixed in many different combinations. However, there are some rules of thumb to follow:
+
+- An optional parameter should always be followed by a non-optional parameter (usually unlabeled).
+- The order of labeled arguments does not matter, except when a label occurs more than once.
+- Labeled and optional arguments should be specified explicitly for higher-order functions.
