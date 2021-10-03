@@ -30,3 +30,16 @@ The **signal** is a function depending on some variable with pyhsical meaning. T
     img.shape
     subimg = img[72:92, 62:82]
 ```
+
+```python
+    # Random image in Python
+    import numpy as np
+    import cv2
+    t = np.random.rand(64, 64)
+    cv2.imshow('Random', t)
+    cv2.waitKey(0)
+```
+
+In summary, an **image** is a picture or pattern of a value varying in space and/or time. It is the representation of a function `f : R^n -> S`.
+
+As an example, for greyscale CCD images, `n = 2` and `S = R^+`.
