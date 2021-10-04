@@ -85,3 +85,80 @@ There are several different ways to choose `T`:
 - Trial and error
 - Compare results with ground truth
 - Automatic methods (we'll discuss ROC curves later on)
+
+## 2.3 Chromakeying
+
+If we can control the background of a picture, segmentation becomes easier. Assume we use a green screen.
+
+**Chromakeying** describes the process of playin distance measuring, in this case for green:
+
+![](./Figures/VisComp_Fig2-4.PNG)
+
+This has some problems:
+
+- Variation is *not* the same in all three channels
+- The alpha mask is hard: `I_comp = I_alpha I_a + (1 - I_alpha) I_b`
+
+### Background color variation
+
+Colors in the background may vary a lot (especially the intensity of colors and especially of green).
+
+On way which can make segmentation easier is to **normalize colors** (per pixel):
+
+- Intensity `I = R + G + B`
+- Normalized color `(r, g, b) = (R/I, G/I, B/I)`
+
+## 2.4 ROC Analysis
+
+A **Receiver Operating Characteristic (ROC)** curve characterizes the performance of a binary classifier. A binary classifier distinguishes between two different types of things, e.g.:
+
+- Healty/afflicted patients
+- Pregnancy tests
+- Object detection
+- Foreground/background image pixels
+
+### Classification errors
+
+Binary classifiers make errors. There are two types of input to a binary classifier:
+
+- positives
+- negatives
+
+This results in four possible outcomes in any test:
+
+- True positive
+- True negative
+- *False negative*
+- *False positive*
+
+### ROC Curve
+
+The **ROC curve** characterizes the error trade-off in binary classification tasks. It plots the TP fraction against the FP fraction:
+
+- *TP fraction* (**sensitivity**) is `True positive count / positive count`
+- *FP fraction* (1-sensitivity) is `False positive count / negative count`
+
+The result could look something like this:
+
+![](./Figures/VisComp_Fig2-5.PNG)
+
+### Operating points
+
+We can choose an **operating point** by assigning relative costs and values to each outcome:
+
+- `V_TN`: value of true negative
+- `V_TP`: value of true positive
+- `C_FN`: cost of false negative
+- `C_FP`: cost of fale positive
+
+When we assigned these costs, we can choose the point on the ROC curve with **gradient**:
+
+![](./Figures/VisComp_Fig2-6.PNG)
+
+For simplicity, we often set `V_TN = V_TP = 0`.
+¨
+## 2.5 Limits of Thresholding
+
+Why can we segment images much better by eye than through thresholding processes? Because we can consider the context of the whole image.
+
+We might improve results by considering *image context* through **surface coherence**.
