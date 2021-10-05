@@ -162,3 +162,70 @@ For simplicity, we often set `V_TN = V_TP = 0`.
 Why can we segment images much better by eye than through thresholding processes? Because we can consider the context of the whole image.
 
 We might improve results by considering *image context* through **surface coherence**.
+
+## 2.6 Pixels
+
+### Pixel connectivity
+
+We need to define which pixels are connected/neighbors.
+
+We define two different types of **pixel neighborhoods**:
+
+![](./Figures/VisComp_Fig2-7.PNG)
+
+### Pixel paths
+
+A **4-connected path** between pixels `p_1` and `p_n` is a set of pixels `{p_1, p_2,..., p_n}` such that `p_i` is a 4-neighbor of `p_i+1`.
+
+In an **8-connected path**, `p_i` is an 8-neighbor of `p_i+1`.
+
+### Connected regions
+
+A region is 4-connected if it contains a 4-connected path between any two of its pixels. Analog, a region is 8-connected if it contains an 8-connected path between any two of its pixels.
+
+## 2.7 Region growing
+
+**Region growing** is defined by the following steps:
+
+1. Start from a seed point/pixel or region
+2. Add neighboring pixels that satisfy the criteria defining the region
+3. Repeat until we can include no more pixels
+
+In code, this could look like the following example:
+
+```python
+def regionGrow(I, seed) :
+    X, Y = I.shape
+    visited = np.zeros((X, Y))
+    visited[seed] = 1
+    boundary = []
+    boundary.append(seed)
+
+    while len(boundary) > 0 :
+            nextPoint = boundary.pop()
+            # Here is the important function which defines the region criteria
+            if include(nextPoint, seed) :
+                visited[nextpoint] = 2
+                for (x, y) in neighbors(nextPoint) :
+                    if visted[x, y] == 0 :
+                        boundary.append((x, y))
+                        visited [x, y] = 1
+```
+
+### Variations
+
+There are three key indicators which lead to variation:
+
+- Seed selection
+- Inclusion criteria
+- Boundary constraints and snakes
+
+**Seed selection** can happen in different ways. This may be either by hand (point and click), or automatically by conservative thresholding.
+
+The **inclusion criteria** could either by done by greylevel thresholding or by a *greylevel distribution model*:
+
+- Use mean `mu` and standard deviation `sigma` in seed region and then:
+    - include if `(I(x, y) - mu)^2 < (n sigma)^2` (with for example `n = 3`)
+    - this also leads to the ability to update the mean and standard deviation after every iteration
+
+
