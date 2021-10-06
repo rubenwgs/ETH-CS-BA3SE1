@@ -228,4 +228,94 @@ The **inclusion criteria** could either by done by greylevel thresholding or by 
     - include if `(I(x, y) - mu)^2 < (n sigma)^2` (with for example `n = 3`)
     - this also leads to the ability to update the mean and standard deviation after every iteration
 
+### Snakes
+
+A **snake** is an active contour. It is a polygon, i.e., an ordered set of points joined up by lines. Each point on the contour moves away from the seed while its image neighborhood satisfies an inclusion criterion.
+
+## 2.8 Distance Measures
+
+With a **plain background-subtraction metric** we do the following calculations:
+
+- `I_alpha = | I - I_bg | > T`
+- `T = [20 20 10]` (for example)
+- `I_bg` is the background image
+
+The background image is obtained by a "previous image", for example before a car drives into the scene. The color of the background is determined on a per-pixel basis.
+
+When possible, we should fit a Gaussian model per pixel, just as we did for an entire green-screen. This leads to the following, better way of doing distance measurements:
+
+![](./Figures/VisComp_Fig2-8.PNG)
+
+## 2.9 Spatial Relations
+
+We introduce the concept of **Markov Random Field** for spatial relations:
+
+- *Markov chains* have a 1D structure. At every time, there is one state (which enables use of dynamic programming)
+- *Markov Random Fields* break this 1D structure. It is a field of sites, each of which has a label. The labels at one site depend on others, there are no 1D structure dependencies.
+
+### Solving MRFs with graph cuts
+
+*something something*
+
+## 2.10 Morphological Operations
+
+**Morphological operators** are local pixel transformers for procesing recion shapes. They are most often used on binary images. Logical transformations are based on comparison of pixel neighborhoods with a pattern.
+
+### Example: 8-neighbor erode
+
+The **8-neighbor erode** works by simply erasing any foreground pixel that has one eigh-connected neighbor that belongs to the background.
+
+*Example:*
+
+![](./Figures/VisComp_Fig2-9.PNG)
+
+The contrast to this function is the **8-neighbor dilate**, where we simply paint any background pixel that has one 8-connected neighbor that is foreground.
+
+### Structuring elements
+
+Morphological operations take two arguments:
+
+- A binary image
+- A structuring element
+
+We compare the structuring element to the neighborhood of each pixel, which determines the output of the morphological operation.
+
+We can think of **binary images** and the structuring elements as *sets* containing the pixels with value `1`.
+
+![](./Figures/VisComp_Fig2-10.PNG)
+
+### Fitting, Hitting and Missing
+
+We define the following three terms:
+
+- `S` *fits* `I` at `x` if `{y : y = x + s, s in S} subset I`
+- `S` *hits* `I` at `x` if `{y : y = x - s, s in S} intersection I != emptyset`
+- `S` *misses* `I` at `x` if `{y : y = x - s, s in S} intersection I = emptyset`
+
+### Erosion
+
+The image `E = I circ- S` is the **erosion** of image `I` by structuring element `S`:
+
+![](./Figures/VisComp_Fig2-11.PNG)
+
+### Opening and Closing
+
+The **opening** of `I` by `S` is defined by:
+
+![](./Figures/VisComp_Fig2-12.PNG)
+
+The **closing** of `I` by `S` is defined by:
+
+![](./Figures/VisComp_Fig2-13.PNG)
+
+### Skeletonization and the Medial Axis Transform
+
+The **skeleton** and **medial axis transform (MAT)** are stick-figure representations of a region `X subset R^2`.
+Simply speaking, one might start a "grassfire"" at the boundary of the region, and the skeleton is then defined as the set of points at which two fire fronts meet.
+
+Example:
+
+![](./Figures/VisComp_Fig2-14.PNG)
+
+With a **medial axis transform** you remember for each point on the skeleton the distance you travelled to get to that point. This way, the whole shape can be reconstructed from a MAT.
 
