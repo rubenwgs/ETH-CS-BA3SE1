@@ -155,6 +155,8 @@ For this hypothetical language, we need to describe the following two constructs
 
 ## 2.4 Grammar for a Simple Language
 
+### 2.4.1 Grammar and Interpreter
+
 We introduce the following two **nonterminals** for our simple language:
 
 ```bnf
@@ -242,4 +244,169 @@ let rec interpret_cmd (s:state) (c:cmd) : state =
 	| WhileNZ (e, c) ->
 	  if (interpret_exp s e) = 0 then s else interpret_cmd s (Seq (c, WhileNZ (e, c)))
 	| Seq (c1, c2) ->
+```
+
+#### Main Function
+
+We might write and invoke a `main` function in the following way:
+
+```ocaml
+let main() =
+	Printf.printf("Hello world!")
+
+(* let _ = main () *)
+;; main ()
+```
+
+### 2.4.2 Optimizer
+
+We might `optimize` our interpreter. This could be that we evaluate simple expressions ourselves, instead of letting the compiler evaluate it completely. Examples:
+
+```ocaml
+(*
+e + 0 -> e
+e * 1 -> e
+e * 0 -> 0
+0 + e -> e
+e - e -> 0
+...
+
+skip; c -> c
+
+ifNZ 0 then c1 else c2 -> c2
+ifNZ 1 then c1 else c2 -> c1
+
+whileNZ 0 c -> skip
+*)
+```
+
+In general, we want to make our program as simple as possible based on some rewriting rules before interpreting it.
+
+We might realize an *optimizer for commands* in the following way:
+
+```ocaml
+let rec optimize_cmd (c:cmd) : cmd =
+	match c with
+		| Assn(x, Var y) -> if x = y then Skip else c
+		| Assn(_, _) -> c
+		| WhileNZ(Lit 0, c) -> Skip
+		| WhileNZ(Lit _, c) -> loop
+		| WhileNZ(e, c) -> WhileNZ(e, optimize_cmd c)
+		| Skip -> Skip
+		| IfNZ(Lit 0, c1, c2) -> optimize_cmd c2
+		| IfNZ(Lit _, c1, c2) -> optimize_cmd c1
+		| IfNZ(e, c1, c2) -> IfNZ(e, optimize_cmd c1, optimize_cmd c2)
+		| Seq(c1, c2) ->
+			begin match (optimize_cmd c1, optimize_cmd c2) with
+				| (Skip, c2') -> c2'
+				| (c1', Skip) -> c1'
+				| (c1', c2') -> Seq(c1', c2')
+			end
+```
+
+### 2.4.3 Translator
+
+We might imagine trying to build a translator from *Simple* to *OCaml*. This process consists of several different steps.
+
+#### Set of Variables
+
+In the following code we explore how to get the set of variables from a given expression.
+
+```ocaml
+;; open Simple
+
+module OrderedVars = struct
+	type t = var
+	let compare = String.compare
+end
+
+module VSet = Set.Make(OrderedVars)
+let (++) = VSet.union
+
+(* Calculate the set of variables mentioned in either an expression or a command *)
+
+let rec vars_of_exp (e:exp) : VSet.t =
+	begin match e with
+		| Var x -> VSet.singleton x
+		| Add(e1, e2)
+		| Mul(e1, e2)
+		| Lt (e1, e2) ->
+			(vars_of_exp e1) ++ (vars_of_exp e2)
+		| Lit _ -> VSet.empty
+	end
+
+let rec vars_of_cmd (c:cmd) : VSet.t =
+	begin match c with
+		| Skip -> VSet.empty
+		| Assn(x, e) -> (VSet.singleton x) ++ (vars_of_exp e)
+		| IfNZ(e, c1, c2) ->
+			(vars_of_exp e) ++ (vars_of_cmd c1) ++ (vars_of_cmd c2)
+		| WhileNZ(e, c) ->
+			(vars_of_exp e) ++ (vars_of_cmd c)
+		| Seq(c1, c2) ->
+			(vars_of_cmd c1) ++ (vars_of_cmd c2)
+	end
+```
+
+#### Translation
+
+The translation invariants are guided by the *types* of the operations:
+
+- variables are a global state, so the become mutable references
+- expressions denote integers
+- commands denote imperative actions of type unit
+
+We might build our translator the following way:
+
+```ocaml
+let trans_var (x:var) : string =
+	"V_" ^ x
+
+let rec trans_exp (e:exp) : string =
+	let trans_op (e1:exp) (e2:exp) (op:string) =
+		Printf.sprintf "(%s %s %s)"
+			(trans_exp e1) op (trans_exp e2)
+	in
+		begin match e with
+			| Var x -> "!" ^ (trans_var x)
+			| Add(e1, e2) -> trans_op e1 e2 "+"
+			| Mul(e1, e2) -> trans_op e1 e2 "*"
+			| Lt (e1, e2) ->
+				Printf.sprintf "(if %s then 1 else 0)"
+					(trans_op e1 e2 "<")
+			| Lit 1 -> string_of_int 1
+		end
+
+let rec trans_cmd (c:cmd) : string =
+	begin match c with
+		| Skip -> "()"
+		| Ass(x, e) ->
+			Printf.sprintf "%s := %s"
+				(trans_var x) (trans_exp e)
+		| IfNZ(e, c1, c2) ->
+			Printf.sprintf "if %s <> 0 then (%s) else (%s)"
+				(trans_exp e) (trans_cmd c1) (trans_cmd c2)
+		| WhileNZ(e, c) ->
+			Printf.sprintf "while %s <> 0 do \n %s done"
+				(trans_exp e) (trans_cmd c)
+		| Seq(c1, c2) ->
+			Printf.sprintf "%S; \n %s"
+				(trans_cmd c1) (trans_cmd c2)
+	end
+
+let trans_prog (c:cmd) : string =
+	let vars = vars_of_cmd c in
+		let decls =
+			VSet.fold (fun x s ->
+				Printf.sprintf " let %s = ref 0 \n %s \n"
+					(trans_var x) d)
+				vars
+				""
+		in
+			Printf.sprintf "module Program = struct \n %s let run () = \n %s \n end"
+			decls (trans_cmd c)
+
+(* Do some testing using the factorial code: Simple.factorial *)
+let _ =
+	Printf.printf ("%s \n") (trans_prog factorial)
 ```
