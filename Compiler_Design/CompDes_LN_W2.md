@@ -209,3 +209,66 @@ The different instructions one might use are given by the following table:
 | `jmp SRC`       | `rip <- SRC`                                | Jump to location in `SRC`                                                                                                                    |
 | `call SRC`      | Push `rip`, `rip <- SRC` (call a procedure) | Push the program counter to the stack (decrementing `rsp`), and then jump to the machine instruction at the address given by `SRC`           |
 | `ret`           | Pop into `rip` (return from procedure)      | Pop the current top of the stack into `rip` (incrementing `rsp`). This instruction effectively jumps to the address at the top of the stack. |
+
+## 3.5 x86Lite Addresses
+
+### 3.5.1 x86Lite Addressing
+
+We show how **addressing** in x86Lite works with the following simple example:
+
+```c
+long a[0, 42, 2020;]
+
+long b = (long)a;     // b = address(a)
+long b = *a;          // b = a[0] = 0
+long b = *(a+2);      // b = a[2] = 2020
+
+long c = 1;
+long b = a[c];        // b = 42
+long b = a[c+1];      // b = 2020
+```
+
+```assembly
+; Array [0, 42, 2020]
+; Array address 0xBEEF
+
+movq %0xBEEF, %rax
+
+movq %rax,     %rbx        ; rbx = 0xBEEF
+movq (%rax),   %rbx        ; rbx = 0
+movq 16(%rax), %rbx        ; rbx = 2020
+
+movq $1, %rcx
+movq (%rax, %rcx), %rbx    ; rbx = 42
+movq 8(%rax, %rcx), %rbx   ; rbx = 2020
+```
+
+In general, there are three components to an **indirect address**:
+
+- *Base*: a machine address stored in a register
+- *Index*: a variable offset from the base
+- *Disp*: a constant offset (displacement) from the base
+
+We therefore have: `addr(ind) = Base + [Index * 8] + Disp`. When used as a location, `ind` denotes the address `addr(ind)`. When used as a value, `ind` denotes `Mem[addr(ind)]`, the contents of the memory address.
+
+Examples:
+
+| **Expression**  | **Address**         |
+|-----------------|---------------------|
+| `-8(%rsp)`      | `rsp - 8`           |
+| `(%rax, %rcx)`  | `rax + 8 * rcx`     |
+| `8(%rax, %rcx)` | `rax + 8 * rcx + 8` |
+
+### 3.5.2 x86Lite Memory Model
+
+The x86Lite memory consists of `2^64` bytes numbered `0x00000000` through `0xffffffff`. The memory is treated as consisting of 64-bit (8 byte) words. Therefore: *legal x86Lite memory addresses consists of 64-bit, quadword-aligned pointers*. This means, that all memory addresses are evenly divisible by 8.
+
+To load a pointer into `DEST`, we use `leaq Ind, DEST` (`DEST <- addr(Ind)`).
+
+By convention, the stack grows from high addresses to low addresses.
+
+The register `rsp` points to the top of the stack:
+
+- `pushq SRC`: `rsp <- rsp - 8; Mem[rsp] <- SRC`
+- `popq DEST`: `DEST <- Mem[rsp]; rsp <- rsp + 8`
+
