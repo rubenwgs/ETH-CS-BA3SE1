@@ -297,9 +297,23 @@ factorial:
   movq    %rsp, %rbp
 
   ; if (i > 1l)
+  cmpq    $1, %rdi      ; computes %rdi - 1
+  jle     BASECASE      ; if (i <= 1)
+
+  ; (i > 1l) holds at this point
+  pushq   %rdi          ; stores the current value of i on top of the calls tack
+
+  subq    $1, %rdi
+  callq   factorial
+  ; %rax holds factorial(i - 1)
+
+BASECASE:
+  movq    $1, %rax
 
   ; rest of boilerplate
   movq    %rbp, %rsp
   popq    %rbp
   ret     ; return the value in %rax
+
+.data
 ```
