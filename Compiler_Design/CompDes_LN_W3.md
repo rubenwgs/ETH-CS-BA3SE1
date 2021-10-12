@@ -119,3 +119,17 @@ We take the following notes on the translation above:
 - Translation makes the order of evaluation explicit
 - Translation names intermediate values
 - Introduced temporaries are never modified
+
+### 4.2.3 Basic Blocks and CFGs
+
+A **basic block** is a sequence of instructions that is always executed starting at the first instruction and always exits at the last instruction:
+
+- Starts with a label that names the *entry point* of the basic block
+- Ends with a control-flow instruction (e.g. branch or return), i.e. the *link*
+- Contains no other control-flow instruction
+- Contains no interior label used as a jump target
+
+Basic blocks can be arranged into a **control-flow graph (CFG)**:
+
+- The nodes of the graph are basic blocks
+- There is a directed edge from node A to node B if the control flow instruction at the end of block A might jump to the label of block B
