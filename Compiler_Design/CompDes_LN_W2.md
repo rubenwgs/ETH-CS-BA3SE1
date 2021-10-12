@@ -125,7 +125,9 @@ From these three flags, we can define **condition codes**. If we want to compare
 | `ge` (greater or equal)  | `(SF = OF)`              |
 | `le`(less than or equal) | `SF <> OF or ZF`         |
 
-*Example*: We might write conditional instructions in the following way in X86:
+### 3.4.6 Conditional Instructions
+
+We might write conditional instructions in the following way in X86:
 
 ```c
 // Conditional instruction in C
@@ -155,3 +157,56 @@ commonCode:
   <instruction>
   ;...
 ```
+
+We support the following three **conditional instructions**:
+
+| **Instruction**   | **Description**                              |
+|-------------------|----------------------------------------------|
+| `cmpq SRC2, SRC1` | Compute `SRC1 - SRC2`, set condition flags   |
+| `setbCC DEST`     | `DEST`'s lower byte <- `if CC then 1 else 0` |
+| `jCC SRC`         | `rip <- if CC then SRC else fallthrough`     |
+
+### 3.4.7 Code Blocks and Labels
+
+x86 assembly code is organized into **labeled blocks**. Labels indicate code locations than can be jump targets. Labels are translated away by the linker and loader -- instructions live in the *code segment*.
+
+An x86 program begins executing at a designated code label (usually `main`).
+
+### 3.4.8 Jumps, Call and Return
+
+We might code function calls in the following way in x86:
+
+```c
+void bar() {
+  // ...
+}
+
+void foo() {
+  // ...
+  bar();
+}
+```
+
+```assembly
+bar:
+  <instruction>
+  ;...
+  <instruction>
+  ret
+
+foo:
+  <instruction>
+  ; ...
+  <instruction>
+  call bar
+  ;...
+```
+
+The different instructions one might use are given by the following table:
+
+| **Instruction** | **Description**                             | **Notes**                                                                                                                                    |
+|-----------------|---------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------|
+| `jmp SRC`       | `rip <- SRC`                                | Jump to location in `SRC`                                                                                                                    |
+| `call SRC`      | Push `rip`, `rip <- SRC` (call a procedure) | Push the program counter to the stack (decrementing `rsp`), and then jump to the machine isntruction at the address given by `SRC`           |
+| `ret`           | Pop into `rip` (return from procedure)      | Pop the current top of the stack into `rip` (incrementing `rsp`). This instruction effectively jumps to the address at the top of the stack. |
+
