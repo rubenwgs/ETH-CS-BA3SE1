@@ -272,3 +272,4 @@ The register `rsp` points to the top of the stack:
 - `pushq SRC`: `rsp <- rsp - 8; Mem[rsp] <- SRC`
 - `popq DEST`: `DEST <- Mem[rsp]; rsp <- rsp + 8`
 
+> Here is a nice website to explore assembly code given some code snippet in another language: [Compiler Explorer](https://godbolt.org/)
