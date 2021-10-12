@@ -273,3 +273,33 @@ The register `rsp` points to the top of the stack:
 - `popq DEST`: `DEST <- Mem[rsp]; rsp <- rsp + 8`
 
 > Here is a nice website to explore assembly code given some code snippet in another language: [Compiler Explorer](https://godbolt.org/)
+
+### 3.6 Example: Handcoding x86Lite
+
+Let's look at how we would implement the **factorial** function in **x86Lite**:
+
+```assembly
+;  long factorial(long i) {
+;  if (i > 1l) {
+;    return i * factorial(i-1l);
+;  }
+;  return 1l;
+;}
+
+.text
+.global factorial
+
+factorial:
+  ; i is in %rdi
+
+  ; boilerplate
+  pushq   %rbp
+  movq    %rsp, %rbp
+
+  ; if (i > 1l)
+
+  ; rest of boilerplate
+  movq    %rbp, %rsp
+  popq    %rbp
+  ret     ; return the value in %rax
+```
