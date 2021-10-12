@@ -1,4 +1,4 @@
-**Compiler Design - Lecture note week 1**
+**Compiler Design — Lecture note week 1**
 
 - Author: Ruben Schenk
 - Date: 23.09.2021
@@ -103,14 +103,14 @@ Another simplified view on the compilation and execution is given by the followi
 The programming language **OCaml** includes the following tools:
 
 - `ocaml` -> The top-level interactive loop
-- `ocamlc` -> The bytecode compiler
+- `ocamlc` -> The byte code compiler
 - `ocamlopt` -> The native code compiler
 - `ocamldep` -> The dependency analyzer
 - `ocamldoc` -> The documentation generator
 - `ocamllex` -> The lexer generator
 - `ocamlyacc` -> The parser generator
 
-In addition to the above mentioned tools, one might use the following additional tools:
+In addition to the above-mentioned tools, one might use the following additional tools:
 
 - `menhir` -> A more modern parser generator
 - `ocamlbuild` -> A compilation manager
@@ -124,16 +124,16 @@ OCaml has the following two main distinguishing characteristics:
 #### Functional and mostly pure
 
 - Programs manipulate values rather than issue commands
-- Functions are first-class entitites
+- Functions are first-class entities
 - Results of computations can be "named" using `let`
-- Has realtively few "side effects"
+- Has relatively few "side effects"
 
 #### Strongly and statically typed
 
 - Compiler typechecks every expression of the program, issues errors if it can't prove that the program is type safe
 - Good support for type inference and generic polymorphic types
 - Rich user-defined "algebraic data types" with pervasive use of pattern matching
-- Very strong and flexible module system for cosntructing large projects
+- Very strong and flexible module system for constructing large projects
 
 ## 2.3 Factorial on OCaml
 
@@ -176,7 +176,7 @@ We introduce the following two **nonterminals** for our simple language:
 	|	<cmd>; <cmd>
 ```
 
-The above given syntax (or *grammar*) for a simple imperative language has the following proeprties:
+The above given syntax (or *grammar*) for a simple imperative language has the following properties:
 
 - It is written in *Backus-Naur form*
 - The symbols `::=`, `|`, and `<...>` are part of the **meta language**
