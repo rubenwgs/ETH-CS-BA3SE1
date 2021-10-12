@@ -137,7 +137,7 @@ if (a == b) {
   // commonCode
 ```
 
-```x86
+```assembly
 ; Conditional instruction in x86
   cmpq %rax, %rbx
   je
