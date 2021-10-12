@@ -367,7 +367,7 @@ movq    (%rsp), %rax
 
 The following picture shows how we use the stack in a program with different calls. This corresponds to the "boilerplate" code in the previous example with the `factorial`. We adjust the pointers to the bottom and the top of the stack before and after calling a "function", such that the function has its own **stack frame**.
 
-![](.Figures/CompDes_Fig2-5.PNG)
+![](./Figures/CompDes_Fig2-5.PNG)
 
 ### 3.7.4 Calling Conventions
 
