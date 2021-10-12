@@ -325,3 +325,70 @@ factorial:
 ```
 
 *Remark: By convention, compilers often use a `.` in front of a label that is internal, i.e. not a global label (compare `factorial` to `.EXIT` in the code above).*
+
+## 3.7 Programming in x86Lite
+
+### 3.7.1 Three parts of the C memory model
+
+We want to quickly revisit the three different parts of the C memory model, shown in the picture below.
+
+![](./Figures/CompDes_Fig2-4.PNG)
+
+- The **code & data** (or `.text`) segment: contains compile code, constant strings, etc.
+- The **heap**: stores dynamically allocated objects, is allocated via `malloc` and deallocated via `free`
+- The **stack**: stores local variables, the return address of a function and other bookkeeping information
+
+### 3.7.2 Local vs. Temporal Variable Storage
+
+We somehow need space to store things like global variables, values passed as arguments to procedures, and local variables. The processor provides two options for storing stuff:
+
+- *Registers*: fast, small size, very limited number
+- *Memory (Stack)*: slow, very large amount of space
+
+Example:
+
+```assembly
+; int i = 5
+
+; Option 1:
+; store to a register
+; register is "blocked"
+movq    $5, %rax
+
+; Option 2:
+; store on the stack
+subq    $8, %rsp
+movq    $5, (%rsp)
+;...
+movq    (%rsp), %rax
+```
+
+### 3.7.3 The Stack
+
+The following picture shows how we use the stack in a program with different calls. This corresponds to the "boilerplate" code in the previous example with the `factorial`. We adjust the pointers to the bottom and the top of the stack before and after calling a "function", such that the function has its own **stack frame**.
+
+![](.Figures/CompDes_Fig2-5.PNG)
+
+### 3.7.4 Calling Conventions
+
+The **calling conventions** cover three main topics:
+
+- Specify the locations of arguments
+  - Passed to a function, and
+  - Returned by a function
+- Designate registers as either
+  - Caller Save -- e.g. freely usable by the called code
+  - Callee Save -- e.g. must be restored by the called code
+- Define the protocol for deallocating stack-allocated arguments, either
+  - Caller cleans up
+  - Callee cleans up
+
+The widely used calling conventions for x86-64 systems are as follows:
+
+- Callee save registers: `rbp, rbx, r12-r15`
+- Caller save: all others
+- Call parameters:
+  - Parameter 1-6: `rdi, rsi, rdx, rcx, r8, r9`
+  - Parameter 7+: on the stack (in right-to-left order), thus, for `n > 6`, the nth argument is at `((n - 7) + 2) * 8 + rbp`
+- Return value is in `rax`
+- 128-byte "red zone" -- scratchpad for the callee's data
