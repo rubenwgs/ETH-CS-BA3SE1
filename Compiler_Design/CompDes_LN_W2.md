@@ -298,18 +298,24 @@ factorial:
 
   ; if (i > 1l)
   cmpq    $1, %rdi      ; computes %rdi - 1
-  jle     BASECASE      ; if (i <= 1)
+  jle     .BASECASE     ; if (i <= 1)
 
   ; (i > 1l) holds at this point
   pushq   %rdi          ; stores the current value of i on top of the calls tack
 
   subq    $1, %rdi
   callq   factorial
-  ; %rax holds factorial(i - 1)
 
-BASECASE:
+  ; %rax holds factorial(i - 1)
+  popq    %rdi          ; %rdi holds again the original value of i
+  imulq   %rdi, %rax    ; i * factorial(i - 1)
+
+  jmp     .EXIT
+
+.BASECASE:
   movq    $1, %rax
 
+.EXIT:
   ; rest of boilerplate
   movq    %rbp, %rsp
   popq    %rbp
@@ -317,3 +323,5 @@ BASECASE:
 
 .data
 ```
+
+*Remark: By convention, compilers often use a `.` in front of a label that is internal, i.e. not a global label (compare `factorial` to `.EXIT` in the code above).*
