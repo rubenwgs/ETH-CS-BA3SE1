@@ -1,4 +1,4 @@
-**Compiler Design - Lecture note week 2**
+**Compiler Design — Lecture note week 2**
 
 - Author: Ruben Schenk
 - Date: 11.10.2021
@@ -12,7 +12,7 @@ A simplified compiler structure looks as follows:
 
 ![](./Figures/CompDes_Fig2-1.PNG)
 
-## 3.2  X86 vs. X86Lite
+## 3.2 X86 vs. X86Lite
 
 `X86` assembly is very complicated:
 
@@ -42,7 +42,7 @@ There are three special **registers**:
 
 ### 3.3.2 Memory
 
-The memory consists of thee parts:
+The memory consists of three parts:
 
 - *Code & Data*: Holds the actual program instructions as well as program constants and globals
 - *Stack*: Used for function calls and local variables
@@ -58,7 +58,7 @@ The `mov` instructions is of the following form:
 movq SRC, DEST
 ```
 
-Here, `SRC` and `DEST` are *operands*. `DEST` is treated as a location, either a register or a memory address. `SRC` is treated as a values and is the content of either a register or a memory address or an immediate constant or a label.
+Here, `SRC` and `DEST` are *operands*. `DEST` is treated as a location, either a register or a memory address. `SRC` is treated as a value and is the content of either a register or a memory address or an immediate constant or a label.
 
 Example of a `mov` instruction:
 
@@ -96,13 +96,13 @@ The most important note is that we have the source *before* the destination. Fur
 
 ### 3.4.4 Logical/Bit Manipulation Instructions
 
-| **Instruction**  | **Exaplanation**       | **Example**       | **Notes**             |
+| **Instruction**  | **Explanation**       | **Example**       | **Notes**             |
 |------------------|------------------------|-------------------|-----------------------|
 | `notq DEST`      | logical negation       | `notq %rax`       | bitwise not           |
 | `andq SRC, DEST` | `DEST <- DEST & SRC`   | `andq %rbx, %rax` | bitwise and           |
 | `orq SRC, DEST`  | `DEST <- DEST | SRC`   | `orq $4, %rsp`    | bitwise or            |
 | `xorq SRC, DEST` | `DEST <- DEST xor SRC` | `xorq $2, %rax`   | bitwise xor           |
-| `sarq Amt, DEST` | `DEST <- DEST >> Amt`  | `sarq $4, %rax`   | arithmetic shit right |
+| `sarq Amt, DEST` | `DEST <- DEST >> Amt`  | `sarq $4, %rax`   | arithmetic shift right |
 | `shlq Amt, DEST` | `DEST <- DEST <<< Amt` | `shlq %rbx, %rax` | logical shift left    |
 | `shrq Amt, DEST` | `DEST <- DEST >>> Amt` | `shrq $1. %rsp`   | logical shift right   |
 
@@ -207,6 +207,5 @@ The different instructions one might use are given by the following table:
 | **Instruction** | **Description**                             | **Notes**                                                                                                                                    |
 |-----------------|---------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------|
 | `jmp SRC`       | `rip <- SRC`                                | Jump to location in `SRC`                                                                                                                    |
-| `call SRC`      | Push `rip`, `rip <- SRC` (call a procedure) | Push the program counter to the stack (decrementing `rsp`), and then jump to the machine isntruction at the address given by `SRC`           |
+| `call SRC`      | Push `rip`, `rip <- SRC` (call a procedure) | Push the program counter to the stack (decrementing `rsp`), and then jump to the machine instruction at the address given by `SRC`           |
 | `ret`           | Pop into `rip` (return from procedure)      | Pop the current top of the stack into `rip` (incrementing `rsp`). This instruction effectively jumps to the address at the top of the stack. |
-
