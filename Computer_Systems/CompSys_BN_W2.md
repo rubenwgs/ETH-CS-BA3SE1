@@ -142,4 +142,29 @@ An OS **spawns** a child process by creating it from scratch in a single operati
 - Unless you're familiar with `fork()`, this is the obvious way to create a process.
 - Windows creates processes by spawning using the `CreateProcess()` system call.
 
-In Unix, a `fork` operation creates a new child process as an exact copy of the calling parent.
+In Unix, a `fork` operation creates a new child process as an exact copy of the calling parent. An `exec` operation replaces the contents of the calling process with a new program, specified as a set of command-line arguments.
+
+- `exec()` does *not* create a new process, instead it is the complement to `fork()` -- without it, you could not run any new programs
+- `exec()` never returns (except if it fails), instead the new program starts where you might expect `main()`
+
+The **initial process**, often called `init`, is the first process to run as a program when a machine boots.
+
+## 4.4 Process life cycle
+
+Each process is said to be in one of a set of states at any point in time. **Running** processes are actually executing code, either in kernel mode or in user space. **Runnable** (also called *waiting* or *ready*) processes can execute, but are not currently doing so. **Blocked** (also called *asleep*) processes are waiting for an event to occur before they can run.
+
+*Example*: The figure below shows a slightly simplified process state machine for Unix.
+
+![](./Figures/CompSys_Fig2-1.PNG)
+
+A process which exits is generally not removed completely from the system, but enters a state between being alive and being deleted from the OS. A process in this state is a **zombie**. A process which is alive, but whose parent has exited, is an **orphan**.
+
+## 4.5 Coroutines
+
+A **coroutine** is a generalization of the concept of a subroutine. A coroutine can be entered at multiple times, at multiple points, and return multiple times. Programming with coroutines is sometimes referred to as **cooperative multitasking**.
+
+## 4.6 Threads
+
+**User threads** are implemented entirely within a user process. They are sometimes known as *lightweight processes*, but this latter term is a bit ambiguous.
+
+**Kernel threads** are implemented by the OS kernel directly, and appear as different virtual processors to the user process.
