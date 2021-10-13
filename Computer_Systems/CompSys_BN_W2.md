@@ -8,7 +8,7 @@
 
 ## 3.1 The role of the OS
 
-The **operating system** for a unit of computing hardware is that part of the software running on the machine which fulfils three particular roles:
+The **operating system** for a unit of computing hardware is that part of the software running on the machine which fulfills three particular roles:
 
 - As a **Referee**, the OS multiplexes the hardware of the machine among different principals (users, programs, etc.), and protects these principals from each other.
 - As an **Illusionist**, the OS provides the illusion of *real* hardware resources to resource principals through *virtualization*.
@@ -82,3 +82,64 @@ The *boot sequence steps* are as follows:
 > - This typically involves switching between user mode and kernel mode.
 > - The key goal of user to kernel mode transfer is to protect the kernel from malicious or buggy user processes.
 > - The kernel is entered from user space as a result of processor exception: either a synchronous trap or an asynchronous fault.
+
+A **system call** is a trap (synchronous exception) deliberately invoked by a user program to request a service from the kernel. A system call is defined as taking arguments and returning values.
+
+*Example*: Consider the `write()` system call in Unix. `write()` has the following functional prototype:
+
+```c
+ssize_t write(int fd, const void *buf, size_t count);
+```
+
+Such a call would be implemented as follows:
+
+```algo
+# Procedure in user space
+1: Load fd, buf, and count into processor register
+2: Load system call number for write into a register
+3: Trap
+4: Read result from register
+5: return Result
+
+# Execution in the kernel (the trap handler)
+6: Set up execution environment (stack etc.)
+7: Read system call number from register
+8: Jump to write code based on this
+9: Read fd, buf, and count from processor register
+10: Check buf and count for validity
+11: Copy count bytes from user memory into kernel buffer
+12: Do the rest of the code for write
+13: Load the return value into a register
+14: Resume the calling process, transfer to user mode
+```
+
+# Chapter 4 : Processes
+
+The **process** is a fundamental concept in operating systems. In this chapter, we look at what a process is, the concept of an execution environment, how processes are created and destroyed, and how they interact with threads.
+
+## 4.1 Basic definitions
+
+A **process** is the execution of a program on a computer with restricted rights.
+
+- A process can be though of as an *instance* of a program
+- A process combines execution, running the program, and protection
+- A process is a resource principal: In terms of implementation, a process bundles a set of hardware and software resources together
+
+## 4.2 Execution environment
+
+The **execution environment** of a process is the virtual platform on which it executes: the virtual address space, available system calls, etc.
+
+- The execution environment of the kernel is purely defined by the machine hardware
+- A process can be thought of as a *virtual machine* for executing the user's program
+- The process's *virtual processor* doesn't have a simple relationship to the real processors that the OS kernel is managing
+
+## 4.3 Process creation
+
+When a process creates (via the OS) another new process, the creating process is called the **parent** and the newly created process the **child**. This creates a **process tree**: every process in the system has a parent (except the root of the tree).
+
+An OS **spawns** a child process by creating it from scratch in a single operation, with a program specified by the parent.
+
+- Unless you're familiar with `fork()`, this is the obvious way to create a process.
+- Windows creates processes by spawning using the `CreateProcess()` system call.
+
+In Unix, a `fork` operation creates a new child process as an exact copy of the calling parent.
