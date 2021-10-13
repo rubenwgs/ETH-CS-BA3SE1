@@ -1,4 +1,4 @@
-**Computer System - Notes week 2**
+**Computer System -- Notes week 2**
 
 - Author: Ruben Schenk
 - Date: 13.10.2021
