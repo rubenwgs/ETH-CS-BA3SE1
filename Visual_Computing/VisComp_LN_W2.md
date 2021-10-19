@@ -22,7 +22,7 @@ With this concept, one coats the filter directly on the sensor.
 
 ### Filter wheel
 
-For static scenes, we can rotate multiple filters in front of the lens. This allows for more than 3 colours.
+For static scenes, we can rotate multiple filters in front of the lens. This allows for more than 3 colors.
 
 ### Prism vs. mosaic vs. wheel
 
@@ -50,7 +50,7 @@ In contrast to a filter mosaic, we truly measure each color at each pixel, inste
 
 **Image segmentation** partitions an image into regions of interest. It is the first stage in many automatic image analysis systems.
 
-A *complete segemtnation* of an image `I` is a finite set of regions `R_1,..., R_N`, such that:
+A *complete segmentation* of an image `I` is a finite set of regions `R_1,..., R_N`, such that:
 
 ![](./Figures/VisComp_Fig2-2.PNG)
 
@@ -80,7 +80,7 @@ The **quality** of a segmentation depends on what you want to do with it. Segmen
 
 ### How do we choose T?
 
-There are several different ways to choose `T`:
+There are several ways to choose `T`:
 
 - Trial and error
 - Compare results with ground truth
@@ -90,7 +90,7 @@ There are several different ways to choose `T`:
 
 If we can control the background of a picture, segmentation becomes easier. Assume we use a green screen.
 
-**Chromakeying** describes the process of playin distance measuring, in this case for green:
+**Chromakeying** describes the process of plain distance measuring, in this case for green:
 
 ![](./Figures/VisComp_Fig2-4.PNG)
 
@@ -112,7 +112,7 @@ On way which can make segmentation easier is to **normalize colors** (per pixel)
 
 A **Receiver Operating Characteristic (ROC)** curve characterizes the performance of a binary classifier. A binary classifier distinguishes between two different types of things, e.g.:
 
-- Healty/afflicted patients
+- Healthy/afflicted patients
 - Pregnancy tests
 - Object detection
 - Foreground/background image pixels
@@ -149,7 +149,7 @@ We can choose an **operating point** by assigning relative costs and values to e
 - `V_TN`: value of true negative
 - `V_TP`: value of true positive
 - `C_FN`: cost of false negative
-- `C_FP`: cost of fale positive
+- `C_FP`: cost of false positive
 
 When we assigned these costs, we can choose the point on the ROC curve with **gradient**:
 
@@ -222,7 +222,7 @@ There are three key indicators which lead to variation:
 
 **Seed selection** can happen in different ways. This may be either by hand (point and click), or automatically by conservative thresholding.
 
-The **inclusion criteria** could either by done by greylevel thresholding or by a *greylevel distribution model*:
+The **inclusion criteria** could either done by greylevel thresholding or by a *greylevel distribution model*:
 
 - Use mean `mu` and standard deviation `sigma` in seed region and then:
     - include if `(I(x, y) - mu)^2 < (n sigma)^2` (with for example `n = 3`)
@@ -259,11 +259,11 @@ We introduce the concept of **Markov Random Field** for spatial relations:
 
 ## 2.10 Morphological Operations
 
-**Morphological operators** are local pixel transformers for procesing recion shapes. They are most often used on binary images. Logical transformations are based on comparison of pixel neighborhoods with a pattern.
+**Morphological operators** are local pixel transformers for processing region shapes. They are most often used on binary images. Logical transformations are based on comparison of pixel neighborhoods with a pattern.
 
 ### Example: 8-neighbor erode
 
-The **8-neighbor erode** works by simply erasing any foreground pixel that has one eigh-connected neighbor that belongs to the background.
+The **8-neighbor erode** works by simply erasing any foreground pixel that has one eight-connected neighbor that belongs to the background.
 
 *Example:*
 
@@ -311,11 +311,10 @@ The **closing** of `I` by `S` is defined by:
 ### Skeletonization and the Medial Axis Transform
 
 The **skeleton** and **medial axis transform (MAT)** are stick-figure representations of a region `X subset R^2`.
-Simply speaking, one might start a "grassfire"" at the boundary of the region, and the skeleton is then defined as the set of points at which two fire fronts meet.
+Simply speaking, one might start a "grassfire" at the boundary of the region, and the skeleton is then defined as the set of points at which two fire fronts meet.
 
 Example:
 
 ![](./Figures/VisComp_Fig2-14.PNG)
 
 With a **medial axis transform** you remember for each point on the skeleton the distance you travelled to get to that point. This way, the whole shape can be reconstructed from a MAT.
-
