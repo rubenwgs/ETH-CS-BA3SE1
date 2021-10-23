@@ -174,3 +174,57 @@ Example:
 | `ret <ty> OP`                                    | return OP                 | `retq`                                                 |
 | `br label %LAB`                                  | unconditional branch      | `jmp %LAB`                                             |
 | `br i1 OP, label %LAB1, label %LAB2`             | conditional branch        | `jne/je/... %LAB1; jmp %LAB2`                          |
+
+### 5.3.4 LLVMLite Misc Instructions
+
+| **LLVMLite**                                        | **Meaning**                                                   | **x86Lite Equivalent**                                           |
+|-----------------------------------------------------|---------------------------------------------------------------|------------------------------------------------------------------|
+| `%L = icmp (eq | ne | slt | ...) i64 OP1, OP2`      | Compare OP1 and OP2, typically used together with branches    | No direct equivalent                                             |
+| `%L = getelementptr T1* OP1, i64 OP2, ..., i64 OPN` | Address computation (typically used for indexing into arrays) | Sometimes `leaq` but typically unrolled to multiple instructions |
+| `%L = bitcast <ty1>* OP to <ty2>*`                  | `(<ty2>*) OP`                                                 | No types in x86                                                  |
+
+## 5.4 More on LLVM
+
+### 5.4.1 Factorial Example
+
+```c
+#include <stdint.h>
+
+int64_t factorial(int64_t n) {
+    int64_t acc = 1;
+    while(n > 0) {
+        acc = acc * n;
+        n = n - 1;
+    }
+    return acc;
+}
+```
+
+```llvm
+define i64 @factorial(i64 @0) {
+    %2 = alloca i64
+    %3 = alloca i64
+    store i64 %0, i64* %2
+    store i64 1, i64* %3
+    br label %4
+
+4:
+    %5 = load i64, i64* %2
+    &6 = icmp sgt i64 %5, 0
+    br i1 %6, label %7, label %13
+
+7:
+    %8 = load i64, i64* %3
+    %9 = load i64, i64* %2
+    %10 = mul nsw i64 %8, %9
+    store i64 %10, i64* %3
+    %11 = load i64, i64* %2
+    %12 = sub nsw i64 %11, 1
+    store i64 %12, i64* %2
+    br label %4
+
+13:
+    %14 = load i64, i64* %3
+    ret i64 %14
+}
+```
