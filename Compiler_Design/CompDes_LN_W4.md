@@ -159,3 +159,18 @@ Intended to be an *abstract version of stack slots*.
 | `%L = load <ty>* OP`        | `%L = *OP`        | `movq (SRC), DEST`        |
 | `store <ty> OP1, <ty>* OP2` | `*OP2 = OP1`      | `movq SRC, (DEST)`        |
 | `%L = alloca <ty>`          | alloc. stack slot | `subq sizeof(<ty>), %rsp` |
+
+Example:
+
+![](./Figures/CompDes_Fig4-2.PNG)
+
+### 5.3.3 LLVMLite Control Flow Instructions
+
+| **LLVMLite**                                     | **Meaning**               | **x86Lite equivalent**                                 |
+|--------------------------------------------------|---------------------------|--------------------------------------------------------|
+| `%L = call <ty1> OP1(<ty2> OP2, ..., <tyN> OPN)` | `%L = OP1(OP2, ..., OPN)` | OP2, ..., OPN handled according to calling conventions |
+| `call void OP1(<ty2> OP2, ..., <tyN> OPN)`       | `OP1(OP2, ..., OPN)`      | "                                                      |
+| `ret void`                                       | return                    | `retq`                                                 |
+| `ret <ty> OP`                                    | return OP                 | `retq`                                                 |
+| `br label %LAB`                                  | unconditional branch      | `jmp %LAB`                                             |
+| `br i1 OP, label %LAB1, label %LAB2`             | conditional branch        | `jne/je/... %LAB1; jmp %LAB2`                          |
