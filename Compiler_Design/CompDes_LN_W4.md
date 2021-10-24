@@ -290,3 +290,322 @@ We therefore have the following five elements:
 The general CFG for a loop looks as follows:
 
 ![](./Figures/CompDes_Fig4-5.PNG)
+
+### 5.4.5 LLVM Cheat Sheet
+
+```shell
+# Extract LLVM-IR from C code - with optimization
+clang -S -emit-llvm -O3 -o file.ll file.c
+
+# Extract LLVM_IR from C code - no optimization
+clang -S -emit-llvm -O0 -o file.ll file.c -Xclang -disable-llvm-passes
+
+# View the CFG of a file
+opt -view-cfg file.ll
+
+# Compile .ll file to .o file
+clang file.ll -c -o file.o
+
+# Compile .ll file to executable
+clang file.ll -o file.exe
+```
+
+## 5.5 Structured Data
+
+### 5.5.1 Example LL Types
+
+*`C`-Code:*
+
+```c
+struct Node {
+    long a;
+    struct Node* next;
+};
+
+struct List {
+    struct Node head;
+    long length;
+};
+
+struct ListOfLists {
+    struct List *lists1;
+    struct List *lists2;
+}
+
+void foo() {
+    long a[4];
+    long b[3][4];
+    struct Node c;
+    struct List d;
+    struct ListsOfLists f;
+    long(*g)(long, long);
+}
+```
+
+*`LLVM-IR`-Code:*
+
+```llvm
+%struct.Node = type { i64, %struct.Node* }
+
+%struct.List = type { %struct.Node, i64 }
+
+%struct.ListsOfLists = type { %struct.List*, %struct.List* }
+
+Define void @foo() #0 {
+    %1 = alloca [4 x i64]               ;a
+    %2 = alloca [3 x [4 x i64]]         ;b
+    %3 = alloca %struct.Node            ;c
+    %4 = alloca %struct.List            ;d
+    %5 = alloca %struct.ListsOfLists    ;f
+    %6 alloca i64 (i64, i64)*           ;g
+    ret void
+}
+```
+
+### 5.5.2 Datatypes in LLVM
+
+- LLVM's IR uses types to describe the structure of data
+- `<#elts>` is an integer constant >= 0
+- Structure types can be named at the top level: such structure types can be recursive
+
+```bnf
+t ::=
+    void
+    i1 | i8 | i64       # N-bit integers
+    [<#elts> x t]       # arrays
+    fty                 # function types
+    {t1, t2, ..., tn}   # structures
+    t*                  # pointers
+    %Tident             # named types
+
+fty ::=                 # function types
+    t (t1, ..., tn)     # return, argument types
+
+%T1 = type {t1, t2, ..., tn}    # named type
+```
+
+#### Point struct example
+
+```c
+struct Point {
+    long x;
+    long x;
+};
+
+void foo() {
+    struct Point p;
+    p.x = 1;
+    p.y = 2;
+}
+```
+
+```llvm
+%struct.Point = type { i64, i64 }
+
+define void @foo() {
+    %1 = alloca %struct.Point
+    %2 = getelementptr,
+            %struct.Point* %1, i32 0, i32 0
+    atore i64 1, i64* %2
+    %3 = getelementptr,
+            %structPoint* %1, i32 0, i32 1
+    store i64 2, i64* %3
+    ret void
+}
+```
+
+#### `getelementptr`
+
+LLVM provides the `getelementptr` (**GEP**)instruction to compute pointer values:
+
+- Given a pointer and a path through the structured data pointed to by that pointer, `getelementptr` computes an address
+- This is the abstract analog of the X86 `lea`. It does not access memory
+- It is a type indexed operation, since the size computations depend on the type
+
+```llvm
+<result> = getelementptr <ty>* <ptrval>{, <ty> <idx>}*
+```
+
+*GEP example:*
+
+![](./Figures/CompDes_Fig4-6.PNG)
+
+*Remarks:*
+
+- GEP never dereferences the address it's calculating!
+  - GEP only produces pointers by doing arithmetic
+  - It doesn't actually traverse the links of datastructure
+- To index into a deeply nested structure, we need to follow the pointer by loading it from the computed pointer
+
+#### Array Indexing
+
+```c
+struct Point {
+    long x;
+    long y;
+};
+
+void foo(struct Point *ps, long n) {
+    ps[n].y = 42;
+}
+```
+
+```llvm
+%Point = type { i64, i64 }
+
+define void @foo(%Point* %0, i64 %1) {
+    %3 = getelementptr, %Point* %0, i64 %1, i32 1
+    store i64 42, i64* %3
+    ret void
+}
+```
+
+#### Struct parameters and return values
+
+```c
+struct Point {
+    long x;
+    long y;
+};
+
+long foo(struct Point p) {
+    return p.x + p.y;
+}
+
+// Assume this is in a different file
+struct Point {
+    long x;
+    long y;
+    long z;
+}
+
+struct Point bar(long x, long y, long z) {
+    struct Point p;
+    p.x = x;
+    p.y = y;
+    p.z = z;
+    return p;
+}
+```
+
+```llvm
+%struct.Point = type { i64, i64 }
+
+; Remark here that struct parameters are unpacked!
+define i64 @foo(i64 %0, i64 %1) {
+    %3 = add nsw i64 %1, %0
+    ret i64 %3
+}
+
+; Assume this is in a different file
+%struct.Point = type { i64, i64, i64 }
+
+; Return strcut allocated by the caller and passed as pointer argument
+define void @ bar(%struct.Point* %0,
+                    i64 %1, i64 %2, i64 %3) {
+    %5 = getelementptr, %struct.Point* %0, i64 0, i32 0
+    store i64 %1, i64* %5
+    %6 = getelementptr, %struct.Point* %0, i64 0, i32 1
+    store i64 %2, i64* %6
+    %7 = getelementptr, %struct.Point* %0, i64 0, i32 2
+    store i64 %3, i64* %7
+    ret void
+}
+```
+
+### 5.5.3 Compiling LLVMLite to x86 (With LLVM's Help)
+
+#### LLVMLite Types to x86
+
+- `[[i1]], [[i64]], [[t*]]` = quad word (8 bytes, 8-byte aligned)
+- raw `i8` values are not allowed (they must be manipulated via `i8*`)
+- array and struct types are laid out sequentially in memory
+- `getelementptr` computations must be relative to the LLVMLite size definitions (i.e. `[[i1]] = quad`)
+
+#### Compiling LLVM Locals
+
+How do we manage storage for each `%uid` defined by an LLVM instruction?
+
+*Option 1:*
+
+- Map each `%uid` to an x86 register
+- Efficient!
+- Difficult to do effectively: many `%uid` values but only 16 registers
+
+*Option 2:*
+
+- Map each `%uid` to a stack-allocated space
+- Less efficient!
+- Simple to implement
+
+#### `C` -> `LLVMLite` -> `x86Lite` Example
+
+```c
+long bar(long n);
+long foo(long n) {
+    long a = n;
+    return bar(a);
+}
+```
+
+```llvm
+define i64 @foo(i64 %0) {
+    %2 = alloca i64
+    %3 = alloca i64
+    store i64 %0, i64* %2
+    %4 = load i64, i64* %2
+    store i64 %4, i64* %3
+    %5 = load i64, i64* %3
+    %6 = call i64 @bar(i64 %5)
+    ret i64 %6
+}
+
+declare i64 @bar(i64)
+```
+
+```x86
+foo:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    subq    $16, %rsp
+    movq    %rdi, -8(%rbp)
+    movq    -8(%rbp), %rax
+    movq    %rax, -16(%rbp)
+    movq    -16(%rbp), %rdi
+    callq   bar
+    addq    $16, %rsp
+    popq    %rbp
+    retq
+```
+
+*Remarks:*
+
+- For each `alloca Ty` -> `subq sizeof(Ty), %rsp` (optimization: combine them!)
+- Loads from/stores to stack slots -> `movq & offset(%rbp)`
+- Storing args/temporaries to stack slots simplifies code: no need to keep track if a register was overwritten, instead load it before every use
+- Arguments and return values handled according to calling conventions (in this example: `%0 -> %rdi, %5 -> % rdi, %6 -> %rax`)
+
+#### `getelementptr` -> `x86`
+
+![](./Figures/CompDes_Fig4-7.PNG)
+
+*Remarks:*
+
+- `%1` in this case corresponds to `-16(%rbp)`: `getelementptr -> base address + offset`
+- *Compilation of GEP:*
+  1. Translate GEP's base pointer to an actual address (e.g. a stack slot)
+  2. Compute the offset specified by the indices and add it to the base address
+
+#### Array Indexing
+
+![](./Figures/CompDes_Fig4-8.PNG)
+
+#### If-statements and Loops
+
+- If-statements and loops correspond to branching in the CFG
+- Basic blocks are mostly generated independently
+- The resulting x86 BB's are connected via jumps
+
+*Example:*
+
+![](./Figures/CompDes_Fig4-9.PNG)
