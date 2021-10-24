@@ -17,7 +17,7 @@ A simplified compiler structure looks as follows:
 `X86` assembly is very complicated:
 
 - 8-, 16, 32-, and 64-bit values + floating point, etc.
-- Intel 64 and IA 32 have a *huge* number of functions
+- Intel 64 and IA 32 have a _huge_ number of functions
 - For machine code, the instruction range is in size from 1 to 17 bytes
 
 `X86Lite` assembly is a very simple subset of X86
@@ -36,17 +36,17 @@ The X86 schematic looks as follows:
 
 There are three special **registers**:
 
-- `rip`: The *instruction pointer*, holds the address of the next instruction
-- `rbp`: The *base pointer*, used for call-stack manipulation
-- `rsp`: *The stack pointer*, used for call-stack manipulation
+- `rip`: The _instruction pointer_, holds the address of the next instruction
+- `rbp`: The _base pointer_, used for call-stack manipulation
+- `rsp`: _The stack pointer_, used for call-stack manipulation
 
 ### 3.3.2 Memory
 
 The memory consists of three parts:
 
-- *Code & Data*: Holds the actual program instructions as well as program constants and globals
-- *Stack*: Used for function calls and local variables
-- *Heap*: Dynamically allocated memory, e.g. via calls to `malloc()`
+- _Code & Data_: Holds the actual program instructions as well as program constants and globals
+- _Stack_: Used for function calls and local variables
+- _Heap_: Dynamically allocated memory, e.g. via calls to `malloc()`
 
 ## 3.4 Instructions
 
@@ -58,7 +58,7 @@ The `mov` instructions is of the following form:
 movq SRC, DEST
 ```
 
-Here, `SRC` and `DEST` are *operands*. `DEST` is treated as a location, either a register or a memory address. `SRC` is treated as a value and is the content of either a register or a memory address or an immediate constant or a label.
+Here, `SRC` and `DEST` are _operands_. `DEST` is treated as a location, either a register or a memory address. `SRC` is treated as a value and is the content of either a register or a memory address or an immediate constant or a label.
 
 Example of a `mov` instruction:
 
@@ -66,7 +66,7 @@ Example of a `mov` instruction:
 
 #### A Note About Instruction Syntax
 
-The most important note is that we have the source *before* the destination. Furthermore:
+The most important note is that we have the source _before_ the destination. Furthermore:
 
 - Immediate values are prefixed with `$`
 - Registers are prefixed with `%`
@@ -78,17 +78,17 @@ The most important note is that we have the source *before* the destination. Fur
 
 ### 3.4.2 X86 Operands
 
-| **Type** | **Description**                                                           | **Example**                 |
-|----------|---------------------------------------------------------------------------|-----------------------------|
-| Imm      | 64-bit literal signed integer ("immediate")                               | `move $4, %rax`             |
-| Lbl      | a "label" representing a machine address                                  | `call FOO`                  |
-| Reg      | one of the 16 registers                                                   | `move %rbx, %rax`           |
-| Ind      | machine address: [base:Reg][index:Reg][disp:int32](base + index*8 + disp) | `move 12(%rax, %rcx), %rbx` |
+| **Type** | **Description**                                                            | **Example**                 |
+| -------- | -------------------------------------------------------------------------- | --------------------------- |
+| Imm      | 64-bit literal signed integer ("immediate")                                | `move $4, %rax`             |
+| Lbl      | a "label" representing a machine address                                   | `call FOO`                  |
+| Reg      | one of the 16 registers                                                    | `move %rbx, %rax`           |
+| Ind      | machine address: [base:Reg][index:reg][disp:int32](base + index\*8 + disp) | `move 12(%rax, %rcx), %rbx` |
 
 ### 3.4.3 Arithmetic Instructions
 
 | **Instruction**  | **Description**                              | **Example**      | **Notes**                                      |
-|------------------|----------------------------------------------|------------------|------------------------------------------------|
+| ---------------- | -------------------------------------------- | ---------------- | ---------------------------------------------- |
 | `negs DEST`      | 2's complement negation                      | `negs %rax`      |                                                |
 | `add SRC, DEST`  | `DEST <- DEST + SRC`                         | `add %rbx, %rax` |                                                |
 | `Subq SRC, DEST` | `DEST <- DEST - SRC`                         | `subq $4, %rsp`  |                                                |
@@ -96,28 +96,28 @@ The most important note is that we have the source *before* the destination. Fur
 
 ### 3.4.4 Logical/Bit Manipulation Instructions
 
-| **Instruction**  | **Explanation**       | **Example**       | **Notes**             |
-|------------------|------------------------|-------------------|-----------------------|
-| `notq DEST`      | logical negation       | `notq %rax`       | bitwise not           |
-| `andq SRC, DEST` | `DEST <- DEST & SRC`   | `andq %rbx, %rax` | bitwise and           |
-| `orq SRC, DEST`  | `DEST <- DEST | SRC`   | `orq $4, %rsp`    | bitwise or            |
-| `xorq SRC, DEST` | `DEST <- DEST xor SRC` | `xorq $2, %rax`   | bitwise xor           |
+| **Instruction**  | **Explanation**        | **Example**       | **Notes**              |
+| ---------------- | ---------------------- | ----------------- | ---------------------- | ---------- |
+| `notq DEST`      | logical negation       | `notq %rax`       | bitwise not            |
+| `andq SRC, DEST` | `DEST <- DEST & SRC`   | `andq %rbx, %rax` | bitwise and            |
+| `orq SRC, DEST`  | `DEST <- DEST          | SRC`              | `orq $4, %rsp`         | bitwise or |
+| `xorq SRC, DEST` | `DEST <- DEST xor SRC` | `xorq $2, %rax`   | bitwise xor            |
 | `sarq Amt, DEST` | `DEST <- DEST >> Amt`  | `sarq $4, %rax`   | arithmetic shift right |
-| `shlq Amt, DEST` | `DEST <- DEST <<< Amt` | `shlq %rbx, %rax` | logical shift left    |
-| `shrq Amt, DEST` | `DEST <- DEST >>> Amt` | `shrq $1. %rsp`   | logical shift right   |
+| `shlq Amt, DEST` | `DEST <- DEST <<< Amt` | `shlq %rbx, %rax` | logical shift left     |
+| `shrq Amt, DEST` | `DEST <- DEST >>> Amt` | `shrq $1. %rsp`   | logical shift right    |
 
 ### 3.4.5 Condition Flags & Codes
 
 Some X86 instructions set flags as side effects:
 
-- `OF`: *overflow* is set when the result is too big/small to fit in a 64-bit register
-- `SF`: *sign* is set to the sign of the result (`0` means positive, `1` means negative)
-- `ZF`: *zero* is set when the result is `0`
+- `OF`: _overflow_ is set when the result is too big/small to fit in a 64-bit register
+- `SF`: _sign_ is set to the sign of the result (`0` means positive, `1` means negative)
+- `ZF`: _zero_ is set when the result is `0`
 
 From these three flags, we can define **condition codes**. If we want to compare `SRC1` to `SRC2`, we compute `SRC1 - SRC2`. We can then define the following condition codes based on the resulting condition flags:
 
 | **Code**                 | **Condition**            |
-|--------------------------|--------------------------|
+| ------------------------ | ------------------------ |
 | `e` (equality)           | `ZF` is set              |
 | `ne` (inequality)        | `(not ZF)`               |
 | `g` (greater than)       | `(not ZF) and (SF = OF)` |
@@ -161,14 +161,14 @@ commonCode:
 We support the following three **conditional instructions**:
 
 | **Instruction**   | **Description**                              |
-|-------------------|----------------------------------------------|
+| ----------------- | -------------------------------------------- |
 | `cmpq SRC2, SRC1` | Compute `SRC1 - SRC2`, set condition flags   |
 | `setbCC DEST`     | `DEST`'s lower byte <- `if CC then 1 else 0` |
 | `jCC SRC`         | `rip <- if CC then SRC else fallthrough`     |
 
 ### 3.4.7 Code Blocks and Labels
 
-x86 assembly code is organized into **labeled blocks**. Labels indicate code locations than can be jump targets. Labels are translated away by the linker and loader -- instructions live in the *code segment*.
+x86 assembly code is organized into **labeled blocks**. Labels indicate code locations than can be jump targets. Labels are translated away by the linker and loader -- instructions live in the _code segment_.
 
 An x86 program begins executing at a designated code label (usually `main`).
 
@@ -205,7 +205,7 @@ foo:
 The different instructions one might use are given by the following table:
 
 | **Instruction** | **Description**                             | **Notes**                                                                                                                                    |
-|-----------------|---------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------|
+| --------------- | ------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
 | `jmp SRC`       | `rip <- SRC`                                | Jump to location in `SRC`                                                                                                                    |
 | `call SRC`      | Push `rip`, `rip <- SRC` (call a procedure) | Push the program counter to the stack (decrementing `rsp`), and then jump to the machine instruction at the address given by `SRC`           |
 | `ret`           | Pop into `rip` (return from procedure)      | Pop the current top of the stack into `rip` (incrementing `rsp`). This instruction effectively jumps to the address at the top of the stack. |
@@ -245,23 +245,23 @@ movq 8(%rax, %rcx), %rbx   ; rbx = 2020
 
 In general, there are three components to an **indirect address**:
 
-- *Base*: a machine address stored in a register
-- *Index*: a variable offset from the base
-- *Disp*: a constant offset (displacement) from the base
+- _Base_: a machine address stored in a register
+- _Index_: a variable offset from the base
+- _Disp_: a constant offset (displacement) from the base
 
 We therefore have: `addr(ind) = Base + [Index * 8] + Disp`. When used as a location, `ind` denotes the address `addr(ind)`. When used as a value, `ind` denotes `Mem[addr(ind)]`, the contents of the memory address.
 
 Examples:
 
 | **Expression**  | **Address**         |
-|-----------------|---------------------|
+| --------------- | ------------------- |
 | `-8(%rsp)`      | `rsp - 8`           |
 | `(%rax, %rcx)`  | `rax + 8 * rcx`     |
 | `8(%rax, %rcx)` | `rax + 8 * rcx + 8` |
 
 ### 3.5.2 x86Lite Memory Model
 
-The x86Lite memory consists of `2^64` bytes numbered `0x00000000` through `0xffffffff`. The memory is treated as consisting of 64-bit (8 byte) words. Therefore: *legal x86Lite memory addresses consists of 64-bit, quadword-aligned pointers*. This means, that all memory addresses are evenly divisible by 8.
+The x86Lite memory consists of `2^64` bytes numbered `0x00000000` through `0xffffffff`. The memory is treated as consisting of 64-bit (8 byte) words. Therefore: _legal x86Lite memory addresses consists of 64-bit, quadword-aligned pointers_. This means, that all memory addresses are evenly divisible by 8.
 
 To load a pointer into `DEST`, we use `leaq Ind, DEST` (`DEST <- addr(Ind)`).
 
@@ -324,7 +324,7 @@ factorial:
 .data
 ```
 
-*Remark: By convention, compilers often use a `.` in front of a label that is internal, i.e. not a global label (compare `factorial` to `.EXIT` in the code above).*
+_Remark: By convention, compilers often use a `.` in front of a label that is internal, i.e. not a global label (compare `factorial` to `.EXIT` in the code above)._
 
 ## 3.7 Programming in x86Lite
 
@@ -342,8 +342,8 @@ We want to quickly revisit the three different parts of the C memory model, show
 
 We somehow need space to store things like global variables, values passed as arguments to procedures, and local variables. The processor provides two options for storing stuff:
 
-- *Registers*: fast, small size, very limited number
-- *Memory (Stack)*: slow, very large amount of space
+- _Registers_: fast, small size, very limited number
+- _Memory (Stack)_: slow, very large amount of space
 
 Example:
 
