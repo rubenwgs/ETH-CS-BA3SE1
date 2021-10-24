@@ -26,7 +26,7 @@ Hello world!
 %
 ```
 
-The goal of a **compiler** is to *translate one programming language to another*, typically that is translating a high-level source code to a low-level machine code (**object code**).
+The goal of a **compiler** is to _translate one programming language to another_, typically that is translating a high-level source code to a low-level machine code (**object code**).
 
 #### Source Code
 
@@ -90,7 +90,7 @@ The typical **compiler stages** are as follows:
 - Register allocation -> assembly
 - Code emission
 
-**Optimization** may be done at *many* of these stages!
+**Optimization** may be done at _many_ of these stages!
 
 Another simplified view on the compilation and execution is given by the following figure:
 
@@ -176,9 +176,9 @@ We introduce the following two **nonterminals** for our simple language:
 	|	<cmd>; <cmd>
 ```
 
-The above given syntax (or *grammar*) for a simple imperative language has the following properties:
+The above given syntax (or _grammar_) for a simple imperative language has the following properties:
 
-- It is written in *Backus-Naur form*
+- It is written in _Backus-Naur form_
 - The symbols `::=`, `|`, and `<...>` are part of the **meta language**
 - Keywords like `skip`, `ifNZ`, and `whileNZ` and symbols like `{` and `+` are part of the **object language**
 
@@ -282,7 +282,7 @@ whileNZ 0 c -> skip
 
 In general, we want to make our program as simple as possible based on some rewriting rules before interpreting it.
 
-We might realize an *optimizer for commands* in the following way:
+We might realize an _optimizer for commands_ in the following way:
 
 ```ocaml
 let rec optimize_cmd (c:cmd) : cmd =
@@ -306,7 +306,7 @@ let rec optimize_cmd (c:cmd) : cmd =
 
 ### 2.4.3 Translator
 
-We might imagine trying to build a translator from *Simple* to *OCaml*. This process consists of several different steps.
+We might imagine trying to build a translator from _Simple_ to _OCaml_. This process consists of several different steps.
 
 #### Set of Variables
 
@@ -350,7 +350,7 @@ let rec vars_of_cmd (c:cmd) : VSet.t =
 
 #### Translation
 
-The translation invariants are guided by the *types* of the operations:
+The translation invariants are guided by the _types_ of the operations:
 
 - variables are a global state, so the become mutable references
 - expressions denote integers
@@ -430,7 +430,7 @@ A simplified compiler structure looks as follows:
 `X86` assembly is very complicated:
 
 - 8-, 16, 32-, and 64-bit values + floating point, etc.
-- Intel 64 and IA 32 have a *huge* number of functions
+- Intel 64 and IA 32 have a _huge_ number of functions
 - For machine code, the instruction range is in size from 1 to 17 bytes
 
 `X86Lite` assembly is a very simple subset of X86
@@ -449,17 +449,17 @@ The X86 schematic looks as follows:
 
 There are three special **registers**:
 
-- `rip`: The *instruction pointer*, holds the address of the next instruction
-- `rbp`: The *base pointer*, used for call-stack manipulation
-- `rsp`: *The stack pointer*, used for call-stack manipulation
+- `rip`: The _instruction pointer_, holds the address of the next instruction
+- `rbp`: The _base pointer_, used for call-stack manipulation
+- `rsp`: _The stack pointer_, used for call-stack manipulation
 
 ### 3.3.2 Memory
 
 The memory consists of three parts:
 
-- *Code & Data*: Holds the actual program instructions as well as program constants and globals
-- *Stack*: Used for function calls and local variables
-- *Heap*: Dynamically allocated memory, e.g. via calls to `malloc()`
+- _Code & Data_: Holds the actual program instructions as well as program constants and globals
+- _Stack_: Used for function calls and local variables
+- _Heap_: Dynamically allocated memory, e.g. via calls to `malloc()`
 
 ## 3.4 Instructions
 
@@ -471,7 +471,7 @@ The `mov` instructions is of the following form:
 movq SRC, DEST
 ```
 
-Here, `SRC` and `DEST` are *operands*. `DEST` is treated as a location, either a register or a memory address. `SRC` is treated as a value and is the content of either a register or a memory address or an immediate constant or a label.
+Here, `SRC` and `DEST` are _operands_. `DEST` is treated as a location, either a register or a memory address. `SRC` is treated as a value and is the content of either a register or a memory address or an immediate constant or a label.
 
 Example of a `mov` instruction:
 
@@ -479,7 +479,7 @@ Example of a `mov` instruction:
 
 #### A Note About Instruction Syntax
 
-The most important note is that we have the source *before* the destination. Furthermore:
+The most important note is that we have the source _before_ the destination. Furthermore:
 
 - Immediate values are prefixed with `$`
 - Registers are prefixed with `%`
@@ -491,17 +491,17 @@ The most important note is that we have the source *before* the destination. Fur
 
 ### 3.4.2 X86 Operands
 
-| **Type** | **Description**                                                           | **Example**                 |
-|----------|---------------------------------------------------------------------------|-----------------------------|
-| Imm      | 64-bit literal signed integer ("immediate")                               | `move $4, %rax`             |
-| Lbl      | a "label" representing a machine address                                  | `call FOO`                  |
-| Reg      | one of the 16 registers                                                   | `move %rbx, %rax`           |
-| Ind      | machine address: [base:Reg][index:Reg][disp:int32](base + index*8 + disp) | `move 12(%rax, %rcx), %rbx` |
+| **Type** | **Description**                                                            | **Example**                 |
+| -------- | -------------------------------------------------------------------------- | --------------------------- |
+| Imm      | 64-bit literal signed integer ("immediate")                                | `move $4, %rax`             |
+| Lbl      | a "label" representing a machine address                                   | `call FOO`                  |
+| Reg      | one of the 16 registers                                                    | `move %rbx, %rax`           |
+| Ind      | machine address: [base:Reg][index:reg][disp:int32](base + index\*8 + disp) | `move 12(%rax, %rcx), %rbx` |
 
 ### 3.4.3 Arithmetic Instructions
 
 | **Instruction**  | **Description**                              | **Example**      | **Notes**                                      |
-|------------------|----------------------------------------------|------------------|------------------------------------------------|
+| ---------------- | -------------------------------------------- | ---------------- | ---------------------------------------------- |
 | `negs DEST`      | 2's complement negation                      | `negs %rax`      |                                                |
 | `add SRC, DEST`  | `DEST <- DEST + SRC`                         | `add %rbx, %rax` |                                                |
 | `Subq SRC, DEST` | `DEST <- DEST - SRC`                         | `subq $4, %rsp`  |                                                |
@@ -509,28 +509,28 @@ The most important note is that we have the source *before* the destination. Fur
 
 ### 3.4.4 Logical/Bit Manipulation Instructions
 
-| **Instruction**  | **Explanation**       | **Example**       | **Notes**             |
-|------------------|------------------------|-------------------|-----------------------|
-| `notq DEST`      | logical negation       | `notq %rax`       | bitwise not           |
-| `andq SRC, DEST` | `DEST <- DEST & SRC`   | `andq %rbx, %rax` | bitwise and           |
-| `orq SRC, DEST`  | `DEST <- DEST | SRC`   | `orq $4, %rsp`    | bitwise or            |
-| `xorq SRC, DEST` | `DEST <- DEST xor SRC` | `xorq $2, %rax`   | bitwise xor           |
+| **Instruction**  | **Explanation**        | **Example**       | **Notes**              |
+| ---------------- | ---------------------- | ----------------- | ---------------------- | ---------- |
+| `notq DEST`      | logical negation       | `notq %rax`       | bitwise not            |
+| `andq SRC, DEST` | `DEST <- DEST & SRC`   | `andq %rbx, %rax` | bitwise and            |
+| `orq SRC, DEST`  | `DEST <- DEST          | SRC`              | `orq $4, %rsp`         | bitwise or |
+| `xorq SRC, DEST` | `DEST <- DEST xor SRC` | `xorq $2, %rax`   | bitwise xor            |
 | `sarq Amt, DEST` | `DEST <- DEST >> Amt`  | `sarq $4, %rax`   | arithmetic shift right |
-| `shlq Amt, DEST` | `DEST <- DEST <<< Amt` | `shlq %rbx, %rax` | logical shift left    |
-| `shrq Amt, DEST` | `DEST <- DEST >>> Amt` | `shrq $1. %rsp`   | logical shift right   |
+| `shlq Amt, DEST` | `DEST <- DEST <<< Amt` | `shlq %rbx, %rax` | logical shift left     |
+| `shrq Amt, DEST` | `DEST <- DEST >>> Amt` | `shrq $1. %rsp`   | logical shift right    |
 
 ### 3.4.5 Condition Flags & Codes
 
 Some X86 instructions set flags as side effects:
 
-- `OF`: *overflow* is set when the result is too big/small to fit in a 64-bit register
-- `SF`: *sign* is set to the sign of the result (`0` means positive, `1` means negative)
-- `ZF`: *zero* is set when the result is `0`
+- `OF`: _overflow_ is set when the result is too big/small to fit in a 64-bit register
+- `SF`: _sign_ is set to the sign of the result (`0` means positive, `1` means negative)
+- `ZF`: _zero_ is set when the result is `0`
 
 From these three flags, we can define **condition codes**. If we want to compare `SRC1` to `SRC2`, we compute `SRC1 - SRC2`. We can then define the following condition codes based on the resulting condition flags:
 
 | **Code**                 | **Condition**            |
-|--------------------------|--------------------------|
+| ------------------------ | ------------------------ |
 | `e` (equality)           | `ZF` is set              |
 | `ne` (inequality)        | `(not ZF)`               |
 | `g` (greater than)       | `(not ZF) and (SF = OF)` |
@@ -574,14 +574,14 @@ commonCode:
 We support the following three **conditional instructions**:
 
 | **Instruction**   | **Description**                              |
-|-------------------|----------------------------------------------|
+| ----------------- | -------------------------------------------- |
 | `cmpq SRC2, SRC1` | Compute `SRC1 - SRC2`, set condition flags   |
 | `setbCC DEST`     | `DEST`'s lower byte <- `if CC then 1 else 0` |
 | `jCC SRC`         | `rip <- if CC then SRC else fallthrough`     |
 
 ### 3.4.7 Code Blocks and Labels
 
-x86 assembly code is organized into **labeled blocks**. Labels indicate code locations than can be jump targets. Labels are translated away by the linker and loader -- instructions live in the *code segment*.
+x86 assembly code is organized into **labeled blocks**. Labels indicate code locations than can be jump targets. Labels are translated away by the linker and loader -- instructions live in the _code segment_.
 
 An x86 program begins executing at a designated code label (usually `main`).
 
@@ -618,7 +618,7 @@ foo:
 The different instructions one might use are given by the following table:
 
 | **Instruction** | **Description**                             | **Notes**                                                                                                                                    |
-|-----------------|---------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------|
+| --------------- | ------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
 | `jmp SRC`       | `rip <- SRC`                                | Jump to location in `SRC`                                                                                                                    |
 | `call SRC`      | Push `rip`, `rip <- SRC` (call a procedure) | Push the program counter to the stack (decrementing `rsp`), and then jump to the machine instruction at the address given by `SRC`           |
 | `ret`           | Pop into `rip` (return from procedure)      | Pop the current top of the stack into `rip` (incrementing `rsp`). This instruction effectively jumps to the address at the top of the stack. |
@@ -658,23 +658,23 @@ movq 8(%rax, %rcx), %rbx   ; rbx = 2020
 
 In general, there are three components to an **indirect address**:
 
-- *Base*: a machine address stored in a register
-- *Index*: a variable offset from the base
-- *Disp*: a constant offset (displacement) from the base
+- _Base_: a machine address stored in a register
+- _Index_: a variable offset from the base
+- _Disp_: a constant offset (displacement) from the base
 
 We therefore have: `addr(ind) = Base + [Index * 8] + Disp`. When used as a location, `ind` denotes the address `addr(ind)`. When used as a value, `ind` denotes `Mem[addr(ind)]`, the contents of the memory address.
 
 Examples:
 
 | **Expression**  | **Address**         |
-|-----------------|---------------------|
+| --------------- | ------------------- |
 | `-8(%rsp)`      | `rsp - 8`           |
 | `(%rax, %rcx)`  | `rax + 8 * rcx`     |
 | `8(%rax, %rcx)` | `rax + 8 * rcx + 8` |
 
 ### 3.5.2 x86Lite Memory Model
 
-The x86Lite memory consists of `2^64` bytes numbered `0x00000000` through `0xffffffff`. The memory is treated as consisting of 64-bit (8 byte) words. Therefore: *legal x86Lite memory addresses consists of 64-bit, quadword-aligned pointers*. This means, that all memory addresses are evenly divisible by 8.
+The x86Lite memory consists of `2^64` bytes numbered `0x00000000` through `0xffffffff`. The memory is treated as consisting of 64-bit (8 byte) words. Therefore: _legal x86Lite memory addresses consists of 64-bit, quadword-aligned pointers_. This means, that all memory addresses are evenly divisible by 8.
 
 To load a pointer into `DEST`, we use `leaq Ind, DEST` (`DEST <- addr(Ind)`).
 
@@ -737,7 +737,7 @@ factorial:
 .data
 ```
 
-*Remark: By convention, compilers often use a `.` in front of a label that is internal, i.e. not a global label (compare `factorial` to `.EXIT` in the code above).*
+_Remark: By convention, compilers often use a `.` in front of a label that is internal, i.e. not a global label (compare `factorial` to `.EXIT` in the code above)._
 
 ## 3.7 Programming in x86Lite
 
@@ -755,8 +755,8 @@ We want to quickly revisit the three different parts of the C memory model, show
 
 We somehow need space to store things like global variables, values passed as arguments to procedures, and local variables. The processor provides two options for storing stuff:
 
-- *Registers*: fast, small size, very limited number
-- *Memory (Stack)*: slow, very large amount of space
+- _Registers_: fast, small size, very limited number
+- _Memory (Stack)_: slow, very large amount of space
 
 Example:
 
@@ -825,23 +825,23 @@ One simple strategy for directly generating x86 is based on the following ideas:
 
 - Compilation emits instructions into an instruction stream
 - To compile an expression `e1 op e2`:
-    1. Recursively compile its sub-expressions
-    2. Process the results
+  1. Recursively compile its sub-expressions
+  2. Process the results
 - Invariants:
-    - Compilation of an expression yields its result in `rax`
-    - Argument `Xi` is store in a dedicated operand
-    - Intermediate values are pushed onto the stack 
-    - The stack is popped after use (such that the space is reclaimed)
+  - Compilation of an expression yields its result in `rax`
+  - Argument `Xi` is store in a dedicated operand
+  - Intermediate values are pushed onto the stack
+  - The stack is popped after use (such that the space is reclaimed)
 - Resulting code is wrapped to comply with cdecl calling conventions
 
 # 4. Intermediate Representations
 
-Up until now, we followed a simple *syntax-directed* translation, this meant that:
+Up until now, we followed a simple _syntax-directed_ translation, this meant that:
 
 - Input syntax uniquely determined the output, i.e. no complex analysis or code transformation was done
 - Worked fine for simple languages
 
-However, the resulting *code quality is poor*. Example: The expression `(X1 - X1) + 3` is turned into the following code:
+However, the resulting _code quality is poor_. Example: The expression `(X1 - X1) + 3` is turned into the following code:
 
 ```assembly
 .text
@@ -868,7 +868,7 @@ But, obviously `(X1 - X1)` is 0 and the program therefore could be much more sim
 
 ## 4.1 Intermediate Representations (IR's)
 
-**Abstract machine code** (IR) hides the details of the target architecture and allows machine independent code generation and optimization. 
+**Abstract machine code** (IR) hides the details of the target architecture and allows machine independent code generation and optimization.
 
 The goal of this is to get the program closer to machine code without losing the information needed to do analysis and optimization. We might also have multiple IR's.
 
@@ -882,7 +882,7 @@ A good IR should tick the following points:
 - Easy to translate (to the level below)
 - Narrow interface (fewer constructs means simpler phases/optimizations)
 
-*Example*: Source languages may have "while", "for", and "for each" loops while the IR might only have "while" loops and sequencing.
+_Example_: Source languages may have "while", "for", and "for each" loops while the IR might only have "while" loops and sequencing.
 A "for" loop may be translated as follows:
 
 ```bnf
@@ -890,7 +890,7 @@ A "for" loop may be translated as follows:
     [[pre; while(cond) {body; post}]]
 ```
 
-*Remark: Here, the notation `[[cmd]]` denotes the "translation/compilation" of `cmd`.*
+_Remark: Here, the notation `[[cmd]]` denotes the "translation/compilation" of `cmd`._
 
 ## 4.2 Simple Let-Based IR (SLL)
 
@@ -932,8 +932,8 @@ We take the following notes on the translation above:
 
 A **basic block** is a sequence of instructions that is always executed starting at the first instruction and always exits at the last instruction:
 
-- Starts with a label that names the *entry point* of the basic block
-- Ends with a control-flow instruction (e.g. branch or return), i.e. the *link*
+- Starts with a label that names the _entry point_ of the basic block
+- Ends with a control-flow instruction (e.g. branch or return), i.e. the _link_
 - Contains no other control-flow instruction
 - Contains no interior label used as a jump target
 
@@ -1027,7 +1027,7 @@ We furthermore use **labeled basic blocks** in LLVM:
 Arithmetic instructions:
 
 | **LLVMLite**             | **Meaning**      | **x86Lite Equivalent** |
-|--------------------------|------------------|------------------------|
+| ------------------------ | ---------------- | ---------------------- |
 | `%L = add i64 OP1, OP2`  | `%L = OP1 + OP2` | `add SRC, DEST`        |
 | `%L = subb i64 OP1, OP2` | `%L = OP1 - OP2` | `subq SRC, DEST`       |
 | `%L = mul i64 OP1, OP2`  | `%L = OP1 * OP2` | `Imulq SRC, DEST`      |
@@ -1035,9 +1035,9 @@ Arithmetic instructions:
 Bin instructions:
 
 | **LLVMLite**             | **Meaning**        | **x86Lite Equivalent** |
-|--------------------------|--------------------|------------------------|
+| ------------------------ | ------------------ | ---------------------- | ---- | --------------- |
 | `%L = and i64 OP1, OP2`  | `%L = OP1 && OP2`  | `andq SRC, DEST`       |
-| `%L = or i64 OP1, OP2`   | `%L = OP1 || OP2`  | `orq SRC, DEST`        |
+| `%L = or i64 OP1, OP2`   | `%L = OP1          |                        | OP2` | `orq SRC, DEST` |
 | `%L = xor i64 OP1, OP2`  | `%L = OP1 ^ OP2`   | `xorq SRC, DEST`       |
 | `%L = shl i64 OP1, OP2`  | `%L = OP1 << OP2`  | `sarq AMT, DEST`       |
 | `%L = lshr i64 OP1, OP2` | `%L = OP1 >> OP2`  | `shlq AMT, DEST`       |
@@ -1065,19 +1065,19 @@ define i64 @sqnorm2(i64 %0, i64 %1) {
 
 In LLVM, there are several kinds of storage models:
 
-- *Local variables* (or temporaries); `%uid`
-- *Global declarations* (e.g. for string constants): `@gid`
-- *Abstract locations*: references to stack-allocated storage created by the `alloca` instruction
+- _Local variables_ (or temporaries); `%uid`
+- _Global declarations_ (e.g. for string constants): `@gid`
+- _Abstract locations_: references to stack-allocated storage created by the `alloca` instruction
 - Heap-allocated structures created by external calls (e.g. to `malloc`)
 
 #### Locals
 
-*Local variables:*
+_Local variables:_
 
 - Defined by the instructions of the form `%uid = ...`
-- Must satisfy the *single static assignment* invariant: Each `%uid` appears on the left-hand side of an assignment only once in the entire control flow graph
+- Must satisfy the _single static assignment_ invariant: Each `%uid` appears on the left-hand side of an assignment only once in the entire control flow graph
 - Analogous to `let %uid = e in ...` in OCaml
-- Intended to be an *abstract version of machine registers*
+- Intended to be an _abstract version of machine registers_
 
 #### `alloca`
 
@@ -1094,12 +1094,12 @@ store i64 341, i64* %acc
 %x = load i64, i64* %acc
 ```
 
-Intended to be an *abstract version of stack slots*.
+Intended to be an _abstract version of stack slots_.
 
 #### LLVMLite Memory Instructions
 
 | **LLVMLite**                | **Meaning**       | **x86Lite Equivalent**    |
-|-----------------------------|-------------------|---------------------------|
+| --------------------------- | ----------------- | ------------------------- |
 | `%L = load <ty>* OP`        | `%L = *OP`        | `movq (SRC), DEST`        |
 | `store <ty> OP1, <ty>* OP2` | `*OP2 = OP1`      | `movq SRC, (DEST)`        |
 | `%L = alloca <ty>`          | alloc. stack slot | `subq sizeof(<ty>), %rsp` |
@@ -1111,7 +1111,7 @@ Example:
 ### 5.3.3 LLVMLite Control Flow Instructions
 
 | **LLVMLite**                                     | **Meaning**               | **x86Lite equivalent**                                 |
-|--------------------------------------------------|---------------------------|--------------------------------------------------------|
+| ------------------------------------------------ | ------------------------- | ------------------------------------------------------ |
 | `%L = call <ty1> OP1(<ty2> OP2, ..., <tyN> OPN)` | `%L = OP1(OP2, ..., OPN)` | OP2, ..., OPN handled according to calling conventions |
 | `call void OP1(<ty2> OP2, ..., <tyN> OPN)`       | `OP1(OP2, ..., OPN)`      | "                                                      |
 | `ret void`                                       | return                    | `retq`                                                 |
@@ -1122,8 +1122,8 @@ Example:
 ### 5.3.4 LLVMLite Misc Instructions
 
 | **LLVMLite**                                        | **Meaning**                                                   | **x86Lite Equivalent**                                           |
-|-----------------------------------------------------|---------------------------------------------------------------|------------------------------------------------------------------|
-| `%L = icmp (eq | ne | slt | ...) i64 OP1, OP2`      | Compare OP1 and OP2, typically used together with branches    | No direct equivalent                                             |
+| --------------------------------------------------- | ------------------------------------------------------------- | ---------------------------------------------------------------- | ------------------ | ---------------------------------------------------------- | -------------------- |
+| `%L = icmp (eq                                      | ne                                                            | slt                                                              | ...) i64 OP1, OP2` | Compare OP1 and OP2, typically used together with branches | No direct equivalent |
 | `%L = getelementptr T1* OP1, i64 OP2, ..., i64 OPN` | Address computation (typically used for indexing into arrays) | Sometimes `leaq` but typically unrolled to multiple instructions |
 | `%L = bitcast <ty1>* OP to <ty2>*`                  | `(<ty2>*) OP`                                                 | No types in x86                                                  |
 
@@ -1177,12 +1177,12 @@ define i64 @factorial(i64 @0) {
 
 A **basic block** is a sequence of instructions that is always executed starting at the first instruction and always exits at the last instruction:
 
-- Starts with a label that names the *entry point* of the basic block
-- Ends with a control-flow instruction, i.e. the *link*
+- Starts with a label that names the _entry point_ of the basic block
+- Ends with a control-flow instruction, i.e. the _link_
 - Contains no other control-flow instructions
 - Contains no interior label used as a jump target
 
-*Example*: Representation in OCaml:
+_Example_: Representation in OCaml:
 
 ```ocaml
 type block = {
@@ -1199,17 +1199,17 @@ A **control-flow graph** is represented as a list of labeled basic blocks with t
 - All terminators mention only labels that are defined among the set of basic blocks
 - There is a distinguished, potentially unlabeled, entry block
 
-*Example*: Representation in OCaml:
+_Example_: Representation in OCaml:
 
 ```ocaml
 type cfg = block * (lbl * block) list
 ```
 
-*Example*: Control-flow graph of the factorial function:
+_Example_: Control-flow graph of the factorial function:
 
 ![](./Figures/CompDes_Fig4-3.PNG)
 
-*Example*: `foo` function:
+_Example_: `foo` function:
 
 ![](./Figures/CompDes_Fig4-4.PNG)
 
@@ -1258,7 +1258,7 @@ clang file.ll -o file.exe
 
 ### 5.5.1 Example LL Types
 
-*`C`-Code:*
+_`C`-Code:_
 
 ```c
 struct Node {
@@ -1286,7 +1286,7 @@ void foo() {
 }
 ```
 
-*`LLVM-IR`-Code:*
+_`LLVM-IR`-Code:_
 
 ```llvm
 %struct.Node = type { i64, %struct.Node* }
@@ -1370,11 +1370,11 @@ LLVM provides the `getelementptr` (**GEP**)instruction to compute pointer values
 <result> = getelementptr <ty>* <ptrval>{, <ty> <idx>}*
 ```
 
-*GEP example:*
+_GEP example:_
 
 ![](./Figures/CompDes_Fig4-6.PNG)
 
-*Remarks:*
+_Remarks:_
 
 - GEP never dereferences the address it's calculating!
   - GEP only produces pointers by doing arithmetic
@@ -1470,13 +1470,13 @@ define void @ bar(%struct.Point* %0,
 
 How do we manage storage for each `%uid` defined by an LLVM instruction?
 
-*Option 1:*
+_Option 1:_
 
 - Map each `%uid` to an x86 register
 - Efficient!
 - Difficult to do effectively: many `%uid` values but only 16 registers
 
-*Option 2:*
+_Option 2:_
 
 - Map each `%uid` to a stack-allocated space
 - Less efficient!
@@ -1522,7 +1522,7 @@ foo:
     retq
 ```
 
-*Remarks:*
+_Remarks:_
 
 - For each `alloca Ty` -> `subq sizeof(Ty), %rsp` (optimization: combine them!)
 - Loads from/stores to stack slots -> `movq & offset(%rbp)`
@@ -1533,10 +1533,10 @@ foo:
 
 ![](./Figures/CompDes_Fig4-7.PNG)
 
-*Remarks:*
+_Remarks:_
 
 - `%1` in this case corresponds to `-16(%rbp)`: `getelementptr -> base address + offset`
-- *Compilation of GEP:*
+- _Compilation of GEP:_
   1. Translate GEP's base pointer to an actual address (e.g. a stack slot)
   2. Compute the offset specified by the indices and add it to the base address
 
@@ -1550,6 +1550,6 @@ foo:
 - Basic blocks are mostly generated independently
 - The resulting x86 BB's are connected via jumps
 
-*Example:*
+_Example:_
 
 ![](./Figures/CompDes_Fig4-9.PNG)
