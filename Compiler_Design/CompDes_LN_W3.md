@@ -17,23 +17,23 @@ One simple strategy for directly generating x86 is based on the following ideas:
 
 - Compilation emits instructions into an instruction stream
 - To compile an expression `e1 op e2`:
-    1. Recursively compile its sub-expressions
-    2. Process the results
+  1. Recursively compile its sub-expressions
+  2. Process the results
 - Invariants:
-    - Compilation of an expression yields its result in `rax`
-    - Argument `Xi` is store in a dedicated operand
-    - Intermediate values are pushed onto the stack 
-    - The stack is popped after use (such that the space is reclaimed)
+  - Compilation of an expression yields its result in `rax`
+  - Argument `Xi` is store in a dedicated operand
+  - Intermediate values are pushed onto the stack
+  - The stack is popped after use (such that the space is reclaimed)
 - Resulting code is wrapped to comply with cdecl calling conventions
 
 # 4. Intermediate Representations
 
-Up until now, we followed a simple *syntax-directed* translation, this meant that:
+Up until now, we followed a simple _syntax-directed_ translation, this meant that:
 
 - Input syntax uniquely determined the output, i.e. no complex analysis or code transformation was done
 - Worked fine for simple languages
 
-However, the resulting *code quality is poor*. Example: The expression `(X1 - X1) + 3` is turned into the following code:
+However, the resulting _code quality is poor_. Example: The expression `(X1 - X1) + 3` is turned into the following code:
 
 ```assembly
 .text
@@ -60,7 +60,7 @@ But, obviously `(X1 - X1)` is 0 and the program therefore could be much more sim
 
 ## 4.1 Intermediate Representations (IR's)
 
-**Abstract machine code** (IR) hides the details of the target architecture and allows machine independent code generation and optimization. 
+**Abstract machine code** (IR) hides the details of the target architecture and allows machine independent code generation and optimization.
 
 The goal of this is to get the program closer to machine code without losing the information needed to do analysis and optimization. We might also have multiple IR's.
 
@@ -74,7 +74,7 @@ A good IR should tick the following points:
 - Easy to translate (to the level below)
 - Narrow interface (fewer constructs means simpler phases/optimizations)
 
-*Example*: Source languages may have "while", "for", and "for each" loops while the IR might only have "while" loops and sequencing.
+_Example_: Source languages may have "while", "for", and "for each" loops while the IR might only have "while" loops and sequencing.
 A "for" loop may be translated as follows:
 
 ```bnf
@@ -82,7 +82,7 @@ A "for" loop may be translated as follows:
     [[pre; while(cond) {body; post}]]
 ```
 
-*Remark: Here, the notation `[[cmd]]` denotes the "translation/compilation" of `cmd`.*
+_Remark: Here, the notation `[[cmd]]` denotes the "translation/compilation" of `cmd`._
 
 ## 4.2 Simple Let-Based IR (SLL)
 
@@ -124,8 +124,8 @@ We take the following notes on the translation above:
 
 A **basic block** is a sequence of instructions that is always executed starting at the first instruction and always exits at the last instruction:
 
-- Starts with a label that names the *entry point* of the basic block
-- Ends with a control-flow instruction (e.g. branch or return), i.e. the *link*
+- Starts with a label that names the _entry point_ of the basic block
+- Ends with a control-flow instruction (e.g. branch or return), i.e. the _link_
 - Contains no other control-flow instruction
 - Contains no interior label used as a jump target
 
