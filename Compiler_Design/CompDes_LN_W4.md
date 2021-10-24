@@ -228,3 +228,65 @@ define i64 @factorial(i64 @0) {
     ret i64 %14
 }
 ```
+
+### 5.4.2 Basic Blocks
+
+A **basic block** is a sequence of instructions that is always executed starting at the first instruction and always exits at the last instruction:
+
+- Starts with a label that names the *entry point* of the basic block
+- Ends with a control-flow instruction, i.e. the *link*
+- Contains no other control-flow instructions
+- Contains no interior label used as a jump target
+
+*Example*: Representation in OCaml:
+
+```ocaml
+type block = {
+    insns : (uid * insn) list;
+    term  : (uid * terminator)
+}
+```
+
+### 5.4.3 Control-flow Graphs
+
+A **control-flow graph** is represented as a list of labeled basic blocks with these invariants:
+
+- No two blocks have the same label
+- All terminators mention only labels that are defined among the set of basic blocks
+- There is a distinguished, potentially unlabeled, entry block
+
+*Example*: Representation in OCaml:
+
+```ocaml
+type cfg = block * (lbl * block) list
+```
+
+*Example*: Control-flow graph of the factorial function:
+
+![](./Figures/CompDes_Fig4-3.PNG)
+
+*Example*: `foo` function:
+
+![](./Figures/CompDes_Fig4-4.PNG)
+
+### 5.4.4 Generating Code for Loops
+
+A **loop** has the following general form:
+
+```c
+for(initializationStatement; testExpression; updateStatement) {
+    // statement inside the body of the loop
+}
+```
+
+We therefore have the following five elements:
+
+1. BB with the initialization
+2. BB with the test expression
+3. BB for the update statement
+4. BB for the body of the loop
+5. Connect the different BB's with the conditional statements
+
+The general CFG for a loop looks as follows:
+
+![](./Figures/CompDes_Fig4-5.PNG)
