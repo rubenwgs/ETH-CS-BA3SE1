@@ -83,7 +83,7 @@ We furthermore use **labeled basic blocks** in LLVM:
 Arithmetic instructions:
 
 | **LLVMLite**             | **Meaning**      | **x86Lite Equivalent** |
-|--------------------------|------------------|------------------------|
+| ------------------------ | ---------------- | ---------------------- |
 | `%L = add i64 OP1, OP2`  | `%L = OP1 + OP2` | `add SRC, DEST`        |
 | `%L = subb i64 OP1, OP2` | `%L = OP1 - OP2` | `subq SRC, DEST`       |
 | `%L = mul i64 OP1, OP2`  | `%L = OP1 * OP2` | `Imulq SRC, DEST`      |
@@ -91,9 +91,9 @@ Arithmetic instructions:
 Bin instructions:
 
 | **LLVMLite**             | **Meaning**        | **x86Lite Equivalent** |
-|--------------------------|--------------------|------------------------|
+| ------------------------ | ------------------ | ---------------------- | ---- | --------------- |
 | `%L = and i64 OP1, OP2`  | `%L = OP1 && OP2`  | `andq SRC, DEST`       |
-| `%L = or i64 OP1, OP2`   | `%L = OP1 || OP2`  | `orq SRC, DEST`        |
+| `%L = or i64 OP1, OP2`   | `%L = OP1          |                        | OP2` | `orq SRC, DEST` |
 | `%L = xor i64 OP1, OP2`  | `%L = OP1 ^ OP2`   | `xorq SRC, DEST`       |
 | `%L = shl i64 OP1, OP2`  | `%L = OP1 << OP2`  | `sarq AMT, DEST`       |
 | `%L = lshr i64 OP1, OP2` | `%L = OP1 >> OP2`  | `shlq AMT, DEST`       |
@@ -121,19 +121,19 @@ define i64 @sqnorm2(i64 %0, i64 %1) {
 
 In LLVM, there are several kinds of storage models:
 
-- *Local variables* (or temporaries); `%uid`
-- *Global declarations* (e.g. for string constants): `@gid`
-- *Abstract locations*: references to stack-allocated storage created by the `alloca` instruction
+- _Local variables_ (or temporaries); `%uid`
+- _Global declarations_ (e.g. for string constants): `@gid`
+- _Abstract locations_: references to stack-allocated storage created by the `alloca` instruction
 - Heap-allocated structures created by external calls (e.g. to `malloc`)
 
 #### Locals
 
-*Local variables:*
+_Local variables:_
 
 - Defined by the instructions of the form `%uid = ...`
-- Must satisfy the *single static assignment* invariant: Each `%uid` appears on the left-hand side of an assignment only once in the entire control flow graph
+- Must satisfy the _single static assignment_ invariant: Each `%uid` appears on the left-hand side of an assignment only once in the entire control flow graph
 - Analogous to `let %uid = e in ...` in OCaml
-- Intended to be an *abstract version of machine registers*
+- Intended to be an _abstract version of machine registers_
 
 #### `alloca`
 
@@ -150,12 +150,12 @@ store i64 341, i64* %acc
 %x = load i64, i64* %acc
 ```
 
-Intended to be an *abstract version of stack slots*.
+Intended to be an _abstract version of stack slots_.
 
 #### LLVMLite Memory Instructions
 
 | **LLVMLite**                | **Meaning**       | **x86Lite Equivalent**    |
-|-----------------------------|-------------------|---------------------------|
+| --------------------------- | ----------------- | ------------------------- |
 | `%L = load <ty>* OP`        | `%L = *OP`        | `movq (SRC), DEST`        |
 | `store <ty> OP1, <ty>* OP2` | `*OP2 = OP1`      | `movq SRC, (DEST)`        |
 | `%L = alloca <ty>`          | alloc. stack slot | `subq sizeof(<ty>), %rsp` |
@@ -167,7 +167,7 @@ Example:
 ### 5.3.3 LLVMLite Control Flow Instructions
 
 | **LLVMLite**                                     | **Meaning**               | **x86Lite equivalent**                                 |
-|--------------------------------------------------|---------------------------|--------------------------------------------------------|
+| ------------------------------------------------ | ------------------------- | ------------------------------------------------------ |
 | `%L = call <ty1> OP1(<ty2> OP2, ..., <tyN> OPN)` | `%L = OP1(OP2, ..., OPN)` | OP2, ..., OPN handled according to calling conventions |
 | `call void OP1(<ty2> OP2, ..., <tyN> OPN)`       | `OP1(OP2, ..., OPN)`      | "                                                      |
 | `ret void`                                       | return                    | `retq`                                                 |
@@ -178,8 +178,8 @@ Example:
 ### 5.3.4 LLVMLite Misc Instructions
 
 | **LLVMLite**                                        | **Meaning**                                                   | **x86Lite Equivalent**                                           |
-|-----------------------------------------------------|---------------------------------------------------------------|------------------------------------------------------------------|
-| `%L = icmp (eq | ne | slt | ...) i64 OP1, OP2`      | Compare OP1 and OP2, typically used together with branches    | No direct equivalent                                             |
+| --------------------------------------------------- | ------------------------------------------------------------- | ---------------------------------------------------------------- | ------------------ | ---------------------------------------------------------- | -------------------- |
+| `%L = icmp (eq                                      | ne                                                            | slt                                                              | ...) i64 OP1, OP2` | Compare OP1 and OP2, typically used together with branches | No direct equivalent |
 | `%L = getelementptr T1* OP1, i64 OP2, ..., i64 OPN` | Address computation (typically used for indexing into arrays) | Sometimes `leaq` but typically unrolled to multiple instructions |
 | `%L = bitcast <ty1>* OP to <ty2>*`                  | `(<ty2>*) OP`                                                 | No types in x86                                                  |
 
@@ -233,12 +233,12 @@ define i64 @factorial(i64 @0) {
 
 A **basic block** is a sequence of instructions that is always executed starting at the first instruction and always exits at the last instruction:
 
-- Starts with a label that names the *entry point* of the basic block
-- Ends with a control-flow instruction, i.e. the *link*
+- Starts with a label that names the _entry point_ of the basic block
+- Ends with a control-flow instruction, i.e. the _link_
 - Contains no other control-flow instructions
 - Contains no interior label used as a jump target
 
-*Example*: Representation in OCaml:
+_Example_: Representation in OCaml:
 
 ```ocaml
 type block = {
@@ -255,17 +255,17 @@ A **control-flow graph** is represented as a list of labeled basic blocks with t
 - All terminators mention only labels that are defined among the set of basic blocks
 - There is a distinguished, potentially unlabeled, entry block
 
-*Example*: Representation in OCaml:
+_Example_: Representation in OCaml:
 
 ```ocaml
 type cfg = block * (lbl * block) list
 ```
 
-*Example*: Control-flow graph of the factorial function:
+_Example_: Control-flow graph of the factorial function:
 
 ![](./Figures/CompDes_Fig4-3.PNG)
 
-*Example*: `foo` function:
+_Example_: `foo` function:
 
 ![](./Figures/CompDes_Fig4-4.PNG)
 
@@ -314,7 +314,7 @@ clang file.ll -o file.exe
 
 ### 5.5.1 Example LL Types
 
-*`C`-Code:*
+_`C`-Code:_
 
 ```c
 struct Node {
@@ -342,7 +342,7 @@ void foo() {
 }
 ```
 
-*`LLVM-IR`-Code:*
+_`LLVM-IR`-Code:_
 
 ```llvm
 %struct.Node = type { i64, %struct.Node* }
@@ -426,11 +426,11 @@ LLVM provides the `getelementptr` (**GEP**)instruction to compute pointer values
 <result> = getelementptr <ty>* <ptrval>{, <ty> <idx>}*
 ```
 
-*GEP example:*
+_GEP example:_
 
 ![](./Figures/CompDes_Fig4-6.PNG)
 
-*Remarks:*
+_Remarks:_
 
 - GEP never dereferences the address it's calculating!
   - GEP only produces pointers by doing arithmetic
@@ -526,13 +526,13 @@ define void @ bar(%struct.Point* %0,
 
 How do we manage storage for each `%uid` defined by an LLVM instruction?
 
-*Option 1:*
+_Option 1:_
 
 - Map each `%uid` to an x86 register
 - Efficient!
 - Difficult to do effectively: many `%uid` values but only 16 registers
 
-*Option 2:*
+_Option 2:_
 
 - Map each `%uid` to a stack-allocated space
 - Less efficient!
@@ -578,7 +578,7 @@ foo:
     retq
 ```
 
-*Remarks:*
+_Remarks:_
 
 - For each `alloca Ty` -> `subq sizeof(Ty), %rsp` (optimization: combine them!)
 - Loads from/stores to stack slots -> `movq & offset(%rbp)`
@@ -589,10 +589,10 @@ foo:
 
 ![](./Figures/CompDes_Fig4-7.PNG)
 
-*Remarks:*
+_Remarks:_
 
 - `%1` in this case corresponds to `-16(%rbp)`: `getelementptr -> base address + offset`
-- *Compilation of GEP:*
+- _Compilation of GEP:_
   1. Translate GEP's base pointer to an actual address (e.g. a stack slot)
   2. Compute the offset specified by the indices and add it to the base address
 
@@ -606,6 +606,6 @@ foo:
 - Basic blocks are mostly generated independently
 - The resulting x86 BB's are connected via jumps
 
-*Example:*
+_Example:_
 
 ![](./Figures/CompDes_Fig4-9.PNG)
