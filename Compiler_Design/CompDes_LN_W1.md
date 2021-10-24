@@ -26,7 +26,7 @@ Hello world!
 %
 ```
 
-The goal of a **compiler** is to *translate one programming language to another*, typically that is translating a high-level source code to a low-level machine code (**object code**).
+The goal of a **compiler** is to _translate one programming language to another_, typically that is translating a high-level source code to a low-level machine code (**object code**).
 
 #### Source Code
 
@@ -90,7 +90,7 @@ The typical **compiler stages** are as follows:
 - Register allocation -> assembly
 - Code emission
 
-**Optimization** may be done at *many* of these stages!
+**Optimization** may be done at _many_ of these stages!
 
 Another simplified view on the compilation and execution is given by the following figure:
 
@@ -176,9 +176,9 @@ We introduce the following two **nonterminals** for our simple language:
 	|	<cmd>; <cmd>
 ```
 
-The above given syntax (or *grammar*) for a simple imperative language has the following properties:
+The above given syntax (or _grammar_) for a simple imperative language has the following properties:
 
-- It is written in *Backus-Naur form*
+- It is written in _Backus-Naur form_
 - The symbols `::=`, `|`, and `<...>` are part of the **meta language**
 - Keywords like `skip`, `ifNZ`, and `whileNZ` and symbols like `{` and `+` are part of the **object language**
 
@@ -282,7 +282,7 @@ whileNZ 0 c -> skip
 
 In general, we want to make our program as simple as possible based on some rewriting rules before interpreting it.
 
-We might realize an *optimizer for commands* in the following way:
+We might realize an _optimizer for commands_ in the following way:
 
 ```ocaml
 let rec optimize_cmd (c:cmd) : cmd =
@@ -306,7 +306,7 @@ let rec optimize_cmd (c:cmd) : cmd =
 
 ### 2.4.3 Translator
 
-We might imagine trying to build a translator from *Simple* to *OCaml*. This process consists of several different steps.
+We might imagine trying to build a translator from _Simple_ to _OCaml_. This process consists of several different steps.
 
 #### Set of Variables
 
@@ -350,7 +350,7 @@ let rec vars_of_cmd (c:cmd) : VSet.t =
 
 #### Translation
 
-The translation invariants are guided by the *types* of the operations:
+The translation invariants are guided by the _types_ of the operations:
 
 - variables are a global state, so the become mutable references
 - expressions denote integers
