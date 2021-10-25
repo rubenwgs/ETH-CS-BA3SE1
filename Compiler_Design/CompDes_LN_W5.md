@@ -146,3 +146,62 @@ _Example:_ Consider `-?[0-9]+`:
    2. Follow transitions, remember the last accepted state entered
    3. Accept the input until no transition is possible
    4. Perform the highest-priority action associated with the last accepted state
+
+# 7. Parsing
+
+**Parsing** describes the process of finding a syntactic structure, such as an **abstract syntax tree** (AST).
+
+## 7.1 Overview
+
+Parsing, i.e. syntactic analysis, works as follows:
+
+- Input: stream of tokens
+- Output: abstract syntax tree
+
+The strategy is to parse the token stream to traverse the "concrete" syntax. During the traversal, we build a tree representing the "abstract" syntax.
+
+However, for this to work, we need to know how our concrete syntax looks like. In other words, we need to describe our language syntax precisely and conveniently.
+
+## 7.2 Context Free Grammars
+
+### 7.2.1 Overview
+
+The idea of **context free grammars** (CFG) is to derive a string in the language starting from some element and rewrite it according to the given rules.
+
+_Example:_ Consider the specification of the language of balances `parens`:
+
+$$\text{S} \to (\text{S})\text{S} \\ \text{S} \to \epsilon$$
+
+A derivation could look like:
+
+$$\text{S} \to (\text{S})\text{S} \to ((\text{S})\text{S})\text{S} \to ((\epsilon)\text{S})\text{S} \to ((\epsilon)\text{S})\epsilon \to ((\epsilon)\epsilon)\epsilon = (())$$
+
+### 7.2.2 CFG's Mathematically
+
+A **context free grammar** (CFG) consists of:
+
+- a set of _terminals_
+- a set of _nonterminals_
+- a designated nonterminal called the _start symbol_
+- a set of _productions_ `LHS -> RHS`:
+  - LHS is a nonterminal
+  - RHS is a string of terminals and nonterminals
+
+_Example:_ A grammar that accepts parenthesized sums of numbers:
+
+$$\text{S} \to \text{E} + \text{S} \, | \, \text{E} \\ \text{E} \to \text{number} \, | \, (\text{S})$$
+
+### 7.2.3 Derivations
+
+For arbitrary strings $\alpha, \, \beta, \, \gamma$ and production rule $A \to \beta$, a **single step of derivation** is:
+
+$$\alpha A \gamma \to \alpha \beta \gamma$$
+
+We might represent a derivation as a tree where:
+
+- Leaves: terminals
+- Internal nodes: nonterminals
+
+_Example:_ Derivation tree of `(1 + 2 + (3 + 4)) + 5`:
+
+![](./Figures/CompDes_Fig5-6.PNG)
