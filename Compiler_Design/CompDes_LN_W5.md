@@ -96,3 +96,53 @@ rule token = parse
     | character (digit|character|'_')*  { Ident(lexeme lexbuf) }
     | whitespace+                       { token lexbuf }
 ```
+
+## 6.5 Finite Automata
+
+### 6.5.1 Deterministic Finite Automaton
+
+A **deterministic finite automaton** (DFA) can be represented as:
+
+![](./Figures/CompDes_Fig5-3.PNG)
+
+> We can build a finite automaton for every regular expression!
+
+### 6.5.2 Nondeterministic Finite Automaton
+
+A **nondeterministic finite automaton** (NFA) is built the same way as a DFA (i.e. finite set of states, start state, accepting states, transition arrows connecting states, etc.). However, different to DFA's, NFA's can have two arrows leaving the same state with the same label!
+
+Sums and Kleene stars can easily be represented with NFA's:
+
+![](./Figures/CompDes_Fig5-4.PNG)
+
+### 6.5.3 DFA vs. NFA
+
+- _DFA_
+  - action of the automaton for each input is fully determined
+  - accepts if the input is consumed upon reaching an accepting state
+  - obvious table-based implementation
+- _NFA_
+  - automaton potentially has a choice at every step
+  - accepts an input if there exists a way to reach an accepting state
+  - less obvious how to implement efficiently
+
+### 6.5.4 NFA to DFA conversion
+
+The idea to convert a NFA to a DFA is to run all possible executions of the NFA in "parallel" and meanwhile keep track of a set of possible states (so-called "finite fingers").
+
+_Example:_ Consider `-?[0-9]+`:
+
+![](./Figures/CompDes_Fig5-5.PNG)
+
+## 6.6 Summary of Lexer Generator Behavior
+
+1. Take each regular expression `R_i` and its action `A_i`
+2. Compute the NFA formed by `(R_1 | R_2 | ... | R_n)`
+3. Compute the DFA for the big NFA computed in the previous step
+4. Compute the minimal equivalent DFA
+5. Produce the transition table
+6. Implement the longest match
+   1. Start from initial state
+   2. Follow transitions, remember the last accepted state entered
+   3. Accept the input until no transition is possible
+   4. Perform the highest-priority action associated with the last accepted state
