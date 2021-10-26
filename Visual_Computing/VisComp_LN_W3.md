@@ -8,7 +8,7 @@
 
 ## 3.1 Linear Shift-Invariant Filtering
 
-**Linear shift-invariant filtering** is about modifying pixels base don its *neighborhood*. Linear means that it should be a *linear combination* of neighbors. Shift-invariant means that we do the *same thing for each pixel*. This approach is useful for:
+**Linear shift-invariant filtering** is about modifying pixels base don its _neighborhood_. Linear means that it should be a _linear combination_ of neighbors. Shift-invariant means that we do the _same thing for each pixel_. This approach is useful for:
 
 - Low-level image processing operations
 - Smoothing and noise reduction
@@ -25,9 +25,9 @@ Linear operations can be written as:
 
 $$I'(x, \, y) = \sum_{(i, \, j) \in \mathcal{N}(x, \, y)} K(x, \, y; \, i, \, j)I(i, \, j)$$
 
-Where $I$ is the input image, $I'$ is the output of the operation, and $K$ is the **kernel** of the operation. $\mathcal{N}(m, \, n)$ denotes the *neighborhood* of $(m, \, n)$.
+Where $I$ is the input image, $I'$ is the output of the operation, and $K$ is the **kernel** of the operation. $\mathcal{N}(m, \, n)$ denotes the _neighborhood_ of $(m, \, n)$.
 
-> Operations are **shift-invariant** if $K$ does *not* depend on $(x, \, y)$, i.e. we when using the same weights everywhere!
+> Operations are **shift-invariant** if $K$ does _not_ depend on $(x, \, y)$, i.e. we when using the same weights everywhere!
 
 ## 3.2 Correlation
 
@@ -84,4 +84,3 @@ The top 5 reasons to use Gaussian smoothing are:
 3. Still one lobe in frequency domain (no corruption from high frequencies)
 4. Simple relationship to $\sigma$
 5. Easy to implement efficiently
-
