@@ -205,3 +205,78 @@ We might represent a derivation as a tree where:
 _Example:_ Derivation tree of `(1 + 2 + (3 + 4)) + 5`:
 
 ![](./Figures/CompDes_Fig5-6.PNG)
+
+#### From Parse Trees to Abstract Syntax Trees
+
+![](./Figures/CompDes_Fig5-7.PNG)
+
+#### Derivation Orders
+
+Production of a grammar can be applied in any order, however, there are two standard orders:
+
+- _Leftmost derivation_: Find the left-most nonterminal and apply a production to it
+- _Rightmost derivation_: Find the right-most nonterminal and apply a production there
+
+_Remark_: Both strategies and any other order yield the same parse tree!
+
+### 7.2.4 Loops and Termination
+
+Some care is needed when defining CFG's:
+
+$$\text{S} \to \text{E} \\ \text{E} \to \text{S}$$
+
+- This grammas has nonterminal definitions that are _non-productive_, i.e. they don't mention any terminal symbols
+- There is no finite derivation starting from $\text{S}$, so the language is empty
+
+$$\text{S} \to (\text{S})$$
+
+- This grammar is productive, but again there is no finite derivation string from $\text{S}$, so the language is _empty_
+
+## 7.3 Grammars for Programming Languages
+
+### 7.3.1 Associativity
+
+Consider the following grammar:
+
+$$\text{S} \to \text{E} + \text{S} \, | \, \text{E} \\ \text{E} \to \text{number} \, | \, (\text{S})$$
+
+This grammar makes the `+` _right associative_, i.e. the AST is the same for both `1 + 2 + 3` and `1 + (2 + 4)`. Note also that the grammar is _right recursive_ due to the production $\text{S} \to \text{E} + \text{S}$.
+
+How would we make the `+` _left associative_? Simple:
+
+$$\text{S} \to \text{S} + \text{E} \, | \, \text{E} \\ \text{E} \to \text{number} \, | \, (\text{S})$$
+
+### 7.3.2 Ambiguity
+
+Consider the following grammar:
+
+$$\text{S} \to \text{S} + \text{S} \, | \, (\text{S}) \, | \, \text{number}$$
+
+This accepts the same set of strings as the previously mentioned grammar. We can get both right and left associativity for the `+` operator.
+
+> **Non-ambiguous** means that for every input string, there is only one way to parse it!
+
+However, not all operations are associative. Moreover, if there are multiple operations, amiguity in the grammar leads to ambiguity in their _precedence_.
+
+Consider the grammar:
+
+$$\text{S} \to \text{S} + \text{S} \, | \, \text{S} * \text{S} \, | \, (\text{S}) \, | \, \text{number}$$
+
+The input `1 + 2 * 3` might be parsed either:
+
+- `(1 + 2) * 3 = 9`
+- `1 + (2 * 3) = 7`
+
+#### Eliminating Ambiguity
+
+We can often eliminate ambiguity by adding nonterminals and allowing recursion only on the left (or right).
+
+To disambiguate the previously introduced grammar:
+
+- Decide to make `*` higher precedence than `+`
+- Make `+` left associative
+- Make `*` right associative
+
+_Note_: `S_2` corresponds to "atomic" expressions:
+
+$$S_0 \to S_0 + S_1 \, | \, S_1 \\ S_1 \to S_2 * S_1 \, | \, S_2 \\ S_2 \to \text{number} \, | \, (S_0)$$
