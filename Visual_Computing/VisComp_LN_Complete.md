@@ -12,9 +12,9 @@
 
 ### Image as a 2D signal
 
-The **signal** is a function depending on some variable with pyhsical meaning. The **image** is a continuous function, where we either have 2 variables `x y` which are the coordinates, or, in case of a video, three variables `x y` and the corresponding time in the video. Usually, the value of the function is the **brightness**.
+The **signal** is a function depending on some variable with physical meaning. The **image** is a continuous function, where we either have 2 variables `x y` which are the coordinates, or, in case of a video, three variables `x y` and the corresponding time in the video. Usually, the value of the function is the **brightness**.
 
-*Images in Python:*
+_Images in Python:_
 
 ```python
     # Load a picture into Python
@@ -42,19 +42,19 @@ The **signal** is a function depending on some variable with pyhsical meaning. T
     cv2.waitKey(0)
 ```
 
-In summary, an **image** is a picture or pattern of a value varying in space and/or time. It is the representation of a *continuous* function to a *discrete* domain: `f : R^n -> S`.
+In summary, an **image** is a picture or pattern of a value varying in space and/or time. It is the representation of a _continuous_ function to a _discrete_ domain: `f : R^n -> S`.
 
-As an example, for greyscale CCD images, `n = 2` and `S = R^+`.
+As an example, for grayscale CCD images, `n = 2` and `S = R^+`.
 
 ### What is a pixel?
 
-*A pixel is not a little square!*
+_A pixel is not a little square!_
 
 **Pixels** are point measurements of a function (of the above described continuous function).
 
 ## 1.2 Where do images come from?
 
-There are several different things where pictures can come from:
+There are several things where pictures can come from:
 
 - Digital cameras
 - MRI scanners
@@ -64,11 +64,11 @@ There are several different things where pictures can come from:
 
 ### Digital cameras
 
-Simplified, the **digital camera** consists of the following parts and is said to be a *Charge Coupled Device (CCD)*:
+Simplified, the **digital camera** consists of the following parts and is said to be a _Charge Coupled Device (CCD)_:
 
 ![](./Figures/VisComp_Fig1-1.PNG)
 
-The **sensor array** can be < 1cm^2 and is an array of *photosites*. Each photosite is a bucket of electrical charge, and this charge is proportional to the incident light intensity during the exposure.
+The **sensor array** can be < 1 cm^2 and is an array of _photosites_. Each photosite is a bucket of electrical charge, and this charge is proportional to the incident light intensity during the exposure.
 
 The **analog to digital conversion (ADC)** measure the charge and digitizes the result. The conversion happens line by line in that charges in each photosite move down through the sensor array.
 
@@ -78,7 +78,7 @@ Example:
 
 Because each bucket has a finite capacity, if a photosite bucket is full, it can overflow to other buckets, which leads to **blooming**.
 
-Even without any light, there will still be some current which can degrade the quality of a picture. CCD's produce thermally-generated charge, which results in a *non-zero output* even in darkness. This effect is called the **dark current**.
+Even without any light, there will still be some current which can degrade the quality of a picture. CCD's produce thermally-generated charge, which results in a _non-zero output_ even in darkness. This effect is called the **dark current**.
 
 ## 1.3 CMOS
 
@@ -86,7 +86,7 @@ Even without any light, there will still be some current which can degrade the q
 
 ### CCD vs. CMOS
 
-*CCD*
+_CCD_
 
 - Mature technology
 - Specific technology
@@ -95,7 +95,7 @@ Even without any light, there will still be some current which can degrade the q
 - Blooming
 - Sequential readout
 
-*CMOS*
+_CMOS_
 
 - More recent technology
 - Cheap
@@ -107,23 +107,23 @@ Even without any light, there will still be some current which can degrade the q
 
 ### Rolling shutter
 
-By resetting each line in the sensor line by line (the "shutter"), each line will start capturing light a little before the line below and so one. Each line in the picture is therefore a little behind in time as the line above.
+By resetting each line in the sensor line by line (the "shutter"), each line will start capturing light a little before the line below and so on. Each line in the picture is therefore a little behind in time as the line above.
 
 ## 1.4 Sampling in 1D
 
-**Sampling** in 1D takes a function, and returns a vector whose elements are valuesof that function at the sample points.
+**Sampling** in 1D takes a function, and returns a vector whose elements are values of that function at the sample points.
 
 Example:
 
 ![](./Figures/VisComp_Fig1-3.PNG)
 
-Sampling solves one problem with working with continuous functions. How do we store and compute with them? A common scheme for representing continuous functions is with **samples**: we simply write down the function's values as discret values at many sample points.
+Sampling solves one problem with working with continuous functions. How do we store and compute with them? A common scheme for representing continuous functions is with **samples**: we simply write down the function's values as discrete values at many sample points.
 
 ### Reconstruction
 
-**Reconstruction** describes the process of making samples back into a continuous function. We migh to this for several different reasons:
+**Reconstruction** describes the process of making samples back into a continuous function. We might do this for several reasons:
 
-- For ouput where we need a realizable method
+- For output where we need a realizable method
 - For analysis or processing, where we need a mathematical method
 - Instead of "guessing" what the function did in between sample points
 
@@ -133,19 +133,19 @@ Unsurprisingly, if we undersample some function, we loose information.
 
 Example: If we undersample the following `sin` wave, it gets indistinguishable from lower frequencies:
 
-*Sample:*
+_Sample:_
 
 ![](./Figures/VisComp_Fig1-4.PNG)
 
-*Reconstruction 1:*
+_Reconstruction 1:_
 
 ![](./Figures/VisComp_Fig1-5.PNG)
 
-*Reconstruction 2:*
+_Reconstruction 2:_
 
 ![](./Figures/VisComp_Fig1-6.PNG)
 
-This effect is what we call **aliasing**, i.e. *"Signals travelling in disguise as other frequencies"*.
+This effect is what we call **aliasing**, i.e. _"Signals travelling in disguise as other frequencies"_.
 
 ## 1.5 Sampling in 2D
 
@@ -153,17 +153,17 @@ This effect is what we call **aliasing**, i.e. *"Signals travelling in disguise 
 
 Example:
 
-*Function:*
+_Function:_
 
 ![](./Figures/VisComp_Fig1-7.PNG)
 
-*Sample:*
+_Sample:_
 
 ![](./Figures/VisComp_Fig1-8.PNG)
 
 ### Reconstruction
 
-In 2D, a simple way to reconstruct a function from a sample is to use **bilinear interpolation**¨, which works essentially the same as linear interpolation: we calculate two lines in each direction, and then take the intersection of the two lines.
+In 2D, a simple way to reconstruct a function from a sample is to use **bilinear interpolation**, which works essentially the same as linear interpolation: we calculate two lines in each direction, and then take the intersection of the two lines.
 
 Example:
 
@@ -177,13 +177,13 @@ We define the **Nyquist Frequency** as half the sampling frequency of a discrete
 
 When sampling, real valued functions will get digital values, i.e. integer values. This means that **quantization** is lossy: after quantization, the original signal cannot be reconstructed anymore.
 
-This is in contrast to sampling, as a sampled but not qunatized signal *can* be reconstructed.
+This is in contrast to sampling, as a sampled but not quantized signal _can_ be reconstructed.
 
 ### Usual quantization intervals
 
 The following are the most widely used quantization intervals:
 
-- Grayscale image: `8 bit = 2^8 = 256` grayvalues
+- Grayscale image: `8 bit = 2^8 = 256` gray values
 - Color image RGB (3 channels): `8 bit/channel = 2^24 = 16.7M` colors
 - 12 bit or 16 bit for some sensors
 
@@ -195,13 +195,13 @@ Simply tells the amount of pixels our pictures has.
 
 ### Geometric resolution
 
-*How many pixels per area?*
+_How many pixels per area?_
 
 Tells us how many pixels we have per a given area (e.g. how many pixels per square centimeter of picture).
 
 ### Radiometric resolution
 
-*How many bits per pixel?*
+_How many bits per pixel?_
 
 Tells us how much information each pixel can store.
 
@@ -237,7 +237,7 @@ We consider three different common concepts:
 
 ### Prism
 
-With this type of camera, we separate the light into three beams using two *dichroic prisms*. However, this requires three sensors and a very precise alignment. The plus of this concept is that there is a very good color separation.
+With this type of camera, we separate the light into three beams using two _dichroic prisms_. However, this requires three sensors and a very precise alignment. The plus of this concept is that there is a very good color separation.
 
 ### Filter Mosaic
 
@@ -245,12 +245,12 @@ With this concept, one coats the filter directly on the sensor.
 
 ### Filter wheel
 
-For static scenes, we can rotate multiple filters in front of the lens. This allows for more than 3 colours.
+For static scenes, we can rotate multiple filters in front of the lens. This allows for more than 3 colors.
 
 ### Prism vs. mosaic vs. wheel
 
 | Approach   | Prism            | Mosaic          | Wheel                   |
-|------------|------------------|-----------------|-------------------------|
+| ---------- | ---------------- | --------------- | ----------------------- |
 | # Sensors  | 3                | 1               | 1                       |
 | Separation | High             | Average         | Good                    |
 | Cost       | High             | Low             | Average                 |
@@ -273,11 +273,11 @@ In contrast to a filter mosaic, we truly measure each color at each pixel, inste
 
 **Image segmentation** partitions an image into regions of interest. It is the first stage in many automatic image analysis systems.
 
-A *complete segemtnation* of an image `I` is a finite set of regions `R_1,..., R_N`, such that:
+A _complete segmentation_ of an image `I` is a finite set of regions `R_1,..., R_N`, such that:
 
 ![](./Figures/VisComp_Fig2-2.PNG)
 
-*Excluding dark pixels from an image:*
+_Excluding dark pixels from an image:_
 
 ```python
     img = cv2.imread('BlobsIP.png') # An 8-bit image
@@ -303,7 +303,7 @@ The **quality** of a segmentation depends on what you want to do with it. Segmen
 
 ### How do we choose T?
 
-There are several different ways to choose `T`:
+There are several ways to choose `T`:
 
 - Trial and error
 - Compare results with ground truth
@@ -313,13 +313,13 @@ There are several different ways to choose `T`:
 
 If we can control the background of a picture, segmentation becomes easier. Assume we use a green screen.
 
-**Chromakeying** describes the process of playin distance measuring, in this case for green:
+**Chromakeying** describes the process of plain distance measuring, in this case for green:
 
 ![](./Figures/VisComp_Fig2-4.PNG)
 
 This has some problems:
 
-- Variation is *not* the same in all three channels
+- Variation is _not_ the same in all three channels
 - The alpha mask is hard: `I_comp = I_alpha I_a + (1 - I_alpha) I_b`
 
 ### Background color variation
@@ -351,15 +351,15 @@ This results in four possible outcomes in any test:
 
 - True positive
 - True negative
-- *False negative*
-- *False positive*
+- _False negative_
+- _False positive_
 
 ### ROC Curve
 
 The **ROC curve** characterizes the error trade-off in binary classification tasks. It plots the TP fraction against the FP fraction:
 
-- *TP fraction* (**sensitivity**) is `True positive count / positive count`
-- *FP fraction* (1-sensitivity) is `False positive count / negative count`
+- _TP fraction_ (**sensitivity**) is `True positive count / positive count`
+- _FP fraction_ (1-sensitivity) is `False positive count / negative count`
 
 The result could look something like this:
 
@@ -372,7 +372,7 @@ We can choose an **operating point** by assigning relative costs and values to e
 - `V_TN`: value of true negative
 - `V_TP`: value of true positive
 - `C_FN`: cost of false negative
-- `C_FP`: cost of fale positive
+- `C_FP`: cost of false positive
 
 When we assigned these costs, we can choose the point on the ROC curve with **gradient**:
 
@@ -380,11 +380,12 @@ When we assigned these costs, we can choose the point on the ROC curve with **gr
 
 For simplicity, we often set `V_TN = V_TP = 0`.
 ¨
+
 ## 2.5 Limits of Thresholding
 
 Why can we segment images much better by eye than through thresholding processes? Because we can consider the context of the whole image.
 
-We might improve results by considering *image context* through **surface coherence**.
+We might improve results by considering _image context_ through **surface coherence**.
 
 ## 2.6 Pixels
 
@@ -445,8 +446,8 @@ There are three key indicators which lead to variation:
 
 **Seed selection** can happen in different ways. This may be either by hand (point and click), or automatically by conservative thresholding.
 
-The **inclusion criteria** could either by done by greylevel thresholding or by a *greylevel distribution model*:
+The **inclusion criteria** could either be done by greylevel thresholding or by a _greylevel distribution model_:
 
 - Use mean `mu` and standard deviation `sigma` in seed region and then:
-    - include if `(I(x, y) - mu)^2 < (n sigma)^2` (with for example `n = 3`)
-    - this also leads to the ability to update the mean and standard deviation after every iteration
+  - include if `(I(x, y) - mu)^2 < (n sigma)^2` (with for example `n = 3`)
+  - this also leads to the ability to update the mean and standard deviation after every iteration
