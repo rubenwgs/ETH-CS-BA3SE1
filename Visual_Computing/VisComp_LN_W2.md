@@ -14,7 +14,7 @@ We consider three different common concepts:
 
 ### Prism
 
-With this type of camera, we separate the light into three beams using two *dichroic prisms*. However, this requires three sensors and a very precise alignment. The plus of this concept is that there is a very good color separation.
+With this type of camera, we separate the light into three beams using two _dichroic prisms_. However, this requires three sensors and a very precise alignment. The plus of this concept is that there is a very good color separation.
 
 ### Filter Mosaic
 
@@ -27,7 +27,7 @@ For static scenes, we can rotate multiple filters in front of the lens. This all
 ### Prism vs. mosaic vs. wheel
 
 | Approach   | Prism            | Mosaic          | Wheel                   |
-|------------|------------------|-----------------|-------------------------|
+| ---------- | ---------------- | --------------- | ----------------------- |
 | # Sensors  | 3                | 1               | 1                       |
 | Separation | High             | Average         | Good                    |
 | Cost       | High             | Low             | Average                 |
@@ -50,11 +50,11 @@ In contrast to a filter mosaic, we truly measure each color at each pixel, inste
 
 **Image segmentation** partitions an image into regions of interest. It is the first stage in many automatic image analysis systems.
 
-A *complete segmentation* of an image `I` is a finite set of regions `R_1,..., R_N`, such that:
+A _complete segmentation_ of an image `I` is a finite set of regions `R_1,..., R_N`, such that:
 
 ![](./Figures/VisComp_Fig2-2.PNG)
 
-*Excluding dark pixels from an image:*
+_Excluding dark pixels from an image:_
 
 ```python
     img = cv2.imread('BlobsIP.png') # An 8-bit image
@@ -96,7 +96,7 @@ If we can control the background of a picture, segmentation becomes easier. Assu
 
 This has some problems:
 
-- Variation is *not* the same in all three channels
+- Variation is _not_ the same in all three channels
 - The alpha mask is hard: `I_comp = I_alpha I_a + (1 - I_alpha) I_b`
 
 ### Background color variation
@@ -128,15 +128,15 @@ This results in four possible outcomes in any test:
 
 - True positive
 - True negative
-- *False negative*
-- *False positive*
+- _False negative_
+- _False positive_
 
 ### ROC Curve
 
 The **ROC curve** characterizes the error trade-off in binary classification tasks. It plots the TP fraction against the FP fraction:
 
-- *TP fraction* (**sensitivity**) is `True positive count / positive count`
-- *FP fraction* (1-sensitivity) is `False positive count / negative count`
+- _TP fraction_ (**sensitivity**) is `True positive count / positive count`
+- _FP fraction_ (1-sensitivity) is `False positive count / negative count`
 
 The result could look something like this:
 
@@ -157,11 +157,12 @@ When we assigned these costs, we can choose the point on the ROC curve with **gr
 
 For simplicity, we often set `V_TN = V_TP = 0`.
 ¨
+
 ## 2.5 Limits of Thresholding
 
 Why can we segment images much better by eye than through thresholding processes? Because we can consider the context of the whole image.
 
-We might improve results by considering *image context* through **surface coherence**.
+We might improve results by considering _image context_ through **surface coherence**.
 
 ## 2.6 Pixels
 
@@ -222,11 +223,11 @@ There are three key indicators which lead to variation:
 
 **Seed selection** can happen in different ways. This may be either by hand (point and click), or automatically by conservative thresholding.
 
-The **inclusion criteria** could either done by greylevel thresholding or by a *greylevel distribution model*:
+The **inclusion criteria** could either done by greylevel thresholding or by a _greylevel distribution model_:
 
 - Use mean `mu` and standard deviation `sigma` in seed region and then:
-    - include if `(I(x, y) - mu)^2 < (n sigma)^2` (with for example `n = 3`)
-    - this also leads to the ability to update the mean and standard deviation after every iteration
+  - include if `(I(x, y) - mu)^2 < (n sigma)^2` (with for example `n = 3`)
+  - this also leads to the ability to update the mean and standard deviation after every iteration
 
 ### Snakes
 
@@ -250,12 +251,12 @@ When possible, we should fit a Gaussian model per pixel, just as we did for an e
 
 We introduce the concept of **Markov Random Field** for spatial relations:
 
-- *Markov chains* have a 1D structure. At every time, there is one state (which enables use of dynamic programming)
-- *Markov Random Fields* break this 1D structure. It is a field of sites, each of which has a label. The labels at one site depend on others, there are no 1D structure dependencies.
+- _Markov chains_ have a 1D structure. At every time, there is one state (which enables use of dynamic programming)
+- _Markov Random Fields_ break this 1D structure. It is a field of sites, each of which has a label. The labels at one site depend on others, there are no 1D structure dependencies.
 
 ### Solving MRFs with graph cuts
 
-*something something*
+_something something_
 
 ## 2.10 Morphological Operations
 
@@ -265,7 +266,7 @@ We introduce the concept of **Markov Random Field** for spatial relations:
 
 The **8-neighbor erode** works by simply erasing any foreground pixel that has one eight-connected neighbor that belongs to the background.
 
-*Example:*
+_Example:_
 
 ![](./Figures/VisComp_Fig2-9.PNG)
 
@@ -280,7 +281,7 @@ Morphological operations take two arguments:
 
 We compare the structuring element to the neighborhood of each pixel, which determines the output of the morphological operation.
 
-We can think of **binary images** and the structuring elements as *sets* containing the pixels with value `1`.
+We can think of **binary images** and the structuring elements as _sets_ containing the pixels with value `1`.
 
 ![](./Figures/VisComp_Fig2-10.PNG)
 
@@ -288,9 +289,9 @@ We can think of **binary images** and the structuring elements as *sets* contain
 
 We define the following three terms:
 
-- `S` *fits* `I` at `x` if `{y : y = x + s, s in S} subset I`
-- `S` *hits* `I` at `x` if `{y : y = x - s, s in S} intersection I != emptyset`
-- `S` *misses* `I` at `x` if `{y : y = x - s, s in S} intersection I = emptyset`
+- `S` _fits_ `I` at `x` if `{y : y = x + s, s in S} subset I`
+- `S` _hits_ `I` at `x` if `{y : y = x - s, s in S} intersection I != emptyset`
+- `S` _misses_ `I` at `x` if `{y : y = x - s, s in S} intersection I = emptyset`
 
 ### Erosion
 
