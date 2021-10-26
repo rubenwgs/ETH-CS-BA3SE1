@@ -223,7 +223,7 @@ There are three key indicators which lead to variation:
 
 **Seed selection** can happen in different ways. This may be either by hand (point and click), or automatically by conservative thresholding.
 
-The **inclusion criteria** could either done by greylevel thresholding or by a _greylevel distribution model_:
+The **inclusion criteria** could either be done by greylevel thresholding or by a _greylevel distribution model_:
 
 - Use mean `mu` and standard deviation `sigma` in seed region and then:
   - include if `(I(x, y) - mu)^2 < (n sigma)^2` (with for example `n = 3`)
