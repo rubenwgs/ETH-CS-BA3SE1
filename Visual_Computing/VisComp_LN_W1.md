@@ -10,7 +10,7 @@
 
 ### Image as a 2D signal
 
-The **signal** is a function depending on some variable with pyhsical meaning. The **image** is a continuous function, where we either have 2 variables `x y` which are the coordinates, or, in case of a video, three variables `x y` and the corresponding time in the video. Usually, the value of the function is the **brightness**.
+The **signal** is a function depending on some variable with physical meaning. The **image** is a continuous function, where we either have 2 variables `x y` which are the coordinates, or, in case of a video, three variables `x y` and the corresponding time in the video. Usually, the value of the function is the **brightness**.
 
 _Images in Python:_
 
@@ -42,7 +42,7 @@ _Images in Python:_
 
 In summary, an **image** is a picture or pattern of a value varying in space and/or time. It is the representation of a _continuous_ function to a _discrete_ domain: `f : R^n -> S`.
 
-As an example, for greyscale CCD images, `n = 2` and `S = R^+`.
+As an example, for grayscale CCD images, `n = 2` and `S = R^+`.
 
 ### What is a pixel?
 
@@ -52,7 +52,7 @@ _A pixel is not a little square!_
 
 ## 1.2 Where do images come from?
 
-There are several different things where pictures can come from:
+There are several things where pictures can come from:
 
 - Digital cameras
 - MRI scanners
@@ -66,7 +66,7 @@ Simplified, the **digital camera** consists of the following parts and is said t
 
 ![](./Figures/VisComp_Fig1-1.PNG)
 
-The **sensor array** can be < 1cm^2 and is an array of _photosites_. Each photosite is a bucket of electrical charge, and this charge is proportional to the incident light intensity during the exposure.
+The **sensor array** can be < 1 cm^2 and is an array of _photosites_. Each photosite is a bucket of electrical charge, and this charge is proportional to the incident light intensity during the exposure.
 
 The **analog to digital conversion (ADC)** measure the charge and digitizes the result. The conversion happens line by line in that charges in each photosite move down through the sensor array.
 
@@ -105,23 +105,23 @@ _CMOS_
 
 ### Rolling shutter
 
-By resetting each line in the sensor line by line (the "shutter"), each line will start capturing light a little before the line below and so one. Each line in the picture is therefore a little behind in time as the line above.
+By resetting each line in the sensor line by line (the "shutter"), each line will start capturing light a little before the line below and so on. Each line in the picture is therefore a little behind in time as the line above.
 
 ## 1.4 Sampling in 1D
 
-**Sampling** in 1D takes a function, and returns a vector whose elements are valuesof that function at the sample points.
+**Sampling** in 1D takes a function, and returns a vector whose elements are values of that function at the sample points.
 
 Example:
 
 ![](./Figures/VisComp_Fig1-3.PNG)
 
-Sampling solves one problem with working with continuous functions. How do we store and compute with them? A common scheme for representing continuous functions is with **samples**: we simply write down the function's values as discret values at many sample points.
+Sampling solves one problem with working with continuous functions. How do we store and compute with them? A common scheme for representing continuous functions is with **samples**: we simply write down the function's values as discrete values at many sample points.
 
 ### Reconstruction
 
-**Reconstruction** describes the process of making samples back into a continuous function. We migh to this for several different reasons:
+**Reconstruction** describes the process of making samples back into a continuous function. We might do this for several reasons:
 
-- For ouput where we need a realizable method
+- For output where we need a realizable method
 - For analysis or processing, where we need a mathematical method
 - Instead of "guessing" what the function did in between sample points
 
@@ -161,7 +161,7 @@ _Sample:_
 
 ### Reconstruction
 
-In 2D, a simple way to reconstruct a function from a sample is to use **bilinear interpolation**¨, which works essentially the same as linear interpolation: we calculate two lines in each direction, and then take the intersection of the two lines.
+In 2D, a simple way to reconstruct a function from a sample is to use **bilinear interpolation**, which works essentially the same as linear interpolation: we calculate two lines in each direction, and then take the intersection of the two lines.
 
 Example:
 
@@ -175,13 +175,13 @@ We define the **Nyquist Frequency** as half the sampling frequency of a discrete
 
 When sampling, real valued functions will get digital values, i.e. integer values. This means that **quantization** is lossy: after quantization, the original signal cannot be reconstructed anymore.
 
-This is in contrast to sampling, as a sampled but not qunatized signal _can_ be reconstructed.
+This is in contrast to sampling, as a sampled but not quantized signal _can_ be reconstructed.
 
 ### Usual quantization intervals
 
 The following are the most widely used quantization intervals:
 
-- Grayscale image: `8 bit = 2^8 = 256` grayvalues
+- Grayscale image: `8 bit = 2^8 = 256` gray values
 - Color image RGB (3 channels): `8 bit/channel = 2^24 = 16.7M` colors
 - 12 bit or 16 bit for some sensors
 
