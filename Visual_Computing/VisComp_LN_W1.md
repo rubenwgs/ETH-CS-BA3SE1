@@ -12,7 +12,7 @@
 
 The **signal** is a function depending on some variable with pyhsical meaning. The **image** is a continuous function, where we either have 2 variables `x y` which are the coordinates, or, in case of a video, three variables `x y` and the corresponding time in the video. Usually, the value of the function is the **brightness**.
 
-*Images in Python:*
+_Images in Python:_
 
 ```python
     # Load a picture into Python
@@ -40,13 +40,13 @@ The **signal** is a function depending on some variable with pyhsical meaning. T
     cv2.waitKey(0)
 ```
 
-In summary, an **image** is a picture or pattern of a value varying in space and/or time. It is the representation of a *continuous* function to a *discrete* domain: `f : R^n -> S`.
+In summary, an **image** is a picture or pattern of a value varying in space and/or time. It is the representation of a _continuous_ function to a _discrete_ domain: `f : R^n -> S`.
 
 As an example, for greyscale CCD images, `n = 2` and `S = R^+`.
 
 ### What is a pixel?
 
-*A pixel is not a little square!*
+_A pixel is not a little square!_
 
 **Pixels** are point measurements of a function (of the above described continuous function).
 
@@ -62,11 +62,11 @@ There are several different things where pictures can come from:
 
 ### Digital cameras
 
-Simplified, the **digital camera** consists of the following parts and is said to be a *Charge Coupled Device (CCD)*:
+Simplified, the **digital camera** consists of the following parts and is said to be a _Charge Coupled Device (CCD)_:
 
 ![](./Figures/VisComp_Fig1-1.PNG)
 
-The **sensor array** can be < 1cm^2 and is an array of *photosites*. Each photosite is a bucket of electrical charge, and this charge is proportional to the incident light intensity during the exposure.
+The **sensor array** can be < 1cm^2 and is an array of _photosites_. Each photosite is a bucket of electrical charge, and this charge is proportional to the incident light intensity during the exposure.
 
 The **analog to digital conversion (ADC)** measure the charge and digitizes the result. The conversion happens line by line in that charges in each photosite move down through the sensor array.
 
@@ -76,7 +76,7 @@ Example:
 
 Because each bucket has a finite capacity, if a photosite bucket is full, it can overflow to other buckets, which leads to **blooming**.
 
-Even without any light, there will still be some current which can degrade the quality of a picture. CCD's produce thermally-generated charge, which results in a *non-zero output* even in darkness. This effect is called the **dark current**.
+Even without any light, there will still be some current which can degrade the quality of a picture. CCD's produce thermally-generated charge, which results in a _non-zero output_ even in darkness. This effect is called the **dark current**.
 
 ## 1.3 CMOS
 
@@ -84,7 +84,7 @@ Even without any light, there will still be some current which can degrade the q
 
 ### CCD vs. CMOS
 
-*CCD*
+_CCD_
 
 - Mature technology
 - Specific technology
@@ -93,7 +93,7 @@ Even without any light, there will still be some current which can degrade the q
 - Blooming
 - Sequential readout
 
-*CMOS*
+_CMOS_
 
 - More recent technology
 - Cheap
@@ -131,19 +131,19 @@ Unsurprisingly, if we undersample some function, we loose information.
 
 Example: If we undersample the following `sin` wave, it gets indistinguishable from lower frequencies:
 
-*Sample:*
+_Sample:_
 
 ![](./Figures/VisComp_Fig1-4.PNG)
 
-*Reconstruction 1:*
+_Reconstruction 1:_
 
 ![](./Figures/VisComp_Fig1-5.PNG)
 
-*Reconstruction 2:*
+_Reconstruction 2:_
 
 ![](./Figures/VisComp_Fig1-6.PNG)
 
-This effect is what we call **aliasing**, i.e. *"Signals travelling in disguise as other frequencies"*.
+This effect is what we call **aliasing**, i.e. _"Signals travelling in disguise as other frequencies"_.
 
 ## 1.5 Sampling in 2D
 
@@ -151,11 +151,11 @@ This effect is what we call **aliasing**, i.e. *"Signals travelling in disguise 
 
 Example:
 
-*Function:*
+_Function:_
 
 ![](./Figures/VisComp_Fig1-7.PNG)
 
-*Sample:*
+_Sample:_
 
 ![](./Figures/VisComp_Fig1-8.PNG)
 
@@ -175,7 +175,7 @@ We define the **Nyquist Frequency** as half the sampling frequency of a discrete
 
 When sampling, real valued functions will get digital values, i.e. integer values. This means that **quantization** is lossy: after quantization, the original signal cannot be reconstructed anymore.
 
-This is in contrast to sampling, as a sampled but not qunatized signal *can* be reconstructed.
+This is in contrast to sampling, as a sampled but not qunatized signal _can_ be reconstructed.
 
 ### Usual quantization intervals
 
@@ -193,13 +193,13 @@ Simply tells the amount of pixels our pictures has.
 
 ### Geometric resolution
 
-*How many pixels per area?*
+_How many pixels per area?_
 
 Tells us how many pixels we have per a given area (e.g. how many pixels per square centimeter of picture).
 
 ### Radiometric resolution
 
-*How many bits per pixel?*
+_How many bits per pixel?_
 
 Tells us how much information each pixel can store.
 
@@ -215,6 +215,6 @@ One might also use the much more meaningful assumption of **Poisson noise**:
 
 ### SNR
 
-The **signal to noise ration (SNR)** `s` is an index of image quality:
+The **signal-to-noise ration (SNR)** `s` is an index of image quality:
 
 ![](./Figures/VisComp_Fig1-12.PNG)
