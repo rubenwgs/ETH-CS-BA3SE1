@@ -148,7 +148,7 @@ $$|\text{grad}(f(x, \, y))| = \sqrt{\lparen \frac{\partial f}{\partial x} \rpare
 
 We mostly use the following **edge detection filters**:
 
-![](./Figures/VisComp_Fig4-1.PNG)
+![](./Figures/VisComp_Fig3-5.PNG)
 
 ### 4.2.1 Laplacian Operator
 
@@ -156,7 +156,7 @@ The idea of a **Laplacian operator** is to detect discontinuities by considering
 
 $$\nabla^2 f(x, \, y) = \frac{\partial^2 fx, \, y()}{\partial x^2} + \frac{\partial^2 f(x, \, y)}{\partial y^2}$$
 
-![](./Figures/VisComp_Fig4-2.PNG)
+![](./Figures/VisComp_Fig3-6.PNG)
 
 We can do a _discrete-space approximation_ by convolution with a $3 \times 3$ impulse response:
 
@@ -215,17 +215,17 @@ It works the following way:
 
 1. For an edge pixel in the $(x, \, y)$ plane we can draw the different lines that cross the edge pixel (all lines have the form $y = mx + c$). We can draw the $m$ and $c$ values in a $(m, \, c)$ plane and see that all those lines are linearly dependent:
 
-![](./Figures/VisComp_Fig4-3.PNG)
+![](./Figures/VisComp_Fig3-7.PNG)
 
 2. If we have multiple edge pixels, we can do the same procedure for each of those, giving us a line in the $(m, \, c)$ plane for each edge pixel.
 3. We then subdivide the $(m, \, c)$ plane into discrete "bins" and initialize the bin count of each bin to $0$. Each time a bin is crossed by one of the lines of the different edge pixels, we increase its count by one.
 4. We then simply have to detect the peaks in the $(m, \, c)$ plane to get our fitted straight line:
 
-![](./Figures/VisComp_Fig4-4.PNG)
+![](./Figures/VisComp_Fig3-8.PNG)
 
 We might encounter an infinite-slope problem, which can be avoided with an alternative parameterization:
 
-![](./Figures/VisComp_Fig4-5.PNG)
+![](./Figures/VisComp_Fig3-9.PNG)
 
 ## 4.3 Detecting Corner Points
 
@@ -239,13 +239,13 @@ The desirable properties of a corner detector are:
 
 *something something what patterns can be localized most accurately?*
 
-![](./Figures/VisComp_Fig4-6.PNG)
+![](./Figures/VisComp_Fig3-10.PNG)
 
 ### 4.3.1 Feature Point Extraction
 
 We have that $SSD \simeq \delta^T M \delta$. Now if we shift our patterns over the picture, we assume it to change the following way:
 
-![](./Figures/VisComp_Fig4-7.PNG)
+![](./Figures/VisComp_Fig3-11.PNG)
 
 Now we want to find points for which the following is large:
 
@@ -257,4 +257,4 @@ i.e. we want to maximize the eigenvalues of $M$.
 
 *something something*
 
-![](./Figures/VisComp_Fig4-8.PNG)
+![](./Figures/VisComp_Fig3-12.PNG)
