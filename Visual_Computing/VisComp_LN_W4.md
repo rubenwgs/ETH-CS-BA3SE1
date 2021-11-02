@@ -32,19 +32,19 @@ where:
 
 The Fourier transform of a real function is complex. It's difficult to plot and to visualize, and instead, we can think of the phase and magnitude of the transform.
 
-The **phase** is the phase of the complex transform, and the **magnitude** is the magnitude of the complex transform. An interesting fact is that all natural images have about the *same magnitude transform*, hence the phase seems to matter much more than the magnitude does.
+The **phase** is the phase of the complex transform, and the **magnitude** is the magnitude of the complex transform. An interesting fact is that all natural images have about the _same magnitude transform_, hence the phase seems to matter much more than the magnitude does.
 
 ## 5.4 Convolution Theorem
 
 The **Convolution Theorem** goes as follows:
 
 > The Fourier transform of the convolution of two functions is the product of their Fourier transforms: $F.G = U(f**g)$.
-> 
+>
 > The Fourier transform of the product of two functions is the convolution of the Fourier transform: $F**G = U(f.g)$.
 
 ## 5.5 Sampling
 
-The idea of **sampling** is to go from a continuous world to a discrete world, i.e. from a function to a vector. Samples are typically measured on a *regular grid*.
+The idea of **sampling** is to go from a continuous world to a discrete world, i.e. from a function to a vector. Samples are typically measured on a _regular grid_.
 
 For example, we might want to be able to approximate integrals sensibly.
 
@@ -52,7 +52,7 @@ $$\text{Sample}_{\text{2D}}(f(x, \, y)) = \sum_{i = - \infty}^{\infty} \sum_{j =
 
 ### 5.5.1 Fourier Transform of a Sampled Signal
 
-The *Fourier transform of a sampled signal* is given by the following equalities:
+The _Fourier transform of a sampled signal_ is given by the following equalities:
 
 ![](./Figures/VisComp_Fig4-2.PNG)
 
@@ -68,7 +68,7 @@ If we have an image transformation of the form:
 
 $$f(x) \to h(x) \to g(x) \to \tilde{h}(x) \to f(x)$$
 
-Then, the **inverse kernel** $\tilde{h}(x)$ should compensate the effect of the *image degradation* $h(x)$, i.e.
+Then, the **inverse kernel** $\tilde{h}(x)$ should compensate the effect of the _image degradation_ $h(x)$, i.e.
 
 $$(\tilde{h} * h)(x) = \delta(x)$$
 
@@ -101,7 +101,7 @@ However, the following problems arise:
 
 ### 5.2.3 Avoiding Noise Amplification
 
-We can avoid **noise amplification** by a *regularized reconstruction filter* of the form:
+We can avoid **noise amplification** by a _regularized reconstruction filter_ of the form:
 
 $$\tilde{\mathcal{F}}[\tilde{h}](u, \, v) = \frac{\mathcal{F}[h]}{|\mathcal{F}[h]|^2 + \epsilon}$$.
 
