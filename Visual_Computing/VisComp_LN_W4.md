@@ -55,3 +55,54 @@ $$\text{Sample}_{\text{2D}}(f(x, \, y)) = \sum_{i = - \infty}^{\infty} \sum_{j =
 The *Fourier transform of a sampled signal* is given by the following equalities:
 
 ![](./Figures/VisComp_Fig4-2.PNG)
+
+### 5.5.2 Nyquist Sampling Theorem
+
+The **Nyquist theorem** says that the sampling frequency must be at least twice the highest frequency, i.e. $\omega_s \geq 2 \omega$. If this is not the case, the signal needs to be bandlimited before sampling, e.g. with a low-pass filter.
+
+## 5.2 Image Restoration
+
+### 5.2.1 Image Restoration Problem
+
+If we have an image transformation of the form:
+
+$$f(x) \to h(x) \to g(x) \to \tilde{h}(x) \to f(x)$$
+
+Then, the **inverse kernel** $\tilde{h}(x)$ should compensate the effect of the *image degradation* $h(x)$, i.e.
+
+$$(\tilde{h} * h)(x) = \delta(x)$$
+
+$\tilde{h}$ may be determined more easily in the Fourier space, since:
+
+$$\mathcal{F}[\tilde{h}](u, \, v) \cdot \mathcal{F}[h](u, \, v) = 1.$$
+
+To determine $\mathcal{F}[\tilde{h}]$ we need to estimate:
+
+1. The distortion model $h(x)$ or $\mathcal{F}[h](u, \, v)$
+2. The parameters of $h(x)$, e.g. $r$ for defocussing
+
+### 5.2.2 Image Restoration: Motion Blur
+
+The **kernel for motion blur** is given by: $h(x) = \frac{1}{2l}(\theta(x_1 + l) - \theta(x_1 - l)) \delta(x_2)$, i.e. the transformation of a light dot into a small line in $x_1$ direction.
+
+The Fourier transformation of this is given by:
+
+![](./Figures/VisComp_Fig4-3.PNG)
+
+Which leads to:
+
+- $\hat{h}(u) = \mathcal{F}[h](u) = \text{sinc}(2 \pi ul)$
+- $\mathcal{F}[\tilde{h}](u) = \frac{1}{\hat{h}(u)}$
+
+However, the following problems arise:
+
+- The convolution with the kernel $h$ completely cancels the frequencies $\frac{v}{2l}$ for $v \in \mathbb{Z}$. Vanishing frequencies cannot be recovered!
+- There is a lot of noise amplification for $\mathcal{F}[h](u, \, v) << 1$.
+
+### 5.2.3 Avoiding Noise Amplification
+
+We can avoid **noise amplification** by a *regularized reconstruction filter* of the form:
+
+$$\tilde{\mathcal{F}}[\tilde{h}](u, \, v) = \frac{\mathcal{F}[h]}{|\mathcal{F}[h]|^2 + \epsilon}$$.
+
+The size of $\epsilon$ implicitly determines an estimate of the noise level in the image, since we discard signal which are dampened below the size $\epsilon$.
