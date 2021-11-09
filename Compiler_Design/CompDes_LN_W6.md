@@ -227,3 +227,63 @@ To use our DFA now, we run the parser stack $\sigma$ through the DFA. The result
 - On a reduction $X \to \gamma$, we `pop` the stack to reveal the state too, e.g. from stack $_1(_3)_3L_5)_6$ we reduce $S \to (L)$ to reach stack $_1(_3$
 - Next, we push the reduction symbol, e.g. to reach the stack $_1(_3S$
 - Then we take just one step in the DFA to find the next state $_1(_3S_7$
+
+### 8.3.7 Implementing The Parsing Table
+
+We represent the DFA as a table of shape `state * (terminals + nonterminals)`.
+
+Entries for the **action table** specify two kinds of actions:
+
+- Shift and go to state $n$
+- Reduce using the reduction $X \to \gamma$: First, `pop gamma` of the stack to reveal the state, second, look up $X$ in the **goto table** and go to that state
+
+_Example:_
+
+![](./Figures/CompDes_Fig6-6.PNG)
+
+### 8.3.8 LR(0) Limitations
+
+An LR(0) machine only works if states with reduce actions have a _single_ reduce action. In such states, the machine always reduces, ignoring lookahead.
+
+With more complex grammars, the DFA construction will yield states with _sift/reduce_ and _reduce/reduce_ problems:
+
+![](./Figures/CompDes_Fig6-7.PNG)
+
+## 8.4 LR(1) Parsing
+
+The algorithm for **LR(1) parsing** is similar to LR(0) DFA construction:
+
+- LR(1) state is the set of all LR(1) items
+- An LR(1) item is an LR(0) item plus a set of lookahead symbols, i.e. $A \to \alpha.\beta, \, \mathcal{L}$
+
+However, the **LR(1) closure** is a little more complex:
+
+1. We first form the set of items just as we did in the LR(0) algorithm
+2. Whenever a new item $C \to .\gamma$ is added, because the item $A \to \beta.C \delta, \, \mathcal{L}$ is already in the set, we need to compute its lookahead set $\mathcal{M}$:
+   1. The lookahead set $\mathcal{M}$ includes $\text{FIRST}(\delta)$, i.e. the set of terminals that may start strings derived from $\delta$
+   2. If $\delta$ is or can derive $\epsilon$, then the lookahead $\mathcal{M}$ also contains $\mathcal{L}$
+
+### 8.4.1 Example Closure in LR(1)
+
+![](./Figures/CompDes_Fig6-8.PNG)
+
+### 8.4.2 Using The DFA
+
+![](./Figures/CompDes_Fig6-9.PNG)
+
+The behavior is determined if:
+
+- There is no overlap among the lookahead sets for each reduce item, and
+- None of the lookahead symbols appear to the right a `.`
+
+### 8.4.3 LR Variant: LALR(1)
+
+Consider for example the following two LR(1) states:
+
+$$S_1: \quad \{[X \to \alpha., \, a], \, [Y \to \beta., \, c]\} \\ S_2: \quad \{[X \to \alpha., \, b], \, [Y \to \beta., \, d] \}$$
+
+They have the same core and can therefore be _merged_. The merged state contains:
+
+$$\{[X \to \alpha., \, a/b], \, [Y \to \beta., \, c/d] \}$$
+
+These are so-called **LALR(1)** states. Typically there are 10 times fewer LALR(1) states than LR(1). However, LALR(1) may introduce new reduce/reduce conflicts (but not new shift/reduce conflicts).
