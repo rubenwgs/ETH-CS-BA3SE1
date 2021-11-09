@@ -76,7 +76,7 @@ When compiling code we might encounter different bugs. We can distinguish them i
 
 The following figure shows a simplified view of the **compiler structure**:
 
-![Simplified Compiler Structure](./Figures/CompDes_Fig_W1_1.PNG)
+![Simplified Compiler Structure](./Figures/CompDes_Fig1-1.PNG)
 
 The typical **compiler stages** are as follows:
 
@@ -94,7 +94,7 @@ The typical **compiler stages** are as follows:
 
 Another simplified view on the compilation and execution is given by the following figure:
 
-![Overview of Compilation and Execution](./Figures/CompDes_Fig_W1_2.PNG)
+![Overview of Compilation and Execution](./Figures/CompDes_Fig1-2.PNG)
 
 # 2. OCaml
 
