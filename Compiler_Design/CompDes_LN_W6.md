@@ -202,3 +202,28 @@ The first step when creating the DFA is to add a new production $S' \to S$$ to t
 _Example:_
 
 $$\text{Closure}(\{S' \to .S \$ \}) = \{S' \to .S \$, \, S \to .(L), \, S \to .\text{id} \}$$
+
+Next we need to add the _transitions:_
+
+1. First, we see what terminals and non-terminals can appear after the `.` in the source state.
+2. The target state initially includes all items from the source state that have the edge-label symbol after the `.`, but we advance the `.` to simulate shifiting the item onto the stack.
+3. Finally, for each new state, we again take the closure of it.
+
+![](./Figures/CompDes_Fig6-4.PNG)
+
+By continuing the above approach, we will reach the following **full DFA** for our example:
+
+![](./Figures/CompDes_Fig6-5.PNG)
+
+### 8.3.6 Using The DFA
+
+To use our DFA now, we run the parser stack $\sigma$ through the DFA. The resulting state tells us what productions may be reduced next:
+
+- If not in a reduce state, we shift the next symbol and transition w.r.t. the DFA
+- If in a reduce state, $X \to \gamma$ with stack $\alpha \gamma$, we `pop gamma` and `push X`
+
+**Optimization:** There is no need to rerun the DFA from the beginning at each step. We might simply store the state with each symbol on the stack, e.g. $_1(_3)_3L_5)_6$. Then:
+
+- On a reduction $X \to \gamma$, we `pop` the stack to reveal the state too, e.g. from stack $_1(_3)_3L_5)_6$ we reduce $S \to (L)$ to reach stack $_1(_3$
+- Next, we push the reduction symbol, e.g. to reach the stack $_1(_3S$
+- Then we take just one step in the DFA to find the next state $_1(_3S_7$
