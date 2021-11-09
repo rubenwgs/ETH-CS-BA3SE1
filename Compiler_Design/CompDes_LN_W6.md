@@ -158,7 +158,6 @@ Our goal it is to know _what set of reductions are legal_ at any given point. Th
 - The parser state is computed by a DFA that reads the stack $\sigma$
 - Accept states of the DFA correspond to unique reductions that apply
 
-
 ### 8.3.2 Example LR(0) Grammar: Tuples
 
 The following grammar is an example grammar for non-empty tuples and identifiers:
