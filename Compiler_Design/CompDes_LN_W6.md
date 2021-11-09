@@ -82,3 +82,29 @@ _Note:_ If there are two different productions for a given entry, then the gramm
 _Example:_
 
 ![](./Figures/CompDes_Fig6-1.PNG)
+
+### 8.1.4 Converting The Parsing Table to Code
+
+When we want to convert a parsing table to code, we proceed as follows:
+
+- Define $N$ mutually recursive functions, one for each non-terminal $A$: `parse_A`
+- `parse_A` is of type `unit -> ast` if £A$ is not an auxiliary non-terminal
+- Otherwise, `parse_A` takes additional ast's as inputs, one for each non-terminal in the "factored" prefix
+
+Then, each function `parse_A`:
+
+- "Peeks" at the lookahead token
+- Follows the production rule in the corresponding entry
+- Consumes the terminal tokens from the input stream
+- Calls `parse_X` to create the sub-tree for the non-terminal $X$
+- If the rule ends in an auxiliary non-terminal, it is called with the appropriate ast's
+- Otherwise, this function builds the ast tree itself and returns it
+
+### 8.1.5 LL(1) Summary
+
+**LL(1)** is top-down based parsing that finds the left-most derivation. The process proceeds with the following steps:
+
+1. Language grammar =>
+2. LL(1) grammar =>
+3. Prediction table =>
+4. Recursive-descent parser
