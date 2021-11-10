@@ -171,3 +171,60 @@ _Example:_
 ## 10.10 Operational Semantics
 
 ![](./Figures/CompDes_Fig7-2.PNG)
+
+## 10.11 Adding Integers to Lambda Calculus
+
+We might extend our previously described Lambda Calculus with **integer values** by modifying our previous definitions in the following way:
+
+```bnf
+exp ::=
+    | ...
+    | n             // constant integers
+    | exp1 + exp2   // binary arithmetic operation
+
+val ::=
+    | fun x -> exp  // functions are values
+    | n             // integers are values
+
+n{v/x} = n          // constants have no free variables
+(e1 + e2){v/x} = (e1{v/x} + e2{v/x})
+```
+
+# 11. Static Analysis
+
+## 11.1 Variable Scoping
+
+We have the following problem: How do we determine whether a declared variable is in scope?
+
+_Example:_ The code below is syntactically correct, but not well-formed! `y` and `q` are used without being defined anywhere.
+
+```c
+int fact(int x) {
+    var acc = 1;
+    while(x > 0) {
+        acc = acc * y;
+        x = q - 1;
+    }
+    return acc;
+}
+```
+
+## 11.2 Contexts and Inference Rules
+
+We somehow need to keep track of **contextual information**, i.e. what variables are in the current scope and what their types are.
+
+One way to describe this is that the compiler keeps a mapping from variables to information about them using a **symbol table.**
+
+### 11.2.1 Inference Rules
+
+A **judgement** is of the form $G;L \vdash e : t$ is read as "_the expression `e` is well typed and has type `t`_".
+
+For any **environment** $G;L$, expression `e`, and statements `s1, s2`:
+
+$$G;L;rt \vdash \text{if } (e) \, s_1 \text{ else } s_2$$
+
+holds if $G;L \vdash e : \text{bool}$, $G;L;rt \vdash s_1$, $G;L;rt \vdash s_2$ all hold.
+
+More succinctly, we can summarize these constrints as an **inference rule:**
+
+$$\frac{G;L \vdash e : \text{bool} \quad G;L;rt \vdash s_1 \quad G;L;rt \vdash s_2}{G;L;rt \vdash \text{if } (e) \, s_1 \text{ else } s_2}$$
