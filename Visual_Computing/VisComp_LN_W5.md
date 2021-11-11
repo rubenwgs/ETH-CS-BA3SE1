@@ -19,7 +19,7 @@ f = \begin{bmatrix}
 \end{bmatrix}
 $$
 
-The pixels $f(x, \, y)$ are sorted into the matrix in natural order. This results in $f(x, \, y) = f_{xy}$, where $f_{xy}$ denotes an individualy element in common matrix notation.\Vec{f} =
+The pixels $f(x, \, y)$ are sorted into the matrix in natural order. This results in $f(x, \, y) = f_{xy}$, where $f_{xy}$ denotes an individual element in common matrix notation.
 
 We might also write an image as a single **vector** of length $L \cdot N$. This makes the math easier:
 
