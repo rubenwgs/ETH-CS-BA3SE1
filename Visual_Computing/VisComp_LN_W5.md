@@ -174,3 +174,47 @@ We essential discrete **Cosine Transform** on our image we wish to compress:
 ### 7.1.2 Image Compression Using DCT
 
 DCT enables _image compression_ by concentrating most image information in the low frequencies. We loose unimportant image info, i.e. high frequencies, by cutting $B(u, \, v)$ at the bottom right corner. The decoder computes the inverse DCT (iDCT).
+
+## 7.2 Image Pyramid
+
+![](./Figures/VisComp_Fig5-6.PNG)
+
+The application of **scaled representations,** such as _image pyramids_, is to look at corase scaled and then refine with finer scaled. For example, a "good" edge at a finer scale has parents at some coarser scale.
+
+### 7.2.1 Gaussian Pyramid
+
+The different levels of the **Gaussian Pyramid** are smooth with Gaussians, since a Gaussian times a Gaussian is another Gaussian.
+
+![](./Figures/VisComp_Fig5-7.PNG)
+
+### 7.2.2 Laplacian Pyramid
+
+For the synthesis of a **Laplacian Pyramid** we have that:
+
+- It preserves the difference between unsampled Gaussian pyramid levels and Gaussian pyramid levels
+- It's a band pass filter: Each level represents spatial frequencies unrepresented at other levels
+
+![](./Figures/VisComp_Fig5-8.PNG)
+
+## 7.3 Discrete Wavelet Transform
+
+### 7.3.1 Haar Transform
+
+The **Haar Transform** with the _Haar Basis_ has the following properties:
+
+- Real and orthogonal
+- Transition at each scale $p$ is localized according to $q$
+
+_Comparison of DCT and Haar basis:_
+
+![](./Figures/VisComp_Fig5-9.PNG)
+
+### 7.3.2 Lifting
+
+_Analysis filters:_
+
+![](./Figures/VisComp_Fig5-10.PNG)
+
+_Synthesis filters:_
+
+![](./Figures/VisComp_Fig5-11.PNG)
