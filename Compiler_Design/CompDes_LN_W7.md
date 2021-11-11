@@ -225,6 +225,57 @@ $$G;L;rt \vdash \text{if } (e) \, s_1 \text{ else } s_2$$
 
 holds if $G;L \vdash e : \text{bool}$, $G;L;rt \vdash s_1$, $G;L;rt \vdash s_2$ all hold.
 
-More succinctly, we can summarize these constrints as an **inference rule:**
+More succinctly, we can summarize these constraints as an **inference rule:**
 
 $$\frac{G;L \vdash e : \text{bool} \quad G;L;rt \vdash s_1 \quad G;L;rt \vdash s_2}{G;L;rt \vdash \text{if } (e) \, s_1 \text{ else } s_2}$$
+
+### 11.2.2 Checking Derivations
+
+We can build a **derivation tree** by making the nodes to be judgements and the edges to connect premises to a conclusion (according to the inference rules). Leaves of the tree are **axioms**, i.e. rules with no premises. The goal of the **type checker** is to verify that such a _tree exists._
+
+### 11.2.3 Compilation as Translating Judgements
+
+Consider the typing judgement for source expressions: $C \vdash e : t$. How do we interpret this information in the target language? I.e. $[[C \vdash e : t]] = \, ?$ We have that:
+
+- $[[t]]$ is a target type
+- $[[e]]$ translates to a (possibly empty) sequence of instructions
+
+We can state the following _invariant:_ If $[[C \vdash e : t]] = \text{ ty, operand, stream}$, then the type of the operand is $ty = [[t]]$.
+
+_Example:_ What is $[[C \vdash 341 + 5 : int]]$ ?
+
+![](./Figures/CompDes_Fig7-3.PNG)
+
+### 11.2.4 Contexts
+
+What is $[[C]]$ ? Source level $C$ has bindings like $x:\text{ int}, \, y:\text{ bool},$ etc. $[[C]]$ maps source identifiers $x$ to source types $[[x]]$.
+
+The interpretation of a variable $[[x]]$ can is:
+
+![](./Figures/CompDes_Fig7-4.PNG)
+
+### 11.2.5 Other Judgements
+
+_Establish invariant for expressions:_
+
+![](./Figures/CompDes_Fig7-5.PNG)
+
+_Statements:_
+
+![](./Figures/CompDes_Fig7-6.PNG)
+
+![](./Figures/CompDes_Fig7-7.PNG)
+
+_Declaration:_
+
+![](./Figures/CompDes_Fig7-8.PNG)
+
+## 11.3 Compiling Control
+
+### 11.3.1 Translating while
+
+![](./Figures/CompDes_Fig7-9.PNG)
+
+### 11.3.2 Translating If-Then-Else
+
+![](./Figures/CompDes_Fig7-10.PNG)
