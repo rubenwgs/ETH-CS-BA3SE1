@@ -132,3 +132,45 @@ We consider the PCA (aka KLT aka closes rank-k approximation property of SVD) $\
 $$I_i - I = \hat{I}_i - \hat{I} \simeq E(p_i - p) \\ ||I_i - I|| \simeq ||p_i - p|| \\ \text{arg min}_i D_i = ||I_i - I|| \simeq ||p_i - p||$$
 
 with $\hat{I} = I - \bar{I}$ and $p = E^T \hat{I}$. This is _much cheaper to compute!_
+
+### 6.3.9 Fisherfaces
+
+The key ideas of **Fisherfaces** are as follows:
+
+- Find directions where the ratio between/within individual variances are maximized
+- Linearly project to the basis where the dimensions with good signal/noise ratios are maximized
+
+![](./Figures/VisComp_Fig5-2.PNG)
+
+The eigenimage method maximizes _scatter_ within the linear subspace over the entire image set, regardless of the classification tasks:
+
+$$W_{opt} = \text{arg max}_W \lparen \text{det} \lparen WRW^H \rparen \rparen$$
+
+The idea of the **Fisher linear discrimant analysis** is to maximize between-class scatter, while minimizing within-class scatter:
+
+![](./Figures/VisComp_Fig5-3.PNG)
+
+#### Fisher Images and Varying Illumination
+
+All images of the same Lambertian surface with different illumination (without shadows) lie in a 3D linear subspace. There is a single point source at infinity such that:
+
+![](./Figures/VisComp_Fig5-4.PNG)
+
+# 7. Image Compression
+
+## 7.1 JPEG Image Compression
+
+### 7.1.1 Block-Based Discrete Cosine Transform (DCT)
+
+We essential discrete **Cosine Transform** on our image we wish to compress:
+
+![](./Figures/VisComp_Fig5-5.PNG)
+
+**DCT** is a variant of discrete Fourier transform with real numbers and a very fast implementation. We can choose the block size, its size will have an influence on the transform:
+
+- Small blocks: faster computation and correlation between neighboring pixels
+- Large blocks: better compression in smooth regions
+
+### 7.1.2 Image Compression Using DCT
+
+DCT enables _image compression_ by concentrating most image information in the low frequencies. We loose unimportant image info, i.e. high frequencies, by cutting $B(u, \, v)$ at the bottom right corner. The decoder computes the inverse DCT (iDCT).
