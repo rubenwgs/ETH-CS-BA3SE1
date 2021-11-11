@@ -51,7 +51,7 @@ But how does one choose $H$
 
 For a **unitary transform** we might proceed as follows:
 
-1. Sort samples $f(x, \, y)$ of an $M \times N$ image into a column vector of length $MN$
+1. Sort samples $f(x, \, y)$ of a $M \times N$ image into a column vector of length $MN$
 2. Compute the transform coefficients of $\vec{c} = A \vec{f}$, where $A$ is a matrix of size $MN \times MN$
 
 The transform $A$ is said to be **unitary**, if and only if:
@@ -111,4 +111,24 @@ _Example:_
 
 ### 6.3.6 Basis Images and Eigenimages
 
-_1:04:55_
+For any unitary transform, the _inverse transform_ $\vec{f} = A^H \vec{c}$ can be interpreted in terms of the superposition of basis images (columns of $A^H$) of size $M \times N$.
+If the transform is a KL transform, the basis images, which are the eigenvectors of the autocorrelation matrix $R_{ff}$, are called **eigenimages.**
+If energy concentration works well, only a limited number of eigenimages is needed to approximate a set of images with a small error. These eigenimages form an optimal linear subspace of dimensionality $J$.
+
+To recognize complex patterns, e.g. faces, large portions of an image might have to be considered. With a transform of the form $\vec{c} = W\vec{f}$ we can reduce the dimensionality from $M \times N$ to $J$ by representing the image by $J$ coefficients.
+
+### 6.3.7 Simple Recognition
+
+For a **simple recognition** we can use the _simple euclidean distance (SSD)_ between two images and let the best match "win":
+
+$$\text{arg min}_i D_i = ||I_i - I||$$
+
+However, this is computationally expensive, i.e. it requires the presented image to be correlated with every image in the database!
+
+### 6.3.8 Eigenspace Matching
+
+We consider the PCA (aka KLT aka closes rank-k approximation property of SVD) $\hat{I}_i \simeq Ep_i$. Then:
+
+$$I_i - I = \hat{I}_i - \hat{I} \simeq E(p_i - p) \\ ||I_i - I|| \simeq ||p_i - p|| \\ \text{arg min}_i D_i = ||I_i - I|| \simeq ||p_i - p||$$
+
+with $\hat{I} = I - \bar{I}$ and $p = E^T \hat{I}$. This is _much cheaper to compute!_
