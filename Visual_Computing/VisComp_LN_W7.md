@@ -107,3 +107,27 @@ _Example of fast motion estimation seach: 3-step log search_
 2. Future frame
 3. Average of a block from the previous frame and a block from the future frame
 4. Neither, i.e. code the current block without prediction
+
+## 9.5 Basic Video Compression Architecture
+
+### 9.5.1 Example Video Encoder
+
+![](./Figures/VisComp_Fig7-8.PNG)
+
+### 9.5.2 Example Video Decoder
+
+![](./Figures/VisComp_Fig7-9.PNG)
+
+## 9.6 Objective Quality Measure: PSNR
+
+The error for one pixel, as the difference between the original and decoded value:
+
+$$e(v, \, h) = \hat{x}(v, \, h) - x(v, \, h))$$
+
+The mean-squared-error, MSE, over an image:
+
+$$e_{mse} = \sqrt{\frac{1}{N \cdot M} \sum_{v = 1}^N \sum_{h = 1}^M e^2(v, \, h)}$$
+
+The peak-signal-to-noise-ration is then given by:
+
+$$PSNR = \frac{(\text{maximum value of } x)^2}{e_{mse}^2} = 10 \cdot \log_10 \Big(\frac{(2^K)^2}{e_{mse}^2} \Big) \text{dB}$$
