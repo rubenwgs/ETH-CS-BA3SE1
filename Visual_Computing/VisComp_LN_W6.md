@@ -83,9 +83,3 @@ _Global_ motion models offer:
 
 - more constrained solutions than smoothness models (Horn-Schunck)
 - integration over a larger area than a translation-only model can accomodate (Lucas-Kanade)
-
-## 8.7 SSD Tracking
-
-## 8.8 Robust Flow
-
-## 8.9 Bayesian Flow
