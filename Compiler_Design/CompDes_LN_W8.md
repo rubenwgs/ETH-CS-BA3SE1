@@ -156,3 +156,155 @@ There are many options to solve those short comings, such as:
 **Array-based closure with N-ary functions:**
 
 ![](./Figures/CompDes_Fig8-4.PNG)
+
+# 12. Statically Ruling Out Partiality: Type Checking
+
+## 12.1 Introduction
+
+### 12.1.1 Contexts and Inference Rules
+
+We need to keep track of contextual information, such as:
+
+- What variables are in scope?
+- What are their types?
+- What information do we have about each syntactic construct?
+
+How do we describe this information?
+
+- In the compiler, there's a mapping from varaibles to information we know about them, i.e. the _context_
+- The compiler has a collection of (mutually recursive) functions that follow the structure of the syntax
+
+### 12.1.2 Type Judgements
+
+In the _judgement_ $E \vdash e : t$
+
+- $E$ is a typing environment or a type context
+- $E$ maps variables to types and is simply a set of bindings of the form: $x_1 : t_1, \, x_2 : t_2, \, ..., \, x_n : t_n$
+
+These mappings could be, for example, $x : int, \, b : \text{if } (b) \, 3 \text{ else } x : int$.
+
+What do we need to know to decide whether $\text{if } (b) \, 3 \text{ else } x$ has type $int$ in the environment $x : int, \, b : bool$ ?
+
+- $b$ must be a bool, i.e. $x : int, \, b : bool \vdash b : bool$
+- $3$ must be an $int$, i.e. $x : int, \, b : bool \vdash 3 : int$
+- $x$ must be an $int$, i.e. $x : int, \, b : bool \vdash x : int$
+
+### 12.1.3 Simply-typed Lambda Calculus
+
+![](./Figures/CompDes_Fig8-5.PNG)
+
+### 12.1.4 Type Checking Derivations
+
+We can make a derivation of a proof tree:
+
+- Nodes are judgements
+- Edges connect premises to a conclusion (according to the inference rules)
+- Leaves are axioms (i.e., rules with no premises)
+
+The _goal of the type checker_ is to verify that such a tree exists.
+
+_Example:_ Find a tree for the following code using the previously given inference rules:
+
+$$\vdash (\text{fun}(x : int) \to x + 3)5 : int$$
+
+![](./Figures/CompDes_Fig8-6.PNG)
+
+Notes:
+
+- The OCaml function `typecheck` verifies the existence of this tree
+- Recursive calles for running `typecheck` follow the same shape as the tree above
+- $x : int \in E$ is implemented by the `lookup` function
+
+### 12.1.5 Type Safety
+
+> **Theorem:** If $\vdash e : t$, then there exists a value $v$ such that $e \Downarrow v$.
+
+This is a _very_ strong property:
+
+- Well-typed programs never execute undefined code like $3 + (\text{fun } x \to 2)$
+- Simply-typed lambda calculus terminates, i.e. not Turing complete
+
+### 12.1.6 Type Safety For General Languages
+
+> **Theorem:** If $\vdash P : t$ is a well-typed program, then either:
+> - the program terminates in a well-defined way, or
+> - the program continues computing forever
+
+_Note:_
+
+- Well-defined termiantion could includes halting with a return value or raising an exception
+- Type safety rules out undefined behavior_
+    - abusing "unsafe" casts, such as converting pointers to integers, etc.
+    - treating non-code values as code and vice-versa
+    - breaking the type abstraction of the language
+
+## 12.2 Basic Types
+
+### 12.2.1 Arrays
+
+![](./Figures/CompDes_Fig8-7.PNG)
+
+### 12.2.2 Tuples
+
+![](./Figures/CompDes_Fig8-8.PNG)
+
+### 12.2.3 References
+
+![](./Figures/CompDes_Fig8-9.PNG)
+
+## 12.3 Types, More Generally
+
+### 12.3.1 What are Types?
+
+A **type** is just apredicate on the set of values in a system, i.e. the type `int` can be thought of as a boolean function that returns "true" on integers and "false" otherwise.
+
+For efficiency and tractability, the predicates are usually very simple.
+
+We can easily add new types that distinguish different subsets of values:
+
+```ocaml
+type tp =
+    | IntT                  (* type of integers *)
+    | PosT | NegT | ZeroT   (* refinements of ints *)
+    | BoolT                 (* type of booleans *)
+    | TrueT | FalseT        (* subsets of booleans *)
+    | AnyT                  (* any value *)
+```
+
+When introducing those new types, we also need to redefine the typing rules.
+
+### 12.3.2 What about "if" ?
+
+Two cases are very easy:
+
+![](./Figures/CompDes_Fig8-10.PNG)
+
+But what if we don't know statically which branch will be taken? Consider the following type checking problem:
+
+$$x : bool \vdash \text{if } (x) \, 3 \text{ else } -1 : ?$$
+
+The true branch has type $Pos$ while the false branch has type $Neg$, so what should be the result type of the whole if-statement?
+
+### 12.3.3 Subtyping and Upper Bounds
+
+If we view types as sets of values, there is a natural _inclusion relation:_ $Pos \subseteq Int$. This subset relation gives rise to a **subtype relation:** $Pos <: Int$.
+
+Such inclusions give rise to a **subtyping hierarchy:**
+
+![](./Figures/CompDes_Fig8-11.PNG)
+
+The subytping relation is a _partial order:_
+
+- Reflexive: $T <: T$ for any type $T$
+- Transitive: $T:1 <: T_2$ and $T_2 <: T_3$ then $T_1 <: T_3$
+- Antisymmetric: $T_1 <: T_2$ and $T_2 <: T_1$ then $T_1 = T_2$
+
+A subtyping relation $T_1 <: T_2$ is **sound** if it approximates the underlying semantic subset relation. Formally, we write $[[T]]$ for the susbet of clsoed values of type $T$, i.e. $[[T]] = \{v \, | \, \vdash v : T \}$. If $T_1 <: T_2$ implies $[[T_1]] \subseteq [[T_2]]$, then $T_1 <: T_2$ is _sound._
+
+For types $T_1, \, T_2,$ we define teir **least upper bound** (LUB) w.r.t. the hierarchy. Examples: $\text{LUB}(\text{True, False}) = Bool, \, \text{LUB}(Int, \, Bool) = Any.$
+
+### 12.3.4 "if" Typing Rule Revisited
+
+For statically unknown conditionals, we want the return value to be the LUB of the types of the branches:
+
+![](./Figures/CompDes_Fig8-12.PNG)
