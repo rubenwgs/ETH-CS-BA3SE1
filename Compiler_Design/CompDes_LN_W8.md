@@ -303,8 +303,63 @@ A subtyping relation $T_1 <: T_2$ is **sound** if it approximates the underlying
 
 For types $T_1, \, T_2,$ we define teir **least upper bound** (LUB) w.r.t. the hierarchy. Examples: $\text{LUB}(\text{True, False}) = Bool, \, \text{LUB}(Int, \, Bool) = Any.$
 
+_Note:_ The LUB of $T_1$ and $T_2$ is sometimes written as $T_1 \lor T_2$.
+
 ### 12.3.4 "if" Typing Rule Revisited
 
 For statically unknown conditionals, we want the return value to be the LUB of the types of the branches:
 
 ![](./Figures/CompDes_Fig8-12.PNG)
+
+### 12.3.5 Subsumption Rule
+
+When we add subtyping judgments of the form $T <: S$, we can uniformly integrate it into the type system generically:
+
+![](./Figures/CompDes_Fig8-13.PNG)
+
+**Subsumption** allows values of type $T$ to be treated as $S$ whenever $T <: S$.
+
+### 12.3.6 Downcasting
+
+What happens if we have an $Int$, but need something of type $Pos$?
+
+- At compile time, we don't know whether the $Int$ is greater than zero
+- At runtime, we do
+
+We can add a **checked downcast:**
+
+![](./Figures/CompDes_Fig8-14.PNG)
+
+At runtime, the $ifPos$ checks whether $e_1 > 0$.
+
+## 12.4 Subtyping Other Types
+
+### 12.4.1 Subtyping for Tuples
+
+Inuition: whenever a program expects something of type $S_1 * S_2$, it is sound to give it type $T_1 * T_2$, if $T_1 <: S_1$ and $T_2 <: S_2$:
+
+![](./Figures/CompDes_Fig8-15.PNG)
+
+### 12.4.2 Subtying for Function Types
+
+On way to see it is exaplined by the following graph:
+
+![](./Figures/CompDes_Fig8-16.PNG)
+
+We need to convert an $S_1$ to a $T_1$ and $T_2$ to $S_2$, so the argument type is **contravariant** and the output type is **covariant:**
+
+![](./Figures/CompDes_Fig8-17.PNG)
+
+### 12.4.3 Immutable Records
+
+The records type is given by: $\{lab_1:T_1: \, lab_2:T_2; \, ...; \, lab_n:T_n \}$. Each $lab_i$ is a label drawn from a set of identifiers.
+
+![](./Figures/CompDes_Fig8-18.PNG)
+
+We can do two different forms of _subtyping for immutable records:_
+
+![](./Figures/CompDes_Fig8-19.PNG)
+
+## 12.5 Mutability & Subtyping
+
+35:58
