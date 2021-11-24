@@ -10,7 +10,7 @@ Originally, **LLVM** stood for _Low-Level Virtual Machine_, however, this name d
 
 ## 5.1 LLVM Compiler Infrastructure
 
-![](./Figures/CompDes_Fig4-1.PNG)
+<img src="./Figures/CompDes_Fig4-1.PNG" style="zoom: 33%;" />
 
 ## 5.2 LLVM overview
 
@@ -162,7 +162,7 @@ Intended to be an _abstract version of stack slots_.
 
 Example:
 
-![](./Figures/CompDes_Fig4-2.PNG)
+<img src="./Figures/CompDes_Fig4-2.PNG" style="zoom:33%;" />
 
 ### 5.3.3 LLVMLite Control Flow Instructions
 
@@ -263,11 +263,11 @@ type cfg = block * (lbl * block) list
 
 _Example_: Control-flow graph of the factorial function:
 
-![](./Figures/CompDes_Fig4-3.PNG)
+<img src="./Figures/CompDes_Fig4-3.PNG" style="zoom: 67%;" />
 
 _Example_: `foo` function:
 
-![](./Figures/CompDes_Fig4-4.PNG)
+<img src="./Figures/CompDes_Fig4-4.PNG" style="zoom: 67%;" />
 
 ### 5.4.4 Generating Code for Loops
 
@@ -289,7 +289,7 @@ We therefore have the following five elements:
 
 The general CFG for a loop looks as follows:
 
-![](./Figures/CompDes_Fig4-5.PNG)
+<img src="./Figures/CompDes_Fig4-5.PNG" style="zoom: 50%;" />
 
 ### 5.4.5 LLVM Cheat Sheet
 
@@ -428,7 +428,7 @@ LLVM provides the `getelementptr` (**GEP**)instruction to compute pointer values
 
 _GEP example:_
 
-![](./Figures/CompDes_Fig4-6.PNG)
+<img src="./Figures/CompDes_Fig4-6.PNG" style="zoom:67%;" />
 
 _Remarks:_
 
@@ -587,7 +587,7 @@ _Remarks:_
 
 #### `getelementptr` -> `x86`
 
-![](./Figures/CompDes_Fig4-7.PNG)
+<img src="./Figures/CompDes_Fig4-7.PNG" style="zoom:67%;" />
 
 _Remarks:_
 
@@ -598,7 +598,7 @@ _Remarks:_
 
 #### Array Indexing
 
-![](./Figures/CompDes_Fig4-8.PNG)
+<img src="./Figures/CompDes_Fig4-8.PNG" style="zoom:67%;" />
 
 #### If-statements and Loops
 
@@ -608,4 +608,4 @@ _Remarks:_
 
 _Example:_
 
-![](./Figures/CompDes_Fig4-9.PNG)
+<img src="./Figures/CompDes_Fig4-9.PNG" style="zoom:67%;" />

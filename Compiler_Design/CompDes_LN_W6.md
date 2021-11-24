@@ -22,27 +22,39 @@ The main problem is that we can't decide which $S$ production to apply until we 
 
 This means that we transform our example grammar
 
-$$S \to E + S \, | \, E \\ E \to \text{number} \, | \, (S)$$
+$$
+S \to E + S \, | \, E \\ E \to \text{number} \, | \, (S)
+$$
 
 to the following "left-factor" grammar:
 
-$$S \to ES' \\ S' \to \epsilon \\ S' \to + S \\ E \to \text{number} \, | \, (S)$$
+$$
+S \to ES' \\ S' \to \epsilon \\ S' \to + S \\ E \to \text{number} \, | \, (S)
+$$
 
 However, we also need to _eliminate left-recursion_ somehow. In general, this is done by rewriting the following left-recursive rule
 
-$$S \to S \alpha_1 \, | \, \cdots \, | \, S \alpha_n \, | \, \beta_1 \, | \, \cdots \, | \, \beta_m$$
+$$
+S \to S \alpha_1 \, | \, \cdots \, | \, S \alpha_n \, | \, \beta_1 \, | \, \cdots \, | \, \beta_m
+$$
 
 to a rule of the form:
 
-$$S \to \beta_1 S' \, | \, \cdots \, | \, \beta_m S' \\ S' \to \alpha_1 S' \, | \, \cdots \, | \, \alpha_n S' \, | \, \epsilon$$
+$$
+S \to \beta_1 S' \, | \, \cdots \, | \, \beta_m S' \\ S' \to \alpha_1 S' \, | \, \cdots \, | \, \alpha_n S' \, | \, \epsilon
+$$
 
 In our running example, this would mean to rewrite
 
-$$S \to S + E \, | \, E \\ E \to \text{number} \, | \, (S)$$
+$$
+S \to S + E \, | \, E \\ E \to \text{number} \, | \, (S)
+$$
 
 to the following left-recursion-eliminating grammar:
 
-$$S \to ES' \\ S' \to +ES' \, | \, \epsilon \\ E \to \text{number} \, | \, (S)$$
+$$
+S \to ES' \\ S' \to +ES' \, | \, \epsilon \\ E \to \text{number} \, | \, (S)
+$$
 
 ### 8.1.2 Predictive Parsing
 
@@ -54,13 +66,15 @@ Given an LL(1) grammar:
 
 _Example:_ Let us look at the following LL(1) grammar:
 
-$$T \to S\$ \\ S \to ES' \\ S' \to \epsilon \\ S' \to + S \\ E \to \text{number} \, | \, (S)$$
+$$
+T \to S\$ \\ S \to ES' \\ S' \to \epsilon \\ S' \to + S \\ E \to \text{number} \, | \, (S)
+$$
 
 We then propose the following **predictive parsing table:**
 
 |      | **number**          | **+**     | **(**     | **)**          | **$ (EOF)**    |
 | ---- | ------------------- | --------- | --------- | -------------- | -------------- |
-| $T$  | $\to S$ $           |           | $\to S$ $ |                |                |
+| $T$  | $\to S$           |           | $\to S$ |                |                |
 | $S$  | $\to ES'$           |           | $\to ES'$ |                |                |
 | $S'$ |                     | $\to + S$ |           | $\to \epsilon$ | $\to \epsilon$ |
 | E    | $\to \text{number}$ |           | $\to (S)$ |                |                |
@@ -81,7 +95,7 @@ _Note:_ If there are two different productions for a given entry, then the gramm
 
 _Example:_
 
-![](./Figures/CompDes_Fig6-1.PNG)
+<img src="./Figures/CompDes_Fig6-1.PNG" style="zoom: 33%;" />
 
 ### 8.1.4 Converting The Parsing Table to Code
 
@@ -145,9 +159,11 @@ In shift/reduce parsing, the parser has a **parser state** described as follows:
 
 _Example:_ We consider our previous example
 
-$$S \to S + E \, | \, E \\ E \to \text{number} \, | \, (S)$$
+$$
+S \to S + E \, | \, E \\ E \to \text{number} \, | \, (S)
+$$
 
-![](./Figures/CompDes_Fig6-2.PNG)
+<img src="./Figures/CompDes_Fig6-2.PNG" style="zoom:33%;" />
 
 ## 8.3 LR(0) Grammars
 
@@ -162,11 +178,13 @@ Our goal it is to know _what set of reductions are legal_ at any given point. Th
 
 The following grammar is an example grammar for non-empty tuples and identifiers:
 
-$$S \to (L) \, | \, \text{id} \\ L \to S \, | \, L, \, S$$
+$$
+S \to (L) \, | \, \text{id} \\ L \to S \, | \, L, \, S
+$$
 
 Now, if we apply parsing as a sequence of shift and reduce operations, we end up with the following parse operation:
 
-![](./Figures/CompDes_Fig6-3.PNG)
+<img src="./Figures/CompDes_Fig6-3.PNG" style="zoom:33%;" />
 
 ### 8.3.3 Action Selection Problem
 
@@ -190,17 +208,21 @@ The intuition for the meaning of the dot is:
 
 We will consider the following grammar:
 
-$$S' \to S \$ \\ S \to (L) \, | \, \text{id} \\ L \to S \, | \, L, \, S$$
+$$
+S' \to S \$ \\ S \to (L) \, | \, \text{id} \\ L \to S \, | \, L, \, S
+$$
 
-The first step when creating the DFA is to add a new production $S' \to S$$ to the grammar. The _start state_ of the DFA is the empty stack, so it contains the item $S' \to .S$$. We then proceed to add the **closure of the state** to our DFA:
+The first step when creating the DFA is to add a new production $S' \to S$ to the grammar. The _start state_ of the DFA is the empty stack, so it contains the item $S' \to .S$. We then proceed to add the **closure of the state** to our DFA:
 
-- Add items for all productions whose LHS non-terminal occurs in an item in the state just after the `.` (e.g. $S$ in $S' \to .S$$)
+- Add items for all productions whose LHS non-terminal occurs in an item in the state just after the `.` (e.g. $S$ in $S' \to .S$)
 - The added items have the `.` located at the beginning
 - Note that newly added items may cause yet more items to be added to the state, we keep iterating until a _fixed point_ is reached
 
 _Example:_
 
-$$\text{Closure}(\{S' \to .S \$ \}) = \{S' \to .S \$, \, S \to .(L), \, S \to .\text{id} \}$$
+$$
+\text{Closure}(\{S' \to .S \$ \}) = \{S' \to .S \$, \, S \to .(L), \, S \to .\text{id} \}
+$$
 
 Next we need to add the _transitions:_
 
@@ -208,11 +230,11 @@ Next we need to add the _transitions:_
 2. The target state initially includes all items from the source state that have the edge-label symbol after the `.`, but we advance the `.` to simulate shifiting the item onto the stack.
 3. Finally, for each new state, we again take the closure of it.
 
-![](./Figures/CompDes_Fig6-4.PNG)
+<img src="./Figures/CompDes_Fig6-4.PNG" style="zoom:25%;" />
 
 By continuing the above approach, we will reach the following **full DFA** for our example:
 
-![](./Figures/CompDes_Fig6-5.PNG)
+<img src="./Figures/CompDes_Fig6-5.PNG" style="zoom: 33%;" />
 
 ### 8.3.6 Using The DFA
 
@@ -238,7 +260,7 @@ Entries for the **action table** specify two kinds of actions:
 
 _Example:_
 
-![](./Figures/CompDes_Fig6-6.PNG)
+<img src="./Figures/CompDes_Fig6-6.PNG" style="zoom:33%;" />
 
 ### 8.3.8 LR(0) Limitations
 
@@ -246,7 +268,7 @@ An LR(0) machine only works if states with reduce actions have a _single_ reduce
 
 With more complex grammars, the DFA construction will yield states with _sift/reduce_ and _reduce/reduce_ problems:
 
-![](./Figures/CompDes_Fig6-7.PNG)
+<img src="./Figures/CompDes_Fig6-7.PNG" style="zoom:33%;" />
 
 ## 8.4 LR(1) Parsing
 
@@ -264,11 +286,11 @@ However, the **LR(1) closure** is a little more complex:
 
 ### 8.4.1 Example Closure in LR(1)
 
-![](./Figures/CompDes_Fig6-8.PNG)
+<img src="./Figures/CompDes_Fig6-8.PNG" style="zoom:33%;" />
 
 ### 8.4.2 Using The DFA
 
-![](./Figures/CompDes_Fig6-9.PNG)
+<img src="./Figures/CompDes_Fig6-9.PNG" style="zoom:33%;" />
 
 The behavior is determined if:
 
@@ -279,10 +301,14 @@ The behavior is determined if:
 
 Consider for example the following two LR(1) states:
 
-$$S_1: \quad \{[X \to \alpha., \, a], \, [Y \to \beta., \, c]\} \\ S_2: \quad \{[X \to \alpha., \, b], \, [Y \to \beta., \, d] \}$$
+$$
+S_1: \quad \{[X \to \alpha., \, a], \, [Y \to \beta., \, c]\} \\ S_2: \quad \{[X \to \alpha., \, b], \, [Y \to \beta., \, d] \}
+$$
 
 They have the same core and can therefore be _merged_. The merged state contains:
 
-$$\{[X \to \alpha., \, a/b], \, [Y \to \beta., \, c/d] \}$$
+$$
+\{[X \to \alpha., \, a/b], \, [Y \to \beta., \, c/d] \}
+$$
 
 These are so-called **LALR(1)** states. Typically there are 10 times fewer LALR(1) states than LR(1). However, LALR(1) may introduce new reduce/reduce conflicts (but not new shift/reduce conflicts).

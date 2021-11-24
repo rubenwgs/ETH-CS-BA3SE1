@@ -8,7 +8,7 @@
 
 ## 6.1 Compilation in a Nutshell
 
-![](./Figures/CompDes_Fig5-1.PNG)
+<img src="./Figures/CompDes_Fig5-1.PNG" style="zoom:50%;" />
 
 ## 6.2 Lexical Analysis
 
@@ -69,7 +69,7 @@ let character = uppercase | lowercase
 
 ### 6.3.2 Chomsky Hierarchy
 
-![](./Figures/CompDes_Fig5-2.PNG)
+<img src="./Figures/CompDes_Fig5-2.PNG" style="zoom: 50%;" />
 
 ### 6.3.3 How to Match?
 
@@ -103,7 +103,7 @@ rule token = parse
 
 A **deterministic finite automaton** (DFA) can be represented as:
 
-![](./Figures/CompDes_Fig5-3.PNG)
+<img src="./Figures/CompDes_Fig5-3.PNG" style="zoom:67%;" />
 
 > We can build a finite automaton for every regular expression!
 
@@ -113,7 +113,7 @@ A **nondeterministic finite automaton** (NFA) is built the same way as a DFA (i.
 
 Sums and Kleene stars can easily be represented with NFA's:
 
-![](./Figures/CompDes_Fig5-4.PNG)
+<img src="./Figures/CompDes_Fig5-4.PNG" style="zoom:67%;" />
 
 ### 6.5.3 DFA vs. NFA
 
@@ -170,11 +170,15 @@ The idea of **context free grammars** (CFG) is to derive a string in the languag
 
 _Example:_ Consider the specification of the language of balances `parens`:
 
-$$\text{S} \to (\text{S})\text{S} \\ \text{S} \to \epsilon$$
+$$
+\text{S} \to (\text{S})\text{S} \\ \text{S} \to \epsilon
+$$
 
 A derivation could look like:
 
-$$\text{S} \to (\text{S})\text{S} \to ((\text{S})\text{S})\text{S} \to ((\epsilon)\text{S})\text{S} \to ((\epsilon)\text{S})\epsilon \to ((\epsilon)\epsilon)\epsilon = (())$$
+$$
+\text{S} \to (\text{S})\text{S} \to ((\text{S})\text{S})\text{S} \to ((\epsilon)\text{S})\text{S} \to ((\epsilon)\text{S})\epsilon \to ((\epsilon)\epsilon)\epsilon = (())
+$$
 
 ### 7.2.2 CFG's Mathematically
 
@@ -189,13 +193,17 @@ A **context free grammar** (CFG) consists of:
 
 _Example:_ A grammar that accepts parenthesized sums of numbers:
 
-$$\text{S} \to \text{E} + \text{S} \, | \, \text{E} \\ \text{E} \to \text{number} \, | \, (\text{S})$$
+$$
+\text{S} \to \text{E} + \text{S} \, | \, \text{E} \\ \text{E} \to \text{number} \, | \, (\text{S})
+$$
 
 ### 7.2.3 Derivations
 
 For arbitrary strings $\alpha, \, \beta, \, \gamma$ and production rule $A \to \beta$, a **single step of derivation** is:
 
-$$\alpha A \gamma \to \alpha \beta \gamma$$
+$$
+\alpha A \gamma \to \alpha \beta \gamma
+$$
 
 We might represent a derivation as a tree where:
 
@@ -204,11 +212,11 @@ We might represent a derivation as a tree where:
 
 _Example:_ Derivation tree of `(1 + 2 + (3 + 4)) + 5`:
 
-![](./Figures/CompDes_Fig5-6.PNG)
+<img src="./Figures/CompDes_Fig5-6.PNG" style="zoom:50%;" />
 
 #### From Parse Trees to Abstract Syntax Trees
 
-![](./Figures/CompDes_Fig5-7.PNG)
+<img src="./Figures/CompDes_Fig5-7.PNG" style="zoom:67%;" />
 
 #### Derivation Orders
 
@@ -223,12 +231,16 @@ _Remark_: Both strategies and any other order yield the same parse tree!
 
 Some care is needed when defining CFG's:
 
-$$\text{S} \to \text{E} \\ \text{E} \to \text{S}$$
+$$
+\text{S} \to \text{E} \\ \text{E} \to \text{S}
+$$
 
 - This grammas has nonterminal definitions that are _non-productive_, i.e. they don't mention any terminal symbols
 - There is no finite derivation starting from $\text{S}$, so the language is empty
 
-$$\text{S} \to (\text{S})$$
+$$
+\text{S} \to (\text{S})
+$$
 
 - This grammar is productive, but again there is no finite derivation string from $\text{S}$, so the language is _empty_
 
@@ -238,19 +250,25 @@ $$\text{S} \to (\text{S})$$
 
 Consider the following grammar:
 
-$$\text{S} \to \text{E} + \text{S} \, | \, \text{E} \\ \text{E} \to \text{number} \, | \, (\text{S})$$
+$$
+\text{S} \to \text{E} + \text{S} \, | \, \text{E} \\ \text{E} \to \text{number} \, | \, (\text{S})
+$$
 
 This grammar makes the `+` _right associative_, i.e. the AST is the same for both `1 + 2 + 3` and `1 + (2 + 4)`. Note also that the grammar is _right recursive_ due to the production $\text{S} \to \text{E} + \text{S}$.
 
 How would we make the `+` _left associative_? Simple:
 
-$$\text{S} \to \text{S} + \text{E} \, | \, \text{E} \\ \text{E} \to \text{number} \, | \, (\text{S})$$
+$$
+\text{S} \to \text{S} + \text{E} \, | \, \text{E} \\ \text{E} \to \text{number} \, | \, (\text{S})
+$$
 
 ### 7.3.2 Ambiguity
 
 Consider the following grammar:
 
-$$\text{S} \to \text{S} + \text{S} \, | \, (\text{S}) \, | \, \text{number}$$
+$$
+\text{S} \to \text{S} + \text{S} \, | \, (\text{S}) \, | \, \text{number}
+$$
 
 This accepts the same set of strings as the previously mentioned grammar. We can get both right and left associativity for the `+` operator.
 
@@ -260,7 +278,9 @@ However, not all operations are associative. Moreover, if there are multiple ope
 
 Consider the grammar:
 
-$$\text{S} \to \text{S} + \text{S} \, | \, \text{S} * \text{S} \, | \, (\text{S}) \, | \, \text{number}$$
+$$
+\text{S} \to \text{S} + \text{S} \, | \, \text{S} * \text{S} \, | \, (\text{S}) \, | \, \text{number}
+$$
 
 The input `1 + 2 * 3` might be parsed either:
 
@@ -279,4 +299,6 @@ To disambiguate the previously introduced grammar:
 
 _Note_: `S_2` corresponds to "atomic" expressions:
 
-$$S_0 \to S_0 + S_1 \, | \, S_1 \\ S_1 \to S_2 * S_1 \, | \, S_2 \\ S_2 \to \text{number} \, | \, (S_0)$$
+$$
+S_0 \to S_0 + S_1 \, | \, S_1 \\ S_1 \to S_2 * S_1 \, | \, S_2 \\ S_2 \to \text{number} \, | \, (S_0)
+$$

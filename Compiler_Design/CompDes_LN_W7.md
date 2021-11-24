@@ -104,7 +104,7 @@ Function application is interpreted by substitution:
 
 ## 10.4 Lambda Calculus Operational Semantics
 
-![](./Figures/CompDes_Fig7-1.PNG)
+<img src="./Figures/CompDes_Fig7-1.PNG" style="zoom:33%;" />
 
 ## 10.5 Free Variables and Scoping
 
@@ -170,7 +170,7 @@ _Example:_
 
 ## 10.10 Operational Semantics
 
-![](./Figures/CompDes_Fig7-2.PNG)
+<img src="./Figures/CompDes_Fig7-2.PNG" style="zoom:33%;" />
 
 ## 10.11 Adding Integers to Lambda Calculus
 
@@ -221,13 +221,17 @@ A **judgement** is of the form $G;L \vdash e : t$ is read as "_the expression `e
 
 For any **environment** $G;L$, expression `e`, and statements `s1, s2`:
 
-$$G;L;rt \vdash \text{if } (e) \, s_1 \text{ else } s_2$$
+$$
+G;L;rt \vdash \text{if } (e) \, s_1 \text{ else } s_2
+$$
 
 holds if $G;L \vdash e : \text{bool}$, $G;L;rt \vdash s_1$, $G;L;rt \vdash s_2$ all hold.
 
 More succinctly, we can summarize these constraints as an **inference rule:**
 
-$$\frac{G;L \vdash e : \text{bool} \quad G;L;rt \vdash s_1 \quad G;L;rt \vdash s_2}{G;L;rt \vdash \text{if } (e) \, s_1 \text{ else } s_2}$$
+$$
+\frac{G;L \vdash e : \text{bool} \quad G;L;rt \vdash s_1 \quad G;L;rt \vdash s_2}{G;L;rt \vdash \text{if } (e) \, s_1 \text{ else } s_2}
+$$
 
 ### 11.2.2 Checking Derivations
 
@@ -244,7 +248,7 @@ We can state the following _invariant:_ If $[[C \vdash e : t]] = \text{ ty, oper
 
 _Example:_ What is $[[C \vdash 341 + 5 : int]]$ ?
 
-![](./Figures/CompDes_Fig7-3.PNG)
+<img src="./Figures/CompDes_Fig7-3.PNG" style="zoom: 50%;" />
 
 ### 11.2.4 Contexts
 
@@ -252,30 +256,30 @@ What is $[[C]]$ ? Source level $C$ has bindings like $x:\text{ int}, \, y:\text{
 
 The interpretation of a variable $[[x]]$ can is:
 
-![](./Figures/CompDes_Fig7-4.PNG)
+<img src="./Figures/CompDes_Fig7-4.PNG" style="zoom:50%;" />
 
 ### 11.2.5 Other Judgements
 
 _Establish invariant for expressions:_
 
-![](./Figures/CompDes_Fig7-5.PNG)
+<img src="./Figures/CompDes_Fig7-5.PNG" style="zoom:50%;" />
 
 _Statements:_
 
-![](./Figures/CompDes_Fig7-6.PNG)
+<img src="./Figures/CompDes_Fig7-6.PNG" style="zoom: 50%;" />
 
-![](./Figures/CompDes_Fig7-7.PNG)
+<img src="./Figures/CompDes_Fig7-7.PNG" style="zoom: 50%;" />
 
 _Declaration:_
 
-![](./Figures/CompDes_Fig7-8.PNG)
+<img src="./Figures/CompDes_Fig7-8.PNG" style="zoom:50%;" />
 
 ## 11.3 Compiling Control
 
 ### 11.3.1 Translating while
 
-![](./Figures/CompDes_Fig7-9.PNG)
+<img src="./Figures/CompDes_Fig7-9.PNG" style="zoom:50%;" />
 
 ### 11.3.2 Translating If-Then-Else
 
-![](./Figures/CompDes_Fig7-10.PNG)
+<img src="./Figures/CompDes_Fig7-10.PNG" style="zoom:50%;" />

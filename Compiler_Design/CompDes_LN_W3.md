@@ -64,7 +64,7 @@ But, obviously `(X1 - X1)` is 0 and the program therefore could be much more sim
 
 The goal of this is to get the program closer to machine code without losing the information needed to do analysis and optimization. We might also have multiple IR's.
 
-![](./Figures/CompDes_Fig3-1.PNG)
+<img src="./Figures/CompDes_Fig3-1.PNG" style="zoom:50%;" />
 
 ### 4.1.1 What makes a good IR?
 

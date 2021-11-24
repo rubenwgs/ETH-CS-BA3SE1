@@ -10,7 +10,7 @@
 
 A simplified compiler structure looks as follows:
 
-![](./Figures/CompDes_Fig2-1.PNG)
+<img src="./Figures/CompDes_Fig2-1.PNG" style="zoom: 33%;" />
 
 ## 3.2 X86 vs. X86Lite
 
@@ -30,7 +30,7 @@ A simplified compiler structure looks as follows:
 
 The X86 schematic looks as follows:
 
-![](./Figures/CompDes_Fig2-2.PNG)
+<img src="./Figures/CompDes_Fig2-2.PNG" style="zoom:33%;" />
 
 ### 3.3.1 Registers
 
@@ -62,7 +62,7 @@ Here, `SRC` and `DEST` are _operands_. `DEST` is treated as a location, either a
 
 Example of a `mov` instruction:
 
-![](./Figures/CompDes_Fig2-3.PNG)
+<img src="./Figures/CompDes_Fig2-3.PNG" style="zoom: 33%;" />
 
 #### A Note About Instruction Syntax
 
@@ -332,7 +332,7 @@ _Remark: By convention, compilers often use a `.` in front of a label that is in
 
 We want to quickly revisit the three different parts of the C memory model, shown in the picture below.
 
-![](./Figures/CompDes_Fig2-4.PNG)
+<img src="./Figures/CompDes_Fig2-4.PNG" style="zoom: 67%;" />
 
 - The **code & data** (or `.text`) segment: contains compile code, constant strings, etc.
 - The **heap**: stores dynamically allocated objects, is allocated via `malloc` and deallocated via `free`
@@ -367,7 +367,7 @@ movq    (%rsp), %rax
 
 The following picture shows how we use the stack in a program with different calls. This corresponds to the "boilerplate" code in the previous example with the `factorial`. We adjust the pointers to the bottom and the top of the stack before and after calling a "function", such that the function has its own **stack frame**.
 
-![](./Figures/CompDes_Fig2-5.PNG)
+<img src="./Figures/CompDes_Fig2-5.PNG" style="zoom: 67%;" />
 
 ### 3.7.4 Calling Conventions
 
