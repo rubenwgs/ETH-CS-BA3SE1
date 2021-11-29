@@ -169,3 +169,38 @@ Consider the method invocation $$[[H;G;L \vdash e.m(e_1,...,e_n):t]]$ :
 4. Use `getelementptr` to extarct the function pointer's address from the vtable
 5. Load the function pointer
 6. Call through the function pointer, passing `obj_ptr` for `this`: `call (cmp_typ t) m(obj_ptr, [[e1]],...,[[e_n]])`
+
+## 13.6 Compiling For OO
+
+### 13.6.1 Compiling Static Methods
+
+Java supports _static_ methods, these are methods belongig to a class, not the instances of the class. They have no `this` parameter.
+
+They are compiled exactly like normal top-level procedures:
+
+- No slots needed in the dispatch vectors
+- No implicit `this` parameter
+
+### 13.6.2 Compiling Constructors
+
+Java and C++ classes can declare constructors that create new objects. The initialization code may have parameters supplied to the constructor.
+
+Constructors are compiled just like static methods, except:
+
+- The `this` variable is initialized to a newly allocated block of memory, big enough to hold the D.V. pointer plus the fields according to the object layout.
+- Constructor code initializes all the fields
+- The D.V. pointer is initialized
+
+### 13.6.3 Compiling Checked Casts
+
+Consider the generalization of Oat's _checked cast:_ `if? (t x = exp) {...} else {...}
+
+We then reason by case distinction:
+
+- If `t` is `null`: The static type of `exp` must be `ref?`. If `exp == null`, then take the true branch, else take the false branch.
+- If `t` is `string` or `t[]`: The static type of `exp` must be the corresponding `string?` or `t[]?`. If `exp == null`, take the false branch, else take the true branch
+- If `t` is `C`: The static type of `exp` must be `D` or `D?` where `C <: D`. If `exp == null`, take the false branch, otherwise emit the code to walk up the class hierarchy, starting at `T` to look for `C` (`T` is `exp`'s dynamic type). If found, take the true branch, else take the false branch
+- If `t` is `C?`: The static type of `exp` must be `D?` where `C <: D`. If `exp == null`, take the true branch, otherwise emit the code to walk up the class hierarchy, starting at `T` to look for `C` (`T` is `exp`'s dynamic type). If found, take the true branch, else take the false branch
+
+# 14. Optimizations
+

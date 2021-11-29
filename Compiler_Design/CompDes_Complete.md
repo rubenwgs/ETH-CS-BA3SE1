@@ -2125,3 +2125,747 @@ They have the same core and can therefore be _merged_. The merged state contains
 $$\{[X \to \alpha., \, a/b], \, [Y \to \beta., \, c/d] \}$$
 
 These are so-called **LALR(1)** states. Typically, there are 10 times fewer LALR(1) states than LR(1). However, LALR(1) may introduce new reduce/reduce conflicts (but not new shift/reduce conflicts).
+
+**Compiler Design — Lecture notes week 7**
+
+- Author: Ruben Schenk
+- Date: 09.11.2021
+- Contact: ruben.schenk@inf.ethz.ch
+
+# 9. Menhir In Practice
+
+## 9.1 Menhir Output
+
+You can get verbose ocamlyacc debugging information by doing:
+
+```console
+menhir --examplain
+```
+
+or, if using `ocamlbuild`:
+
+```console
+ocamlbuild -use-menhir -yaccflag --explain
+```
+
+The result is a `<basename>.conflicts` file describing the error. The flag `--dump` generates a full description of the automaton.
+
+## 9.2 Precedence and Associativity Declarations
+
+Parser generators often support **precedence/associativity declarations**. Those hint to the parser about how to resolve conflicts.
+
+- Pros:
+  - Avoids having to manually resolve those ambiguities by manually introducing extra non-terminals
+  - Easier to maintain the grammar
+- Cons:
+  - Can't as easily re-use the same terminal
+  - Introduces another level of debugging
+
+
+# 10 Untyped Lambda Calculus
+
+## 10.1 Functional Languages
+
+Languages like ML, Haskell, Scheme, Python etc. support different operations on and with functions:
+
+- Functions can be passed as arguments (e.g. `map` or `fold`)
+- Functions can be returned as values (e.g. `compose`)
+- Functions can be nested, i.e. inner functions refer to variables bound in the outer function
+
+_Example:_
+
+```ocaml
+let add = fun x -> fun y -> x + y
+let inc = add 1
+let dec = add -1
+
+let compose = fun f -> fun g -> fun x -> f (g x)
+let id = compose inc dec
+```
+
+But how do we implement such functions in an interpreter or in a compiled language?
+
+## 10.2 Lambda Calculus
+
+The **lambda calculus** is a minimal programming language. It has variables, functions, and function application. That's it! It is, however, still touring complete.
+
+The abstract syntax in OCaml is:
+
+```ocaml
+type exp =
+    | Var of var        (* variables *)
+    | Fun of var * exp  (* functions: fun x -> e *)
+    | App of exp * exp  (* function application *)
+```
+
+The concrete syntax is:
+
+```bnf
+exp ::=
+    | x
+    | fun x -> exp
+    | exp_1 exp_2
+    | (exp)
+```
+
+## 10.3 Values and Substitution
+
+The only **values** of the lambda calculus are (closed) functions:
+
+```bnf
+val ::=
+    | fun x -> exp
+```
+
+To **substitute** value `v` for variable `x` in expression `e`:
+
+- Replace all _free occurrences_ of `x` in `e` by `v`
+- In OCaml written as `subst v x e`
+
+Function application is interpreted by substitution:
+
+```bnf
+(fun x -> fun y -> x + y) 1
+= subst 1 x (fun y -> x + y)
+= (fun y -> 1 + y)
+```
+
+## 10.4 Lambda Calculus Operational Semantics
+
+<img src="./Figures/CompDes_Fig7-1.PNG" style="zoom:33%;" />
+
+## 10.5 Free Variables and Scoping
+
+We look at the following example code:
+
+```ocaml
+let add = fun x -> fun y -> x + y
+let inc = add 1
+```
+
+The result of `add 1` is a function. After calling `add`, we can't throw away its arguments (or its local variables) because those are needed in the function returned by `add`.
+
+- We say that variable `x` is **free** in `fun y -> x + y` (the variable is defined in the outer scope)
+- We say that variable `y` is **bound** by `fun y`. Its scope is the body `x + y` in `fun y -> x + y`
+
+A term with no free variables is called **closed**. In contrast, a term with one or more free variables is called **open**.
+
+## 10.6 Free Variable Calculation
+
+The following OCaml code computes the set of free variables in lambda expressions:
+
+```ocaml
+let rec free_vars (e:exp) : VarSet.t =
+    begin match e with
+        | Var x         -> VarSet.singleton x
+        | Fun (x, body) -> VarSet.remove x (free_vars body)
+        | App (e1, e2)  -> VarSet.union (free_vars e1) (free_vars e2)
+    end
+```
+
+We then say a lambda expression `e` is _closed_ if `free_vars e` is `VarSet.empty`.
+
+## 10.7 Variable Capture
+
+Note that if we try to naively substitute an open term, a bound variable might **capture** the free variables. Example:
+
+```bnf
+(fun x -> (x y)) {(fun z -> x)/y}   // x is free in (fun z -> x)
+= fun x -> (x (fun z -> x))         // the free x is now captured
+```
+
+This is usually not the desired behavior! The meaning of `x` is determined by where it is bound dynamically, not where it is bound statically (_dynamic scoping_).
+
+## 10.8 Alpha Equivalence
+
+Note that the names of bound variables don't matter. `(fun x -> y x)` is the same as `(fun z -> y z)`.
+Two terms that differ only by consistent renaming of bound variables are called **alpha equivalent.**
+
+However, the names of free variables do matter! `(fun x -> y x)` is not the same as `(fun x -> z x)`.
+
+## 10.9 Fixing Substitution
+
+We can fix the substitution problem. For this, let us consider the following substitution operation: $e_1{e_2/x}$
+
+To avoid capture, we define the substitution to pick an alpha equivalent version of $e_1$, such that the bound names of $e_1$ don't mention the free names of $e_2$. Then we can do the simple naive substitution.
+
+_Example:_
+
+```bnf
+(fun x -> (x y)) {(fun z -> x)/y}
+= (fun x' -> (x' (fun z -> x)))     // rename x to x'
+```
+
+## 10.10 Operational Semantics
+
+<img src="./Figures/CompDes_Fig7-2.PNG" style="zoom:33%;" />
+
+## 10.11 Adding Integers to Lambda Calculus
+
+We might extend our previously described Lambda Calculus with **integer values** by modifying our previous definitions in the following way:
+
+```bnf
+exp ::=
+    | ...
+    | n             // constant integers
+    | exp1 + exp2   // binary arithmetic operation
+
+val ::=
+    | fun x -> exp  // functions are values
+    | n             // integers are values
+
+n{v/x} = n          // constants have no free variables
+(e1 + e2){v/x} = (e1{v/x} + e2{v/x})
+```
+
+# 11. Static Analysis
+
+## 11.1 Variable Scoping
+
+We have the following problem: How do we determine whether a declared variable is in scope?
+
+_Example:_ The code below is syntactically correct, but not well-formed! `y` and `q` are used without being defined anywhere.
+
+```c
+int fact(int x) {
+    var acc = 1;
+    while(x > 0) {
+        acc = acc * y;
+        x = q - 1;
+    }
+    return acc;
+}
+```
+
+## 11.2 Contexts and Inference Rules
+
+We somehow need to keep track of **contextual information**, i.e. what variables are in the current scope and what their types are.
+
+One way to describe this is that the compiler keeps a mapping from variables to information about them using a **symbol table.**
+
+### 11.2.1 Inference Rules
+
+A **judgement** is of the form $G;L \vdash e : t$ is read as "_the expression `e` is well typed and has type `t`_".
+
+For any **environment** $G;L$, expression `e`, and statements `s1, s2`:
+
+$$
+G;L;rt \vdash \text{if } (e) \, s_1 \text{ else } s_2
+$$
+
+holds if $G;L \vdash e : \text{bool}$, $G;L;rt \vdash s_1$, $G;L;rt \vdash s_2$ all hold.
+
+More succinctly, we can summarize these constraints as an **inference rule:**
+
+$$
+\frac{G;L \vdash e : \text{bool} \quad G;L;rt \vdash s_1 \quad G;L;rt \vdash s_2}{G;L;rt \vdash \text{if } (e) \, s_1 \text{ else } s_2}
+$$
+
+### 11.2.2 Checking Derivations
+
+We can build a **derivation tree** by making the nodes to be judgements and the edges to connect premises to a conclusion (according to the inference rules). Leaves of the tree are **axioms**, i.e. rules with no premises. The goal of the **type checker** is to verify that such a _tree exists._
+
+### 11.2.3 Compilation as Translating Judgements
+
+Consider the typing judgement for source expressions: $C \vdash e : t$. How do we interpret this information in the target language? I.e. $[[C \vdash e : t]] = \, ?$ We have that:
+
+- $[[t]]$ is a target type
+- $[[e]]$ translates to a (possibly empty) sequence of instructions
+
+We can state the following _invariant:_ If $[[C \vdash e : t]] = \text{ ty, operand, stream}$, then the type of the operand is $ty = [[t]]$.
+
+_Example:_ What is $[[C \vdash 341 + 5 : int]]$ ?
+
+<img src="./Figures/CompDes_Fig7-3.PNG" style="zoom: 50%;" />
+
+### 11.2.4 Contexts
+
+What is $[[C]]$ ? Source level $C$ has bindings like $x:\text{ int}, \, y:\text{ bool},$ etc. $[[C]]$ maps source identifiers $x$ to source types $[[x]]$.
+
+The interpretation of a variable $[[x]]$ can is:
+
+<img src="./Figures/CompDes_Fig7-4.PNG" style="zoom:50%;" />
+
+### 11.2.5 Other Judgements
+
+_Establish invariant for expressions:_
+
+<img src="./Figures/CompDes_Fig7-5.PNG" style="zoom:50%;" />
+
+_Statements:_
+
+<img src="./Figures/CompDes_Fig7-6.PNG" style="zoom: 50%;" />
+
+<img src="./Figures/CompDes_Fig7-7.PNG" style="zoom: 50%;" />
+
+_Declaration:_
+
+<img src="./Figures/CompDes_Fig7-8.PNG" style="zoom:50%;" />
+
+## 11.3 Compiling Control
+
+### 11.3.1 Translating while
+
+<img src="./Figures/CompDes_Fig7-9.PNG" style="zoom:50%;" />
+
+### 11.3.2 Translating If-Then-Else
+
+<img src="./Figures/CompDes_Fig7-10.PNG" style="zoom:50%;" />
+
+**Compiler Design — Lecture notes week 8**
+
+- Author: Ruben Schenk
+- Date: 23.11.2021
+- Contact: ruben.schenk@inf.ethz.ch
+
+## 11.4 Optimizing Control
+
+### 11.4.1 Standard Evaluation
+
+Consider compiling the following program fragment:
+
+```c
+if(x & !y | !w) {
+    z = 3;
+} else {
+    z = 4;
+}
+return 7;
+```
+
+```llvm
+    %tmp1 = icmp Eq [[y]], 0
+    %tmp2 = and [[x]], %tmp1
+    %tmp3 = icmp Eq [[w]], 0
+    %tmp4 = or %tmp2, %tmp3
+    %tmp5 = icmp Eq %tmp4, 0
+    br %tmp5, label %else, label %then
+
+then:
+    store [[z]], 3
+    br %merge
+
+else:
+    store [[z]], 4
+    br %merge
+
+merge:
+    %tmp6 = laod [[z]]
+    ret %tmp 6
+```
+
+What we observe is that usually, we want the translation `[[e]]` to produce a value $[[C \vdash e_1 + e_2 : int]] = (\text{ty, operand, stream})$ = `i64, %tmp, [%tmp = add [[e1]] [[e2]]])`. 
+
+But, when the compiled expression appears in a test, the program jumps to one label or another after the comparison (besides that, it never uses the value). In many cases, we can avoid _materializing_ the value (i.e. storing it in a temporary) and thus produce better code.
+
+### 11.4.2 Short Circuit Boolean Compilation
+
+Instead of the usualy expression translation of the form:
+
+$$[[C \vdash e : t]] = (\text{ty, operand, stream})$$
+
+we can use a _conditional branch translation of Booleans,_ without materializing the value:
+
+$$[[C \vdash e : \text{bool}@]] \text{ Itrue Ifalse} = \text{stream} \\ [[C, \, rt \vdash \text{if } (e) \text{ then } s_1 \text{ else } s_2 \Rightarrow C']] = [[C']]$$
+
+This takes two extra arguments, namely the "true" branch label and the "false" branch label, and doesn't return a value.
+
+#### Expressions
+
+![](./Figures/CompDes_Fig8-1.PNG)
+
+#### Evaluation
+
+![](./Figures/CompDes_Fig8-2.PNG)
+
+If we reconsider our previous code example, we might translate it, using short circuit evaluation, into the following code fragment:
+
+```llvm
+    %tmp1 = icmp Eq [[x]], 0
+    br %tmp1, label %right2, label %right1
+
+right1:
+    %tmp2 = icmp Eq [[y]], 0
+    br %tmp2, label %then, label %right2
+
+right2:
+    %tmp3 = icmp Eq [[w]], 0
+    br %tmp3, label %then, label %else
+
+then:
+    store [[z]], 3
+    br %merge
+
+else:
+    store [[z]], 4
+    br %merge
+
+merge:
+    %tmp5 = load [[z]]
+    ret %tmp6
+```
+
+## 11.5 Closure Conversion
+
+As we have already seen, in functional languages such as ML, Haskell, Scheme, Python, etc, functiosn can be:
+
+- passed as arguments (such as `map` or `fold`)
+- returned as values (sucha s `compose`)
+- nested, i.e. an inner function can refer to variables bound to an outer function
+
+We can show a simple example with the following code fragment:
+
+```ocaml
+let add = fun x -> fun y -> x + y
+let inc = add 1
+let dec = add -1
+
+let compose = fun f -> fun g -> fun x -> f (g x)
+let id = compose inc dec
+```
+
+But how do we implement such functons in an interpreter or in a compiled language?
+
+### 11.5.1 Compiling First-class Functions
+
+To implement first-class functions on a processor, there are 2 main problems:
+
+- We must implemen substitution of free varaibles
+- We must separate "code" from "data"
+
+We can do those things by:
+
+- _Reify the substitution:_ Move the substitution from the meta language to the object language by making the data structure and lookup operation explicit
+- _Closure conversion:_ Eliminates free varaibles by packaging up the needed environment in the data structure
+- _Hoisting:_ Separates code from data, pulling closed code to the top level
+
+#### Closure Creation
+
+Recall the `add` function `let add = fun x -> fun y -> x + y` and consider the inner function `fun y -> x + y`.
+
+When we run the function application `add 4`, the program builds a closure and returns it (the **closure** is a pair of the _environment_ and a _code pointer_):
+
+![](./Figures/CompDes_Fig8-3.PNG)
+
+The code pointer takes a pair of parameters: `env` and `y`. The function code is essentially:
+
+```ocaml
+fun (env y) -> let x = nth env 0 in x + y
+```
+
+#### Representing Closures
+
+The simple closure conversion doesn't generate very efficient code:
+
+- It stores all the values for variables in the environment, even if they aren't needed by the function body
+- It copies the environment values each time a nested closure is created
+- It uses a linked-list data structure for tuples
+
+There are many options to solve those short comings, such as:
+
+- Store only the values for free variables in the body of the closure
+- Share subcomponents of the environment to avoid copying
+- Use vectors or arrays rather then linked structures
+
+**Array-based closure with N-ary functions:**
+
+![](./Figures/CompDes_Fig8-4.PNG)
+
+# 12. Statically Ruling Out Partiality: Type Checking
+
+## 12.1 Introduction
+
+### 12.1.1 Contexts and Inference Rules
+
+We need to keep track of contextual information, such as:
+
+- What variables are in scope?
+- What are their types?
+- What information do we have about each syntactic construct?
+
+How do we describe this information?
+
+- In the compiler, there's a mapping from varaibles to information we know about them, i.e. the _context_
+- The compiler has a collection of (mutually recursive) functions that follow the structure of the syntax
+
+### 12.1.2 Type Judgements
+
+In the _judgement_ $E \vdash e : t$
+
+- $E$ is a typing environment or a type context
+- $E$ maps variables to types and is simply a set of bindings of the form: $x_1 : t_1, \, x_2 : t_2, \, ..., \, x_n : t_n$
+
+These mappings could be, for example, $x : int, \, b : \text{if } (b) \, 3 \text{ else } x : int$.
+
+What do we need to know to decide whether $\text{if } (b) \, 3 \text{ else } x$ has type $int$ in the environment $x : int, \, b : bool$ ?
+
+- $b$ must be a bool, i.e. $x : int, \, b : bool \vdash b : bool$
+- $3$ must be an $int$, i.e. $x : int, \, b : bool \vdash 3 : int$
+- $x$ must be an $int$, i.e. $x : int, \, b : bool \vdash x : int$
+
+### 12.1.3 Simply-typed Lambda Calculus
+
+![](./Figures/CompDes_Fig8-5.PNG)
+
+### 12.1.4 Type Checking Derivations
+
+We can make a derivation of a proof tree:
+
+- Nodes are judgements
+- Edges connect premises to a conclusion (according to the inference rules)
+- Leaves are axioms (i.e., rules with no premises)
+
+The _goal of the type checker_ is to verify that such a tree exists.
+
+_Example:_ Find a tree for the following code using the previously given inference rules:
+
+$$\vdash (\text{fun}(x : int) \to x + 3)5 : int$$
+
+![](./Figures/CompDes_Fig8-6.PNG)
+
+Notes:
+
+- The OCaml function `typecheck` verifies the existence of this tree
+- Recursive calles for running `typecheck` follow the same shape as the tree above
+- $x : int \in E$ is implemented by the `lookup` function
+
+### 12.1.5 Type Safety
+
+> **Theorem:** If $\vdash e : t$, then there exists a value $v$ such that $e \Downarrow v$.
+
+This is a _very_ strong property:
+
+- Well-typed programs never execute undefined code like $3 + (\text{fun } x \to 2)$
+- Simply-typed lambda calculus terminates, i.e. not Turing complete
+
+### 12.1.6 Type Safety For General Languages
+
+> **Theorem:** If $\vdash P : t$ is a well-typed program, then either:
+> - the program terminates in a well-defined way, or
+> - the program continues computing forever
+
+_Note:_
+
+- Well-defined termiantion could includes halting with a return value or raising an exception
+- Type safety rules out undefined behavior_
+    - abusing "unsafe" casts, such as converting pointers to integers, etc.
+    - treating non-code values as code and vice-versa
+    - breaking the type abstraction of the language
+
+## 12.2 Basic Types
+
+### 12.2.1 Arrays
+
+![](./Figures/CompDes_Fig8-7.PNG)
+
+### 12.2.2 Tuples
+
+![](./Figures/CompDes_Fig8-8.PNG)
+
+### 12.2.3 References
+
+![](./Figures/CompDes_Fig8-9.PNG)
+
+## 12.3 Types, More Generally
+
+### 12.3.1 What are Types?
+
+A **type** is just apredicate on the set of values in a system, i.e. the type `int` can be thought of as a boolean function that returns "true" on integers and "false" otherwise.
+
+For efficiency and tractability, the predicates are usually very simple.
+
+We can easily add new types that distinguish different subsets of values:
+
+```ocaml
+type tp =
+    | IntT                  (* type of integers *)
+    | PosT | NegT | ZeroT   (* refinements of ints *)
+    | BoolT                 (* type of booleans *)
+    | TrueT | FalseT        (* subsets of booleans *)
+    | AnyT                  (* any value *)
+```
+
+When introducing those new types, we also need to redefine the typing rules.
+
+### 12.3.2 What about "if" ?
+
+Two cases are very easy:
+
+![](./Figures/CompDes_Fig8-10.PNG)
+
+But what if we don't know statically which branch will be taken? Consider the following type checking problem:
+
+$$x : bool \vdash \text{if } (x) \, 3 \text{ else } -1 : ?$$
+
+The true branch has type $Pos$ while the false branch has type $Neg$, so what should be the result type of the whole if-statement?
+
+### 12.3.3 Subtyping and Upper Bounds
+
+If we view types as sets of values, there is a natural _inclusion relation:_ $Pos \subseteq Int$. This subset relation gives rise to a **subtype relation:** $Pos <: Int$.
+
+Such inclusions give rise to a **subtyping hierarchy:**
+
+![](./Figures/CompDes_Fig8-11.PNG)
+
+The subytping relation is a _partial order:_
+
+- Reflexive: $T <: T$ for any type $T$
+- Transitive: $T:1 <: T_2$ and $T_2 <: T_3$ then $T_1 <: T_3$
+- Antisymmetric: $T_1 <: T_2$ and $T_2 <: T_1$ then $T_1 = T_2$
+
+A subtyping relation $T_1 <: T_2$ is **sound** if it approximates the underlying semantic subset relation. Formally, we write $[[T]]$ for the susbet of clsoed values of type $T$, i.e. $[[T]] = \{v \, | \, \vdash v : T \}$. If $T_1 <: T_2$ implies $[[T_1]] \subseteq [[T_2]]$, then $T_1 <: T_2$ is _sound._
+
+For types $T_1, \, T_2,$ we define teir **least upper bound** (LUB) w.r.t. the hierarchy. Examples: $\text{LUB}(\text{True, False}) = Bool, \, \text{LUB}(Int, \, Bool) = Any.$
+
+_Note:_ The LUB of $T_1$ and $T_2$ is sometimes written as $T_1 \lor T_2$.
+
+### 12.3.4 "if" Typing Rule Revisited
+
+For statically unknown conditionals, we want the return value to be the LUB of the types of the branches:
+
+![](./Figures/CompDes_Fig8-12.PNG)
+
+### 12.3.5 Subsumption Rule
+
+When we add subtyping judgments of the form $T <: S$, we can uniformly integrate it into the type system generically:
+
+![](./Figures/CompDes_Fig8-13.PNG)
+
+**Subsumption** allows values of type $T$ to be treated as $S$ whenever $T <: S$.
+
+### 12.3.6 Downcasting
+
+What happens if we have an $Int$, but need something of type $Pos$?
+
+- At compile time, we don't know whether the $Int$ is greater than zero
+- At runtime, we do
+
+We can add a **checked downcast:**
+
+![](./Figures/CompDes_Fig8-14.PNG)
+
+At runtime, the $ifPos$ checks whether $e_1 > 0$.
+
+## 12.4 Subtyping Other Types
+
+### 12.4.1 Subtyping for Tuples
+
+Inuition: whenever a program expects something of type $S_1 * S_2$, it is sound to give it type $T_1 * T_2$, if $T_1 <: S_1$ and $T_2 <: S_2$:
+
+![](./Figures/CompDes_Fig8-15.PNG)
+
+### 12.4.2 Subtying for Function Types
+
+On way to see it is exaplined by the following graph:
+
+![](./Figures/CompDes_Fig8-16.PNG)
+
+We need to convert an $S_1$ to a $T_1$ and $T_2$ to $S_2$, so the argument type is **contravariant** and the output type is **covariant:**
+
+![](./Figures/CompDes_Fig8-17.PNG)
+
+### 12.4.3 Immutable Records
+
+The records type is given by: $\{lab_1:T_1: \, lab_2:T_2; \, ...; \, lab_n:T_n \}$. Each $lab_i$ is a label drawn from a set of identifiers.
+
+![](./Figures/CompDes_Fig8-18.PNG)
+
+We can do two different forms of _subtyping for immutable records:_
+
+![](./Figures/CompDes_Fig8-19.PNG)
+
+## 12.5 Mutability & Subtyping
+
+### 12.5.1 NULL
+
+What is the type of `null`? Consider the following:
+
+```bnf
+int[] a  = null;     // OK
+int x    = null;     // not OK
+string s = null;    // OK
+```
+
+Null has _any reference type_, it is _generic._
+
+This requires a defined behavior when dereferencing `null` (e.g. Java's NullPointerException) and a safety check for every dereference operation.
+
+### 12.5.2 Subtyping and References
+
+What is the proper subtyping relationship for **references** and **arrays?**
+
+Covariant reference types are unsound, i.e. `(NonZero ref) <: (Int ref)` is unsoun! The contravariant reference types are also unsound, that is, if `T_1 <: T_2`, then `ref T_2 <: ref T_1` is unsound too.
+
+In conclusion, mutable structures are **invariant** in the sens that: `T_1 ref <: T_2 ref` implies `T_1 = T_2`. The same holds for arrays, OCaml-style mutable records, object fields, etc.
+
+## 12.6 Structural vs. Nominal Types
+
+IS the type equality defined by the _structure_ or _name_ of the data? Example:
+
+```ocaml
+type cents = int
+type age   = int
+
+let foo (x:cents) (y:age) = x + y
+```
+
+Type abbrevations as seen in this OCaml example are treated _structurally._ In contrast, `newtypes` (as seen in Haskell) are treated by _name._
+
+## 12.7 OAT's Type System
+
+### 12.7.1 OAT's Treatment of Types
+
+- Primitive (i.e. non-reference) types: `int` and `bool`
+- Definitely non-null reference types: (named) mutable structs with width subtyping, strings, arrays (including length information)
+- Possibly-null reference types: `R?`, subtyping `R <: R?`, checked downcast syntaxt `if?`
+
+_Example:_
+
+```oat
+int sum(int[]? arr) {
+    var z = 0;
+    if?(int[] a = arr) {
+        for(var i = 0; i < length(a); i = i + 1) {
+            z = z + a[i];
+        }
+    }
+    return z;
+}
+```
+
+### 12.7.2 OAT Features
+
+- Named structure types with mutable fields
+- Typed function pointers
+- Polymorphic operations: `length`, and `==` or `!=`
+- Type-annotated null values: `t null` always has type `t?`
+- Definitely-not-null values: "atomic" array initialization syntax
+
+# 13. Compiling Classes And Objects
+
+## 13.1 Code Generation for Objects
+
+- _Classes:_ 
+    - Generate data structure types
+    - Generate the class tables for dynamic dispatch
+- _Methods:_
+    - Method body code is similar to functions/closures
+    - Method calls require dispatch
+- _Fields:_
+    - Issues are the same as for records
+    - Generating access code
+- _Constructors:_
+    - Object initialization
+- _Dynamic types:_
+    - Checked downcasts
+    - `instanceof` and similar type dispatch
+
+## 13.2 Compiling Objects
+
+Objects contain a pointer to a **dispatch vector** (also called _virtual table_ or _vtable_) with pointers to method code.
+
+![](./Figures/CompDes_Fig8-20.PNG)
+
+Code receiving `set:IntSet` only knows that `set` has an initial dispatch vector pointer and the layout of that vector.
+
+![](./Figures/CompDes_Fig8-21.PNG)
