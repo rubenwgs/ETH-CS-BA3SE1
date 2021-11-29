@@ -362,4 +362,96 @@ We can do two different forms of _subtyping for immutable records:_
 
 ## 12.5 Mutability & Subtyping
 
-35:58
+### 12.5.1 NULL
+
+What is the type of `null`? Consider the following:
+
+```bnf
+int[] a  = null;     // OK
+int x    = null;     // not OK
+string s = null;    // OK
+```
+
+Null has _any reference type_, it is _generic._
+
+This requires a defined behavior when dereferencing `null` (e.g. Java's NullPointerException) and a safety check for every dereference operation.
+
+### 12.5.2 Subtyping and References
+
+What is the proper subtyping relationship for **references** and **arrays?**
+
+Covariant reference types are unsound, i.e. `(NonZero ref) <: (Int ref)` is unsoun! The contravariant reference types are also unsound, that is, if `T_1 <: T_2`, then `ref T_2 <: ref T_1` is unsound too.
+
+In conclusion, mutable structures are **invariant** in the sens that: `T_1 ref <: T_2 ref` implies `T_1 = T_2`. The same holds for arrays, OCaml-style mutable records, object fields, etc.
+
+## 12.6 Structural vs. Nominal Types
+
+IS the type equality defined by the _structure_ or _name_ of the data? Example:
+
+```ocaml
+type cents = int
+type age   = int
+
+let foo (x:cents) (y:age) = x + y
+```
+
+Type abbrevations as seen in this OCaml example are treated _structurally._ In contrast, `newtypes` (as seen in Haskell) are treated by _name._
+
+## 12.7 OAT's Type System
+
+### 12.7.1 OAT's Treatment of Types
+
+- Primitive (i.e. non-reference) types: `int` and `bool`
+- Definitely non-null reference types: (named) mutable structs with width subtyping, strings, arrays (including length information)
+- Possibly-null reference types: `R?`, subtyping `R <: R?`, checked downcast syntaxt `if?`
+
+_Example:_
+
+```oat
+int sum(int[]? arr) {
+    var z = 0;
+    if?(int[] a = arr) {
+        for(var i = 0; i < length(a); i = i + 1) {
+            z = z + a[i];
+        }
+    }
+    return z;
+}
+```
+
+### 12.7.2 OAT Features
+
+- Named structure types with mutable fields
+- Typed function pointers
+- Polymorphic operations: `length`, and `==` or `!=`
+- Type-annotated null values: `t null` always has type `t?`
+- Definitely-not-null values: "atomic" array initialization syntax
+
+# 13. Compiling Classes And Objects
+
+## 13.1 Code Generation for Objects
+
+- _Classes:_ 
+    - Generate data structure types
+    - Generate the class tables for dynamic dispatch
+- _Methods:_
+    - Method body code is similar to functions/closures
+    - Method calls require dispatch
+- _Fields:_
+    - Issues are the same as for records
+    - Generating access code
+- _Constructors:_
+    - Object initialization
+- _Dynamic types:_
+    - Checked downcasts
+    - `instanceof` and similar type dispatch
+
+## 13.2 Compiling Objects
+
+Objects contain a pointer to a **dispatch vector** (also called _virtual table_ or _vtable_) with pointers to method code.
+
+![](./Figures/CompDes_Fig8-20.PNG)
+
+Code receiving `set:IntSet` only knows that `set` has an initial dispatch vector pointer and the layout of that vector.
+
+![](./Figures/CompDes_Fig8-21.PNG)
