@@ -172,3 +172,94 @@ repeat until w is empty:
     if(old_in != in[n]):
         for all m in pred[n], w.push(m)
 ```
+
+## 14.7 Register Allocation
+
+### 14.7.1 Register Allocation Problem
+
+Given an IR program using an unbounded number of termporaries, find a mapping from temporaries to machine registers such that:
+
+- program semantics are preserved
+- register usage is maximized
+- moves between registers are minimized
+- calling conventions and archtiecture requirements are obeyed
+
+_Stack spilling_ describes the following observation: If there are `k` available registers and `m > k` temporaries live at the same time, not all temporaries will fit into the registers. We therefore have to _spill_ the excess temporaries onto the stack.
+
+### 14.7.2 Linear-Scan Register Allocation
+
+We introduce a simple, greedy _register-allocation strategy:_
+
+1. Compute liveness information `live(x)`, which is the set of uids that are live on entry to `x`'s definition
+2. Let `pal` be the set of usable registers (we usually reserve a couple of registers for splii code, in our implementation those registers are `rax` and `rcx`)
+3. Maintain a layout `uid_loc` that maps uids to locations, those include registers and stack slots
+4. Scan through the program, for each isntruction that defines a uid `x`:
+    - `used = {r | reg r = uid_loc(y) s.t. y in live(x)}`
+    - `available = pal - used`
+    - If `available` is empty: `uid_loc(x) := slot n; n = n + 1`
+    - Otherwise, pick `r` in `available`: `uid_loc(x) = reg r`
+
+### 14.7.3 Graph Coloring
+
+#### Register Allocation
+
+The basic process for register allocation goes as follows:
+
+1. Compute liveness information for each temporary
+2. Create an _interference graph:_ nodes are temporaries and there is an edge between nodes `n` and `m` if they are live at the same time
+3. Try to color the graph, each color corresponds to a register
+4. If step 3 fails, spill a register to the stack and repeat from step 1
+5. Rewrite the program to use the allocated register
+
+#### Interference Graphs
+
+We build **interference graphs** in the following way:
+
+- Nodes of the graph are `%uids`
+- Edges connect variables that _interfere_ with each other, that is, if their live range intersects.
+
+Once we have build such a graph, register allocation becomes a _graph coloring problem._ A graph coloring assigns each nodein the graph a color (i.e. a register). Any two nodes connected by an edge must have different colors.
+
+_Example:_
+
+![](./Figures/CompDes_Fig10-2.PNG)
+
+#### Coloring a Graph: Kempe's Algorithm
+
+Kempe provides a algorithm for K-coloring a graph. It's a recursive algorithm that works in three steps:
+
+1. Find a node with degree < K and cut it out of the graph. Remove the nodes and corresponding edges. This is called _simplifying_ the graph.
+2. Recursively K-color the remaining subgraph.
+3. When the remaining graph is colored, there must be at least one free color available for the deleted node (since its degree was < K).
+
+_Example:_ 3-color the following graph:
+
+![](./Figures/CompDes_Fig10-3.PNG)
+
+![](./Figures/CompDes_Fig10-4.PNG)
+
+#### Failure of the Algorithm
+
+If the graph cannot be colored, it will simplify to a graph where every node has >= K neighbors. However, this can also happen even when the graph is K-colorable! This is a symptom of NP-hardness.
+
+### 14.7.4 Spilling
+
+If we can't K-color a graph, we need to store one temporary on the stack. Which variable to we choose? Multiple options are possible:
+
+- One that isn't used frequently
+- One that isn't used in a deeply nested loop
+- One that has high interference
+
+In practice, some weighted combination of the above criteria is used. When coloring the graph, we simply mark a node as spilled, remove it from the graph, and then keep on recursively coloring.
+
+_Example:_
+
+![](./Figures/CompDes_Fig10-5.PNG)
+
+#### Optimistic Coloring
+
+If we get lucky with the choices of colors made earlier, it is sometimes possible to color a node marked for spilling.
+
+_Example:_
+
+![](./Figures/CompDes_Fig10-6.PNG)
