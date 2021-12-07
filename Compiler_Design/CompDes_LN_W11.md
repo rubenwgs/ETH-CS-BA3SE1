@@ -271,4 +271,228 @@ If all values flowing into the phi node are the same, we eliminate it.
 
 ![](./Figures/CompDes_Fig11-13.PNG)
 
-## 16.4 Register Allocation
+# 17. Automatic Memory Management (GC)
+
+## 17.1 Why Automatic Memory Management (AMM)?
+
+### 17.1.1 Introduction
+
+Store mamangement is still a hard problem in modern programming. Especially C/C++ programs have many storage bugs:
+
+- forgetting to free unused memory
+- dereferencing a dangling pointer
+- overwriting parts of a data structure by accident
+
+Storage bugs are hard to find! A bug can manifest far away in time and program text from its source.
+
+### 17.1.2 Type Safety and Memory Management
+
+Some storage bugs can be prevented in a strongly typed language, e.g. we cannot overrun the array limits, dereference a null pointer, etc.
+
+However, if we want type safety, we typically must use AMM (GC).
+
+### 17.1.3 The Basic Idea
+
+The basic idea of AMM is as follows:
+
+1. When an object is created, unused space is automaticall allocated. 
+2. After a while there is no more unused space.
+3. Some space is occupied by objects that will never be used again.
+4. This space can be freed to be reused later.
+
+The main problem is: How do we tell whether an object will never be used again? In general, this is impossible to tell.
+One key idea is based on the following observation: A program can use only objects that it can find.
+
+_Example:_
+
+```bnf
+let x : A = new A in {x = y; ...}
+```
+
+After `x = y`, there is no way to access the newly allocated object.
+
+## 17.2 Garbage Collection
+
+### 17.2.1 Introduction
+
+An object `x` is called **reachable** if and only if:
+
+- A _register_ contains a pointer to `x`, or
+- Another reachable object `y` contains a pointer to `x`
+
+One can find all reachable objects by:
+
+- Starting from registers, and
+- Following all the pointers
+
+Unreachable objects can never be reference by the program. These objects are called **garbage.**
+
+### 17.2.2 Simple Example
+
+![](./Figures/CompDes_Fig11-14.PNG)
+
+1. We start tracing from `acc` and `stack`, they are called the _roots_
+2. Note that `B` and `D` are not reachable from `acc` or `stack`
+3. Thus, we can reuse their storage
+
+### 17.2.3 Elements of Garbage Collection
+
+Every **garbage collection scheme** has the following steps:
+
+1. Allocate space as needed for new objects
+2. When space runs out:
+    1. Compute what objects might be used again (generally by tracing objects reachable from a set of root registers)
+    2. Free the sapce used by objects not found in the previous steps
+
+## 17.3 Three Different Techniques
+
+### 17.3.1 Mark and Sweep
+
+When memory runs out, GC executes two phases:
+
+- **Mark phase:** traces reachable objects
+- **Sweep phase:** collects garbage objects
+
+Every object has an extra bit, the _mark bit:_
+
+- reserved for memory management
+- initially the mark is set to 0
+- the bit is set to 1 for the reachable objects in the mark phase
+
+#### Example
+
+![](./Figures/CompDes_Fig11-15.PNG)
+
+#### The Mark Phase
+
+```pseudo
+let todo = {all roots}
+while todo != empty do:
+    pick v in todo
+    todo = todo \ {v}
+    if mark(v) = 0 then:
+        matk(v) = 1
+        let v1,...,vn be the pointers contained in v
+        todo = todo union {v1,..., vn}
+```
+
+#### The Sweep Phase
+
+The sweep phase scans the heap for objects with a mark bit equal to 0, these objects have not been visited in the mark phase and are therefore garbage:
+
+- Any such object is added to the free list
+- The objects with a mark bit 1 have their mark bit reset to 0
+
+```pseudo
+p = bottom of heap
+while p < top of heap do:
+    if mark(p) = 1 then:
+        mark(p) = 0
+    else:
+        add block p...(p + sizeof(p)-1) to freelist
+    p = p + sizeof(p)
+```
+
+#### Details
+
+A serious problem with the mark phase is that it is invoked when we are out of space, yet we need space to construct the todo list!
+The size of the todo list is unbounded, so we cannot reserver space a riori.
+
+There is a trick to allow the auxiliary data (todo list) to be stored in the objects:
+
+- **pointer reversal:** when a pointer is followed, we reverse it to point to its parent
+
+Similarly, the free list is stored in the free objects themselves.
+
+### 17.3.2 Stop and Copy
+
+In this technique, memory is organized into two areas:
+
+- The _old space_, which is used for allocation
+- The _new space_, which is used as a reserve for GC
+
+The heap pointer points to the next free word in the old space. Allocation simply advances the heap pointer.
+
+#### Stop and Copy Process
+
+The garbage collection starts when the old space is full:
+
+1. It copies all reachable objects from the old space into the new space
+    - The garbage is left behind
+    - After the copy phase, new space uses less space than the old space before GC
+2. After the copy, the roles of the old and new spaces are reversed, and the program resumes
+
+#### Example
+
+![](./Figures/CompDes_Fig11-16.PNG)
+
+#### Implementation
+
+We need to find all reachable objects, as it is the same for mark and sweep. As we find a reachable object, we copy it into the new space.
+After this, we need to fix _all_ the pointers pointing to it!
+
+As we copy an object:
+
+- We store in the old copy a _forwarding pointer_ to the new copy.
+- Any object reached later with a forwarding pointer was already copied.
+
+By partitioning the new space into three contiguous regions, we can solve the problem of implementing the traversal without using extra space:
+
+![](./Figures/CompDes_Fig11-17.PNG)
+
+#### Algorithm
+
+```pseudo
+while scan <> alloc do:
+    let O be the object at scan pointer
+    for each pointer p in O do:
+        find O' that p points to
+        if O' is without a forwarding pointer:
+            copy O' to new space and update alloc pointer
+            set 1st word of old O' to point to the new copy
+            change p to point to the new copy of O'
+        else:
+            set p in O equal to the forwarding pointer
+    increment scan pointer to the next object
+```
+
+### 17.3.3 Reference Counting
+
+**Reference counting** is based on the idea that rather than wait for memory to run out, we try to collect an object when there are no more pointers to it.
+We store in each object the number of pointers to that object, this is called the _reference count._ Each assignment operation has to manipulate that reference count.
+
+#### Implementation
+
+`new` returns an object with a reference count of 1. If `x` points to an object, let `rc(x)` refer to the object's reference count.
+
+Every assignment `x := y` must be changed:
+
+```pseudo
+rc(y) = rc(y) + 1
+rc(x) = rc(x) - 1
+if(rc(x) == 0) { mark x as free}
+x := y
+```
+
+#### Evaluation
+
+Advantages:
+
+- Easy to implement
+- Collects garbage incrementally without large pauses in the execution
+
+Disadvantages:
+
+- Manipulating reference counts at each assignment is very slow
+- Cannot collect circular structures
+
+## 17.4 Garbage Collection: Evaluation
+
+Automatic memory management avoids some serious storage bugs. But, it takes away control from the programmer, e.g. layout of data in memory and when memory is allocated.
+Most GC implementations stop the execution during collection, which is not acceptable in real-time applciations.
+
+There are already advanced garbage collection algorithms:
+
+- _Concurrent:_ allow the program to run while the collection is happening
+- _Generational:_ do not scan long-lived objects at every collection
+- _Parallel:_ several collector working in parallel
