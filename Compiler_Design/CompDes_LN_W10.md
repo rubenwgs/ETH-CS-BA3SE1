@@ -389,7 +389,7 @@ We have the following dataflow values:
 
 Define the set of values and the sets `gen[n]` and `kill[n]` as follows:
 
-![](./Figures/CompDes_Fig10-12.PNG)
+![](./Figures/CompDes_Fig10-12.PNG) 
 
 #### Step 2
 
@@ -422,4 +422,75 @@ The algorithm is to initialize `in[n]` and `out[n]` to the set of all nodes and 
 
 ![](./Figures/CompDes_Fig10-13.PNG)
 
-1:06:51
+### 14.11.2 Very Busy Expressions
+
+Expression `e` is said to be **very busy** at location `p` if every path from `p` must evaluate `e` before any variable in `e` is redefined.
+This is a _backward-must-analysis._
+
+### 14.11.3 Common Features
+
+All of these analyses have a _domain_ over which they solve constraints:
+
+- For liveness, the domain is sets of variables
+- For reaching definitions and available expressions, the domain is sets of nodes
+
+Each analysis has a notion of `gen[n]` and `kill[n]`.
+
+Each analysis propagates information either _forward_ or _backward:_
+
+- Forward: `in[n]` is defined in terms of predecessor nodes' `out[n]`
+- Backward: `out[n]` is defined in terms of predecessor nodes' `in[n]`
+
+Each analysis has a way of aggregating information:
+
+- Liveness and reaching definitions take the union
+- Available expressions use intersection
+- Union expresses a property that holds for some path (_may_)
+- Intersection expresses a property that holds for all paths (_must_)
+
+### 14.11.4 Data Flow Analysis Framework
+
+![](./Figures/CompDes_Fig10-14.PNG)
+
+### 14.11.5 Generig Iterative Analysis
+
+```pseudo
+for all n, in[n] := T, out[n] := T
+repeat until no change:
+    for all n:
+        in[n] := \cap_{n' in pred[n]}out[n']
+        out[n] := F_n(in[n])
+    end
+end
+```
+
+`T` $\in \mathcal{L}$ (_top_) represents having the maximum amount if information.
+
+### 14.11.6 Structure of $\mathcal{L}$
+
+The domain has a structure that reflects the amount of information cotnained in each dataflow value. Some dataflow values are more informative than others:
+
+- Write $\mathcal{l}_1 \sqsubseteq \mathcal{l}_2$ whenever $\mathcal{l}_2$ provides at least as much information as $\mathcal{l}_1$.
+
+#### Meets and Joins
+
+The combining operator $\sqcap$ is called the _meet_ operator. It constructs the greates lower bound:
+
+- $l_1 \sqcap l_2 \sqsubseteq l_1$ and $l_1 \sqcap l_2 \sqsubseteq l_2$ (the meet is a lower bound)
+- If $l \sqsubseteq l_1$ and $l \sqsubseteq l_2$ then $l \sqsubseteq l_1 \sqcap l_2$ (there is no greater lower bound)
+
+Dually, the $\sqcup$ operator is called the _join_ operator, it constructs the least upper bound:
+
+- $l_1 \sqsubseteq l_1 \sqcup l_2$ and $l_2 \sqsubseteq l_1 \sqcup l2$ (the join is an upper bound)
+- If $l_1 \sqsubseteq l$ and $l_2 \sqsubseteq l$ then $l_1 \sqcup l_2 \sqsubseteq l$ (there is no smaller upper bound)
+
+### 14.11.7 Classic Constant Propagation
+
+_Constant propagation_ can be formulated as a dataflow analysis. The idea os to propagate and fold integer constants in one pass:
+
+```bnf
+x = 1;      -> x = 1
+y = 5 + x;  -> y = 6;
+z = y * y;  -> z = 36
+...
+```
