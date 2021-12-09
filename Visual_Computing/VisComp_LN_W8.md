@@ -129,3 +129,184 @@ for(u = u1; u <= u2; u++) {
     draw(u, round(v));
 }
 ```
+
+# 2. Drawing Triangles
+
+## 2.1 Introduction
+
+If you know how to draw a triangle, you'll go a long way!
+
+But why triangles and not other shapes, like squares, circles, or stars? Because you can make a lot of different shapes with triangles, such as squares, stars, etc.
+They provide a very good compromise between their overall power of representing different shapes and the need for specialized software and hardware to handle them effectively.
+
+We introduce the following two definitions:
+
+- **Coverage:** What pixels does an object/triangle cover in the image?
+- **Occlusion:** What object/triangle is closest to the camera in each pixel?
+
+## 2.2 The Visibility Problem
+
+We state the following informal definition of the **visibility problem:** What scene geometry is visible within each screen pixel?
+
+This question somewhat corresponds to out two definitions from before:
+
+- What scene geometry projects into a screen pixel? (_coverage_)
+- Which geometry is visible from the camera at that pixel? (_occlusion_)
+
+![](./Figures/VisComp_Fig8-6.PNG)
+
+Said differently, in terms of _rays,_ the visibility problem becomes:
+
+- What scene geometry is hit by a ray from a pixel through the pinhole? (_coverage_)
+- What object is the first hit along that ray? (_occlusion_)
+
+## 2.3 Computing Triangle Coverage
+
+Similar to the line problem from the previous chapter, the main question we have to answer is which pixel is _covered_ by a triangle.
+
+_Example:_
+
+![](./Figures/VisComp_Fig8-7.PNG)
+
+But what do we do with pixels that are only _partially covered_ by the triangle? One option is to compute the fraction of pixel area which is covered by the triangle, and then colo the pixel according to this fraction:
+
+![](./Figures/VisComp_Fig8-8.PNG)
+
+However, computing the area covered by a triangle can get tricky very fast, for example when dealing with the interactions between multiple triangles.
+We may estiamte the amount of overlap between a triangle and a pixel through _sampling._
+
+## 2.4 Sampling 101
+
+Consider a continuous functions and 5 discrete measurement, our _samples:_
+
+![](./Figures/VisComp_Fig8-9.PNG)
+
+We can _reconstruct_ (or approximate) our original continuous functions with our descrete values through **sampling.**
+
+### 2.4.1 Piecewise Constant Approximation
+
+We define the reconstructed function $f_{recon}(x)$ to be the value of the sample closest to $x$, i.e. the nearest neighbor:
+
+![](./Figures/VisComp_Fig8-10.PNG)
+
+### 2.4.2 Picewise Linear Approximation
+
+We define the reconstructed function $f_{recon}(x)$ to be the linear interpolation between two samples closest to $x$.
+
+![](./Figures/VisComp_Fig8-11.PNG)
+
+### 2.4.3 More Accuracy
+
+The simplest and most obvious way to reconstruct our original 1D signal more accurately is to sample the signal more densly, i.e. to _increase the sampling rate._
+
+![](./Figures/VisComp_Fig8-12.PNG)
+
+### 2.4.4 Mathematical Representation Of Sampling
+
+Consider the _dirac delta:_
+
+$$
+\begin{align*}
+&\delta(x) = \begin{cases} 0, &\text{for } x \neq 0 \\ \text{undefined}, &\text{at } x = 0  \end{cases}, \quad \text{such that} \\
+&\int_{- \infty}^{\infty} \delta(x) \, dx = 1
+\end{align*}
+$$
+
+A _impulse_ has a **sifting property** which we define as follows:
+
+$$
+\int_{- \infty}^{\infty} f(x)\delta(x-a) \, dx = f(a),
+$$
+
+with an impulse occuring at $x = a$. Sampling the function is equivalent to multiplying it (inner product) by the Dirac delta!
+
+#### Reconstruction As Convolution
+
+![](./Figures/VisComp_Fig8-13.PNG)
+
+![](./Figures/VisComp_Fig8-14.PNG)
+
+## 2.5 Coverage As A 2D Signal
+
+We can think of the coverage as a 2D signal and define:
+
+$$
+\text{coverage}(x, \, y) = \begin{cases} 1, &\text{if the triangle contains point }(x, \, y) \\ 0, &\text{otherwise} \end{cases}
+$$
+
+We choose a point in the pixel which is said to be the _coverage sample point._
+
+_Example:_
+
+![](./Figures/VisComp_Fig8-15.PNG)
+
+One (literal) edge case we have to consider is what happens if the edge of a triangle exactly falls onto our sample point. The OpenGL/Direct3D **edge rules** are:
+
+When an edge falls directly on a screen sample point, the sample is classified as within the triangle if the edge is a _top edge_ or a _left edge:_
+
+- Top edge: horizontal edge that is above all other edges
+- Left edge: edge that is not exactly horizontal and is on the left side of the triangle
+
+![](./Figures/VisComp_Fig8-16.PNG)
+
+## 2.6 Aliasing
+
+### 2.6.1 1D Example
+
+**Aliasing** describes the observation that high frequencies in a original signal masquerade as low frequencies after reconstruction due to undersampling:
+
+![](./Figures/VisComp_Fig8-17.PNG)
+
+This leads to one obvious question when sampling: How densely should we be sampling?
+
+### 2.6.2 Nyquist-Shannon Theorem
+
+The _Nyquist-Shannon theorem_ says that a signal can be perfectly reconstructed if it is sampled with period $T \lt \frac{1}{2 \omega_0}$.
+
+### 2.6.3 Supersampling
+
+We can increase the density of the sampling coverage signal. The following example shows _stratified sampling_ using four samples per pixel:
+
+![](./Figures/VisComp_Fig8-18.PNG)
+
+However, we now have more samples than pixels! This means we have to **resample**, i.e. converting from one discrete sampled representation to another:
+
+![](./Figures/VisComp_Fig8-19.PNG)
+
+## 2.7 Sampling Triangle Coverage
+
+### 2.7.1 Point-In-Triangle Test
+
+To decide whether a sample point is inside the triangle we have to test whether it is "inside" all of the three edges of the triangle.
+
+For a point with the tree vertices $P_0, \, P_1, \, P_2$, we define:
+
+$$
+\begin{align*}
+&P_i = (X_i, \, Y_i) \\
+&dX_i = X_{i+1} - X_i \\
+&dY_i = Y_{i+1} - Y_i \\
+&E_i(x, \, y) = (x - X_i) dY_i - (y-Y_i)dX_i = A_ix + B_iy + C_i \\
+&E_i(x, \, y) = \begin{cases} 0, &\text{if point is on the edge} \\ >0, &\text{if point is outside of the edge} \\ <0, &\text{if point is inside the edge}  \end{cases}
+\end{align*}
+$$
+
+This leaves us with the following mathematical definition of whether a sample point $S = (sx, \, sy)$ is inside or outside a triangle:
+
+$$
+\begin{align*}
+\text{inside}(sx, \, sy) = &E_0(sx, \, sy) < 0 \, \&\& \\ &E_1(sx, \, sy) < 0 \, \&\& \\ &E_2(sx, \, sy) < 0
+\end{align*}
+$$
+
+### 2.7.2 Incremental Triangle Traversal
+
+Another approach is based on the idea that rather than testing all possible points on a screen, we traverse them incrementally:
+
+![](./Figures/VisComp_Fig8-20.PNG)
+
+### 2.7.3 Tiled Triangle Traversal
+
+A moder approach is to traverse the triangle in blocks. We test all samples in the block against the triangle in parallel:
+
+![](./Figures/VisComp_Fig8-21.PNG)
