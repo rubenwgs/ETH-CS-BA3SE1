@@ -4,7 +4,6 @@
 - Date: 08.12.2021
 - Contact: ruben.schenk@inf.ethz.ch
 
-
 # Part 2: Computer Graphics
 
 # 1. Introduction
