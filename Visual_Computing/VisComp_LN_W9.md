@@ -190,3 +190,65 @@ $$
 $$
 R_{z, \, \theta} = \begin{bmatrix} \cos \theta & - \sin \theta & 0 \\ \sin \theta & \cos \theta & 0 \\ 0 & 0 & 1  \end{bmatrix}
 $$
+
+# 4. Perspective Projection Transformations, Geometry and Texture Mapping
+
+## 4.1 Perspective Projection Transformations
+
+### 4.1.1 Basic Perspective Projection
+
+When doing basic perspective projection, the desired _perspective projection result_ (some 2D point), is given by:
+
+$$
+p_{2D} = (\frac{x_x}{x_z}, \, \frac{x_y}{x_z})
+$$
+
+The procedure for a basic perspective projection, follows 4 steps:
+
+1. Input point in 3D-h: $x = (x_x, \, x_y, \, x_z, \, 1)$
+2. Applying map to get the projected point in 3D-H: $Px = (x_x, \, x_y, \, x_z, \, x_z)$
+3. Point projected to 2D-H by dropping the $z$ coordinate: $p_{2D-H} = (x_x, \, x_y, \, x_z)$
+4. Point in 2D by homogeneous divide: $p_{2D} = (\frac{x_x}{x_z}, \, \frac{x_y}{x_z})$
+
+![](./Figures/VisComp_Fig9-8.PNG)
+
+### 4.1.2 The View Frustum
+
+The **view frustum** denotes the region in space that will appear on the screen.
+
+![](./Figures/VisComp_Fig9-9.PNG)
+
+We want a transformation that maps view frustum to a unit cube, such that computing screen coordinates in that space becomes trivial.
+
+Define the following properties:
+
+- $\theta$ : The field of view in the $y$ direction ($h = 2 \cdot \tan \Big(\frac{\theta}{2} \Big)$)
+- $f = \cdot \Big(\frac{\theta }{2} \Big)$
+- $r$ : The aspect ratio, i.e. $\frac{\text{width}}{\text{height}}$
+
+Then, we can define the _transformation matrix from frustum to unit cube_ as:
+
+$$
+P = \begin{bmatrix} \frac{f}{r} & 0 & 0 & 0 \\ 0 & f & 0 & 0 \\ 0 & 0 & \frac{zfar + znear}{znear - zfar} & \frac{2 \cdot zfar \cdot znear}{znear - zfar} \\ 0 & 0 & -1 & 0  \end{bmatrix}
+$$
+
+![](./Figures/VisComp_Fig9-10.PNG)
+
+## 4.2 Geometry
+
+### 4.2.1 Implicit Representations of Geometry
+
+In an **implicit representation**, points aren't known directly, but satisfy some relationship. For example, we might define a unit sphere as all points $x$ such that $x^2 + y^2 + z^2 = 1$.
+Implicit surfaces make some tasks easy, such as deciding whether some point is inside or outside our implicit suface.
+
+### 4.2.2 Explicit Representations of Geometry
+
+In an **explicit representation,** all points are given directly. For example, the points on a sphere are $(\cos u \sin v, \, \sin u \sin v, \, \cos v)$ for $0 \le u \lt 2 \pi$ and $ 0 \le v \lt \pi$.
+There are many explicit representations in graphics, such as:
+
+- Triangle meshes
+- Polygon meshes
+- Point clouds
+- etc.
+
+Explicit surfaces make some tasks easy, such as sampling. However, they also make some tasks hard, such as deciding whether a given point is inside or outside our surface.
