@@ -66,7 +66,7 @@ _Example:_ The following figure shows an example of the L-System `F -> F[+F]F[-F
 
 ![](./Figures/VisComp_Fig10-3.PNG)
 
-### Stochastic L-System
+#### Stochastic L-System
 
 In **stochastic L-systems** we have conditional firing of rules:
 
@@ -87,3 +87,102 @@ F -> F[-F]F : 0.34
 Multiple applications of the above rules will lead to a geometry similar to the figure below:
 
 ![](./Figures/VisComp_Fig10-4.PNG)
+
+### 4.2.4 Point Cloud (Explicit)
+
+**Point clouds** are the simplest representation for geometries, they are simply a list of points:
+
+- Easily represent any kind of geometry
+- Useful for large datasets (>> 1 point per pixel)
+- Difficult to draw in undersampled regions
+- Hard to do processing and simulation
+
+### 4.2.5 Polygonal Mesh (Explicit)
+
+In a **polygonal mesh,** we store vertices and polygons (most often triangles or quads). They are easier to do processing, simulation, and adaptive sampling.
+This is perhaps the most common representation in computer graphics.
+
+A **polygon** consists of vertices $v_0, \, v_1,..., \, v_{n-1}$ and edges $\{(v_0, \, v_1), \, (v_1, \, v_2),... \}$. The line segments must for a closed loop!
+
+A **polygonal mesh** is a set $M = \langle V, \, E, \, F \rangle$, consisting of a set of vertices $V$, a set of edge $E$, and a set of faces $F$. It has the following properties:
+
+- Every edge belongs to at least one polygon
+- The intersection of two polygons in $M$ is either empty, a vertex, or an edge
+
+Let's introduce some useful definitions:
+
+- _Vertex degree (Valence):_ Number of edges incident to a vertex.
+- _Boundary:_ The set of all edges that belong to only one polygon
+
+![](./Figures/VisComp_Fig10-5.PNG)
+
+#### Mesh Data Structures
+
+With **mesh datastructures** we can store the geometry and topology of some object:
+
+- _Geometry:_ The vertex locations
+- _Topology:_ How vertices are connected (i.e. the edges and faces)
+
+The simplest storage option for mesh datastructures is to simply store them in a **indexed face set:**
+
+![](./Figures/VisComp_Fig10-6.PNG)
+
+### 4.2.6 Surface Normals
+
+We can describe the power of a (light) beam in terms of it's **irradiance,** i.e. the enery per time, per area, or:
+
+$$
+E = \frac{\Phi}{A},
+$$
+
+where $\Phi$ is the flux of the beam of light and $A$ is the surface area to which the beam is incident.
+
+If the beam is incident to an angled surface, it will cover more area, and therefore the irradiance must be smaller! **Lambert's Law** states that the irradiance at some surface is proportional to the cosine of the angle between the light direction and the surface normal, or:
+
+$$
+E = \frac{\Phi}{A'} = \frac{\Phi \cos \theta}{A}
+$$
+
+![](./Figures/VisComp_Fig10-7.PNG)
+
+#### N-dot-L Lightning
+
+**N-dot-L lightning** is one of the most basic ways to shade a suface: One simply takes the dot product of a unit surface normal (_N_) and the unit direction to the light source (_L_).
+
+![](./Figures/VisComp_Fig10-8.PNG)
+
+## 4.3 Texture Mapping
+
+### 4.3.1 Texture Coordinates
+
+**Texture coordinates** define a mapping from surface coordinates (points on a triangle) to points in the texture domain.
+
+![](./Figures/VisComp_Fig10-9.PNG)
+
+### 4.3.2 Texture Space Samples
+
+To do a texture mapping, we need some space samples. WE can sample some some positions in the $XY$ screen space and then use the same sample positions in the texture sapce.
+However, this can lead to **perspective-incorrect interpolation:**
+
+![](./Figures/VisComp_Fig10-10.PNG)
+
+This is due to perspective projection. Barycentric interpolation of values in $XY$ screen coordinates do not correspond to values that vary linearly on the original triangle!
+
+![](./Figures/VisComp_Fig10-11.PNG)
+
+### 4.3.3 Filtering Textures
+
+Due to resizing, our rendering pixels from our image may be much larger or smaller than the pixels available of our texture. This leads to minification and magnification:
+
+- _Minification:_ The area of screen pixel maps to a large region of texture (filtering required). One texel corresponds to far lesse than a pixel on the screen.
+- _Magnification:_ The area of screen pixel maps to a tiny region of texture (interpolation required). One texel maps to many screen pixels.
+
+#### Mipmap (L. Williams 83)
+
+The idea of the **Mipmap** is to prefilter the texture data to remove high frequencies. Texels at higher levels store the itnegral of the texture function over a region of texture space (downsampled images), i.e. they represent low-pass filtered versions of the original texture signal.
+
+![](./Figures/VisComp_Fig10-12.PNG)
+
+To decide which level $d$ to use, we calculate the differences between texture coordinate values of neighboring screen samples:
+
+![](./Figures/VisComp_Fig10-13.PNG)
