@@ -153,3 +153,135 @@ The following properties hold:
 - $f_r(\omega_i \to \omega_o) \geq 0$
 - $\int_{H^2} f_r(\omega_i \to \omega_o) \cos \theta \, \text{d}\omega_i \leq 1$
 - $f_r(\omega_i \to \omega_o) = f_r(\omega_o \to \omega_i)$
+
+# 7. Ray Tracing
+
+## 7.1 Rasterization & Ray-Casting
+
+### 7.1.1 Rasterization
+
+![](./Figures/VisComp_Fig11-6.PNG)
+
+The basic rasterization algorithm consists of obtaining 2D samples and then computing the coverag, i.e. whether a projected triangle covers a 2D sample point, and the occlusion, i.e. calculating the depth buffer.
+
+Finding samples in this case is easy since they are distributed uniformly on screen.
+
+## 7.1.2 Ray-Casting
+
+A alternative to rasterization is **ray-casting.**
+
+![](./Figures/VisComp_Fig11-7.PNG)
+
+The basic ray casting algorithm looks as follows:
+
+- Sample: some ray in 3D
+- Coverage: doeas a ray hit the triangle? (ray-triangle intersection tests)
+- Occlusion: closest intersection along the ray
+
+### 7.1.3 Rasterization vs. Ray-Casting
+
+Rasterization:
+
+- Proceeds in triangle order
+- Most processing is based on 2D primitives
+- Stores a depth buffer
+
+Ray-Casting:
+
+- Proceeds in screen sample order
+    - Never have to store depth buffer
+    - Natural order for rendering transparent surfaces
+- Must store entire scene
+
+Both are approaches for solving the same problem: _determining "visibility"._
+
+## 7.2 Shadows
+
+Shadow can be computed by _recursive ray tracing:_
+
+-  Shoot shadow rays towards the light source from points where camera rays intersect the scene
+    - If they are unclouded, the point is directly lit by the light source
+
+![](./Figures/VisComp_Fig11-8.PNG)
+
+Shadows computed via ray tracing are correct hard shadows. If done via rasterization, shadow map texture can lead to aliasing.
+
+## 7.3 Reflections
+
+Similar to shadow, reflections can be computed with recursive ray tracing by "simply" adding more secondary arrays:
+
+![](./Figures/VisComp_Fig11-9.PNG)
+
+## 7.4 Ray-Scene Intersections
+
+### 7.4.1 Line-Line Intersection
+
+Assume we have two lines $ax = b$ and $cx = d$. How do we fine the intersection?
+
+We simply have to check if there is a simultaneous solution which leads to the following liner system of equations:
+
+$$
+\begin{bmatrix} a_1 & a_2 \\ c_1 & c_2  \end{bmatrix} \begin{bmatrix} x_1 \\ x_2  \end{bmatrix} = \begin{bmatrix} b \\ d \end{bmatrix}
+$$
+
+### 7.4.2 Ray-Mesh Intersection
+
+One very important question to answer is where a ray pierces a surface, since this allows us to do:
+
+- Rendering: visibility, ray tracing
+- Simulation: collision detection
+- Interaction: mouse picking
+
+The parametric equation of a ray is given by: $r(t) = o + t\text{d}$, where $r(t)$ is a point along the ray, $o$ is the origin, and $\text{d}$ is soem unit direction.
+
+#### Intersection With Implicit Surface
+
+Recall that implicit surfaces are given by some function $f(x)$, i.e. all points such that $f(x) = 0$. If we want to find all points where a ray intersects a sruface, we can simply plug in $r(t)$ for $x$ in $f(x)$ and then solve for $t$.
+
+#### Ray-Plane Intersection
+
+Suppose we are given some plane $N^Tx = c$. Then we can find the intersection with ray $r(t)$ with the following equation:
+
+$$
+r(t) = o + \frac{c - N^To}{N^T \text{d}} \text{d}
+$$
+
+#### Ray-Triangle Intersection
+
+If we want to find the intersection of a ray and a triangle, we proceed as follows:
+
+1. Parameterize the triangle by vertices $p_0, \, p_1, \, p_2$ using the barycentric coordiantes:
+
+$$
+f(u, \, v) = (1-u-v)p_0 + up_1 + vp_2
+$$
+
+2. Plug parametric ray equation directly into the equation for the points on the triangle:
+
+$$
+p_0 + u(p_1-p_0) + v(p_2 - p_0) = o + td
+$$
+
+3. Solve for $u, \, v, \, t$:
+
+$$
+\begin{bmatrix} p_1 - p_0 & p_2 - p_0 & -d  \end{bmatrix} \begin{bmatrix} u \\ v \\ t  \end{bmatrix} = o - p_0
+$$
+
+### 7.4.3 Core Methods For Ray-Primitive Queries
+
+We want to solve the following query: Given some primitive `p`, `p.intersect(r)` returns the value `t` corresponding to the point of intersection with ray `r`.
+
+Now given a scene defined by a set of `N` primitives and a ray `r`, find the closes point of intersection of `r` with the scene. A very simple algorithm to solve this query could look like this:
+
+```python
+p_closest = NULL
+t_closes = INF
+for each primitive p in scene:
+    t = p.intersect(r)
+    if t >= 0 && t < t_closest:
+        t_closest = t
+        p_closest = p
+```
+
+This has complexity $O(n)$.
