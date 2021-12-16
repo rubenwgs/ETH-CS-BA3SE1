@@ -34,7 +34,7 @@ C = disc diameter rand(2, 5), forward 10
 
 This can lead to something like the following geometry:
 
-![](./Figures/VisComp_Fig10-1.PNG)
+<img src="./Figures/VisComp_Fig10-1.PNG" style="zoom: 33%;" />
 
 #### von Koch Snowflake Curve
 
@@ -50,7 +50,7 @@ Semantics:
 - - = rotate right 60
 ```
 
-![](./Figures/VisComp_Fig10-2.PNG)
+<img src="./Figures/VisComp_Fig10-2.PNG" style="zoom:33%;" />
 
 #### Branching Structures
 
@@ -64,7 +64,7 @@ With those additional symbols, we can define three rules for different types of 
 
 _Example:_ The following figure shows an example of the L-System `F -> F[+F]F[-F]F`:
 
-![](./Figures/VisComp_Fig10-3.PNG)
+<img src="./Figures/VisComp_Fig10-3.PNG" style="zoom:33%;" />
 
 #### Stochastic L-System
 
@@ -86,7 +86,7 @@ F -> F[-F]F : 0.34
 
 Multiple applications of the above rules will lead to a geometry similar to the figure below:
 
-![](./Figures/VisComp_Fig10-4.PNG)
+<img src="./Figures/VisComp_Fig10-4.PNG" style="zoom:33%;" />
 
 ### 4.2.4 Point Cloud (Explicit)
 
@@ -114,7 +114,7 @@ Let's introduce some useful definitions:
 - _Vertex degree (Valence):_ Number of edges incident to a vertex.
 - _Boundary:_ The set of all edges that belong to only one polygon
 
-![](./Figures/VisComp_Fig10-5.PNG)
+<img src="./Figures/VisComp_Fig10-5.PNG" style="zoom: 33%;" />
 
 #### Mesh Data Structures
 
@@ -125,7 +125,7 @@ With **mesh datastructures** we can store the geometry and topology of some obje
 
 The simplest storage option for mesh datastructures is to simply store them in an **indexed face set:**
 
-![](./Figures/VisComp_Fig10-6.PNG)
+<img src="./Figures/VisComp_Fig10-6.PNG" style="zoom:33%;" />
 
 ### 4.2.6 Surface Normals
 
@@ -143,13 +143,13 @@ $$
 E = \frac{\Phi}{A'} = \frac{\Phi \cos \theta}{A}
 $$
 
-![](./Figures/VisComp_Fig10-7.PNG)
+<img src="./Figures/VisComp_Fig10-7.PNG" style="zoom:33%;" />
 
 #### N-dot-L Lightning
 
 **N-dot-L lightning** is one of the most basic ways to shade a surface: One simply takes the dot product of a unit surface normal (_N_) and the unit direction to the light source (_L_).
 
-![](./Figures/VisComp_Fig10-8.PNG)
+<img src="./Figures/VisComp_Fig10-8.PNG" style="zoom: 50%;" />
 
 ## 4.3 Texture Mapping
 
@@ -157,18 +157,18 @@ $$
 
 **Texture coordinates** define a mapping from surface coordinates (points on a triangle) to points in the texture domain.
 
-![](./Figures/VisComp_Fig10-9.PNG)
+<img src="./Figures/VisComp_Fig10-9.PNG" style="zoom: 50%;" />
 
 ### 4.3.2 Texture Space Samples
 
 To do a texture mapping, we need some space samples. We can sample some positions in the $XY$ screen space and then use the same sample positions in the texture space.
 However, this can lead to **perspective-incorrect interpolation:**
 
-![](./Figures/VisComp_Fig10-10.PNG)
+<img src="./Figures/VisComp_Fig10-10.PNG" style="zoom:33%;" />
 
 This is due to perspective projection. Barycentric interpolation of values in $XY$ screen coordinates do not correspond to values that vary linearly on the original triangle!
 
-![](./Figures/VisComp_Fig10-11.PNG)
+<img src="./Figures/VisComp_Fig10-11.PNG" style="zoom: 50%;" />
 
 ### 4.3.3 Filtering Textures
 
@@ -181,11 +181,11 @@ Due to resizing, our rendering pixels from our image may be much larger or small
 
 The idea of the **Mipmap** is to prefilter the texture data to remove high frequencies. Texels at higher levels store the integral of the texture function over a region of texture space (downsampled images), i.e. they represent low-pass filtered versions of the original texture signal.
 
-![](./Figures/VisComp_Fig10-12.PNG)
+<img src="./Figures/VisComp_Fig10-12.PNG" style="zoom: 33%;" />
 
 To decide which level $d$ to use, we calculate the differences between texture coordinate values of neighboring screen samples:
 
-![](./Figures/VisComp_Fig10-13.PNG)
+<img src="./Figures/VisComp_Fig10-13.PNG" style="zoom: 50%;" />
 
 # 5. The Rasterization Pipeline
 
@@ -208,23 +208,23 @@ _Example: Rendering three opaque triangles_
 
 1. We start by processing a yellow triangle with depth 0.5:
 
-![](./Figures/VisComp_Fig10-14.PNG)
+<img src="./Figures/VisComp_Fig10-14.PNG" style="zoom: 33%;" />
 
 2. After processing the first triangle, we end up with a color buffer and depth buffer as shown below:
 
-![](./Figures/VisComp_Fig10-15.PNG)
+<img src="./Figures/VisComp_Fig10-15.PNG" style="zoom:33%;" />
 
 3. Next we process a blue triangle with depth 0.75. We end up with buffers like this:
 
-![](./Figures/VisComp_Fig10-16.PNG)
+<img src="./Figures/VisComp_Fig10-16.PNG" style="zoom:33%;" />
 
 4. Finally, we process a red triangle with depth 0.25. Our final color and depth buffer looks like this:
 
-![](./Figures/VisComp_Fig10-17.PNG)
+<img src="./Figures/VisComp_Fig10-17.PNG" style="zoom:33%;" />
 
 5. The final picture is:
 
-![](./Figures/VisComp_Fig10-18.PNG)
+<img src="./Figures/VisComp_Fig10-18.PNG" style="zoom:33%;" />
 
 The occlusion algorithm using the depth buffer is simple and given by:
 
@@ -251,7 +251,7 @@ We can represent _opacity_ as alpha. **Alpha** describes the opacity of an objec
 - 50% transparent: $\alpha = 0.5$
 - Fully transparent: $\alpha = 0$
 
-![](./Figures/VisComp_Fig10-19.PNG)
+<img src="./Figures/VisComp_Fig10-19.PNG" style="zoom: 33%;" />
 
 ### 5.2.2 The Over Operator
 
@@ -303,7 +303,7 @@ _Remark:_ Triangles must be rendered in back to front order!
 
 ### 5.3.1 The Real-time Graphics Pipeline
 
-![](./Figures/VisComp_Fig10-20.PNG)
+<img src="./Figures/VisComp_Fig10-20.PNG" style="zoom:50%;" />
 
 ### 5.3.2 Drawing Triangles: Step-by-step
 
@@ -342,25 +342,25 @@ Additionally:
 
 Transform the triangle vertices into the camera space:
 
-![](./Figures/VisComp_Fig10-21.PNG)
+<img src="./Figures/VisComp_Fig10-21.PNG" style="zoom: 50%;" />
 
 #### Step 2
 
 Apply the perspective projection transform to transform the triangle vertices into a normalized coordinate space:
 
-![](./Figures/VisComp_Fig10-22.PNG)
+<img src="./Figures/VisComp_Fig10-22.PNG" style="zoom: 33%;" />
 
 #### Step 3
 
 Discard triangles that lie completely outside the unit cube (since they are off-screen) and clip triangles that extend beyond the unit cube to the unit cube:
 
-![](./Figures/VisComp_Fig10-23.PNG)
+<img src="./Figures/VisComp_Fig10-23.PNG" style="zoom:33%;" />
 
 #### Step 4
 
 Transform the vertex $xy$ positions from the normalized coordinates into the screen coordinates (based on the screen size `(w, h)`):
 
-![](./Figures/VisComp_Fig10-24.PNG)
+<img src="./Figures/VisComp_Fig10-24.PNG" style="zoom:25%;" />
 
 #### Step 5
 
@@ -370,25 +370,25 @@ Preprocess the triangles, i.e. compute the triangle edge equations and the trian
 
 Do the sample coverage and evaluate attributes `Z, u, v` at all covered samples:
 
-![](./Figures/VisComp_Fig10-25.PNG)
+<img src="./Figures/VisComp_Fig10-25.PNG" style="zoom:33%;" />
 
 #### Step 7
 
 Compute the triangle color at the sample point through color interpolation, sample texture map, or more advanced shading algorithms:
 
-![](./Figures/VisComp_Fig10-26.PNG)
+<img src="./Figures/VisComp_Fig10-26.PNG" style="zoom:33%;" />
 
 #### Step 8
 
 Perform the depth test and update the depth value at the covered samples:
 
-![](./Figures/VisComp_Fig10-27.PNG)
+<img src="./Figures/VisComp_Fig10-27.PNG" style="zoom:33%;" />
 
 #### Step 9
 
 Update the color buffer if the depth test passed:
 
-![](./Figures/VisComp_Fig10-28.PNG)
+<img src="./Figures/VisComp_Fig10-28.PNG" style="zoom:33%;" />
 
 ### 5.3.3 Shadow Mapping
 

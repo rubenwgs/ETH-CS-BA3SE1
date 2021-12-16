@@ -30,7 +30,7 @@ where:
 
 ## 5.2 Fourier Basis Functions
 
-![](./Figures/VisComp_Fig4-1.PNG)
+<img src="./Figures/VisComp_Fig4-1.PNG" style="zoom: 33%;" />
 
 ## 5.3 Phase and Magnitude
 
@@ -60,7 +60,7 @@ $$
 
 The _Fourier transform of a sampled signal_ is given by the following equalities:
 
-![](./Figures/VisComp_Fig4-2.PNG)
+<img src="./Figures/VisComp_Fig4-2.PNG" style="zoom:33%;" />
 
 ### 5.5.2 Nyquist Sampling Theorem
 
@@ -99,7 +99,7 @@ The **kernel for motion blur** is given by: $h(x) = \frac{1}{2l}(\theta(x_1 + l)
 
 The Fourier transformation of this is given by:
 
-![](./Figures/VisComp_Fig4-3.PNG)
+<img src="./Figures/VisComp_Fig4-3.PNG" style="zoom:33%;" />
 
 Which leads to:
 

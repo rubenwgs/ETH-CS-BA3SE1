@@ -38,7 +38,7 @@ For static scenes, we can rotate multiple filters in front of the lens. This all
 
 ### Color CMOS sensor (Foveon's X3)
 
-![](./Figures/VisComp_Fig2-1.PNG)
+<img src="./Figures/VisComp_Fig2-1.PNG" style="zoom: 75%;" />
 
 In contrast to a filter mosaic, we truly measure each color at each pixel, instead of either red, blue or green per pixel.
 
@@ -52,7 +52,7 @@ In contrast to a filter mosaic, we truly measure each color at each pixel, inste
 
 A _complete segmentation_ of an image `I` is a finite set of regions `R_1,..., R_N`, such that:
 
-![](./Figures/VisComp_Fig2-2.PNG)
+<img src="./Figures/VisComp_Fig2-2.PNG" style="zoom:67%;" />
 
 _Excluding dark pixels from an image:_
 
@@ -76,7 +76,7 @@ The **quality** of a segmentation depends on what you want to do with it. Segmen
 
 **Thresholding** is a simple segmentation process. It produces a binary image `B` by labeling each pixel in or out of the region of interest by comparison of the graylevel with a threshold `T`:
 
-![](./Figures/VisComp_Fig2-3.PNG)
+<img src="./Figures/VisComp_Fig2-3.PNG" style="zoom:67%;" />
 
 ### How do we choose T?
 
@@ -92,7 +92,7 @@ If we can control the background of a picture, segmentation becomes easier. Assu
 
 **Chromakeying** describes the process of plain distance measuring, in this case for green:
 
-![](./Figures/VisComp_Fig2-4.PNG)
+<img src="./Figures/VisComp_Fig2-4.PNG" style="zoom:50%;" />
 
 This has some problems:
 
@@ -140,7 +140,7 @@ The **ROC curve** characterizes the error trade-off in binary classification tas
 
 The result could look something like this:
 
-![](./Figures/VisComp_Fig2-5.PNG)
+<img src="./Figures/VisComp_Fig2-5.PNG" style="zoom: 50%;" />
 
 ### Operating points
 
@@ -153,7 +153,7 @@ We can choose an **operating point** by assigning relative costs and values to e
 
 When we assigned these costs, we can choose the point on the ROC curve with **gradient**:
 
-![](./Figures/VisComp_Fig2-6.PNG)
+<img src="./Figures/VisComp_Fig2-6.PNG" style="zoom:50%;" />
 
 For simplicity, we often set `V_TN = V_TP = 0`.
 ¨
@@ -172,7 +172,7 @@ We need to define which pixels are connected/neighbors.
 
 We define two different types of **pixel neighborhoods**:
 
-![](./Figures/VisComp_Fig2-7.PNG)
+<img src="./Figures/VisComp_Fig2-7.PNG" style="zoom:50%;" />
 
 ### Pixel paths
 
@@ -245,7 +245,7 @@ The background image is obtained by a "previous image", for example before a car
 
 When possible, we should fit a Gaussian model per pixel, just as we did for an entire green-screen. This leads to the following, better way of doing distance measurements:
 
-![](./Figures/VisComp_Fig2-8.PNG)
+<img src="./Figures/VisComp_Fig2-8.PNG" style="zoom: 25%;" />
 
 ## 2.9 Spatial Relations
 
@@ -268,7 +268,7 @@ The **8-neighbor erode** works by simply erasing any foreground pixel that has o
 
 _Example:_
 
-![](./Figures/VisComp_Fig2-9.PNG)
+<img src="./Figures/VisComp_Fig2-9.PNG" style="zoom: 33%;" />
 
 The contrast to this function is the **8-neighbor dilate**, where we simply paint any background pixel that has one 8-connected neighbor that is foreground.
 
@@ -283,7 +283,7 @@ We compare the structuring element to the neighborhood of each pixel, which dete
 
 We can think of **binary images** and the structuring elements as _sets_ containing the pixels with value `1`.
 
-![](./Figures/VisComp_Fig2-10.PNG)
+<img src="./Figures/VisComp_Fig2-10.PNG" style="zoom: 33%;" />
 
 ### Fitting, Hitting and Missing
 
@@ -297,17 +297,17 @@ We define the following three terms:
 
 The image `E = I circ- S` is the **erosion** of image `I` by structuring element `S`:
 
-![](./Figures/VisComp_Fig2-11.PNG)
+<img src="./Figures/VisComp_Fig2-11.PNG" style="zoom:25%;" />
 
 ### Opening and Closing
 
 The **opening** of `I` by `S` is defined by:
 
-![](./Figures/VisComp_Fig2-12.PNG)
+<img src="./Figures/VisComp_Fig2-12.PNG" style="zoom:25%;" />
 
 The **closing** of `I` by `S` is defined by:
 
-![](./Figures/VisComp_Fig2-13.PNG)
+<img src="./Figures/VisComp_Fig2-13.PNG" style="zoom:25%;" />
 
 ### Skeletonization and the Medial Axis Transform
 
@@ -316,6 +316,6 @@ Simply speaking, one might start a "grass fire" at the boundary of the region, a
 
 Example:
 
-![](./Figures/VisComp_Fig2-14.PNG)
+<img src="./Figures/VisComp_Fig2-14.PNG" style="zoom:33%;" />
 
 With a **medial axis transform** you remember for each point on the skeleton the distance you travelled to get to that point. This way, the whole shape can be reconstructed from a MAT.

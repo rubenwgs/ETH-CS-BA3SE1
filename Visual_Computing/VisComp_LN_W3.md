@@ -41,7 +41,7 @@ In this approach, we take a **correlation mask** and apply it to an image.
 
 This would look as follows:
 
-![](./Figures/VisComp_Fig3-1.PNG)
+<img src="./Figures/VisComp_Fig3-1.PNG" style="zoom: 67%;" />
 
 The linear operation of correlation looks as follows:
 
@@ -55,7 +55,7 @@ This represents the linear weights as an image.
 
 > Compared to correlation, where we looked at the neighborhood of a pixel and applied what we learned from the neighborhood to the single pixel, in convolution we look at a single pixel and apply what we can learn from it to its neighborhood.
 
-![](./Figures/VisComp_Fig3-2.PNG)
+<img src="./Figures/VisComp_Fig3-2.PNG" style="zoom:67%;" />
 
 The linear operation of convolution is given by:
 
@@ -67,7 +67,7 @@ This too represents the linear weights as an image, it is actually the same as c
 
 ### 3.3.1 Correlation vs Convolution
 
-![](./Figures/VisComp_Fig3-3.PNG)
+<img src="./Figures/VisComp_Fig3-3.PNG" style="zoom:67%;" />
 
 ## 3.4 Separable Kernels
 
@@ -81,7 +81,7 @@ $$
 
 The idea of the **Gaussian kernel** is that we weight the contributions of neighboring pixels by their nearness:
 
-![](./Figures/VisComp_Fig3-4.PNG)
+<img src="./Figures/VisComp_Fig3-4.PNG" style="zoom:67%;" />
 
 ### 3.5.1 Gaussian Smoothing Kernels
 
@@ -172,7 +172,7 @@ $$
 
 We mostly use the following **edge detection filters**:
 
-![](./Figures/VisComp_Fig3-5.PNG)
+<img src="./Figures/VisComp_Fig3-5.PNG" style="zoom:67%;" />
 
 ### 4.2.1 Laplacian Operator
 
@@ -182,7 +182,7 @@ $$
 \nabla^2 f(x, \, y) = \frac{\partial^2 fx, \, y()}{\partial x^2} + \frac{\partial^2 f(x, \, y)}{\partial y^2}
 $$
 
-![](./Figures/VisComp_Fig3-6.PNG)
+<img src="./Figures/VisComp_Fig3-6.PNG" style="zoom: 67%;" />
 
 We can do a _discrete-space approximation_ by convolution with a $3 \times 3$ impulse response:
 
@@ -247,17 +247,17 @@ It works the following way:
 
 1. For an edge pixel in the $(x, \, y)$ plane we can draw the different lines that cross the edge pixel (all lines have the form $y = mx + c$). We can draw the $m$ and $c$ values in a $(m, \, c)$ plane and see that all those lines are linearly dependent:
 
-![](./Figures/VisComp_Fig3-7.PNG)
+<img src="./Figures/VisComp_Fig3-7.PNG" style="zoom:67%;" />
 
 2. If we have multiple edge pixels, we can do the same procedure for each of those, giving us a line in the $(m, \, c)$ plane for each edge pixel.
 3. We then subdivide the $(m, \, c)$ plane into discrete "bins" and initialize the bin count of each bin to $0$. Each time a bin is crossed by one of the lines of the different edge pixels, we increase its count by one.
 4. We then simply have to detect the peaks in the $(m, \, c)$ plane to get our fitted straight line:
 
-![](./Figures/VisComp_Fig3-8.PNG)
+<img src="./Figures/VisComp_Fig3-8.PNG" style="zoom:67%;" />
 
 We might encounter an infinite-slope problem, which can be avoided with an alternative parameterization:
 
-![](./Figures/VisComp_Fig3-9.PNG)
+<img src="./Figures/VisComp_Fig3-9.PNG" style="zoom: 33%;" />
 
 ## 4.3 Detecting Corner Points
 
@@ -271,13 +271,13 @@ The desirable properties of a corner detector are:
 
 *something something what patterns can be localized most accurately?*
 
-![](./Figures/VisComp_Fig3-10.PNG)
+<img src="./Figures/VisComp_Fig3-10.PNG" style="zoom: 67%;" />
 
 ### 4.3.1 Feature Point Extraction
 
 We have that $SSD \simeq \delta^T M \delta$. Now if we shift our patterns over the picture, we assume it to change the following way:
 
-![](./Figures/VisComp_Fig3-11.PNG)
+<img src="./Figures/VisComp_Fig3-11.PNG" style="zoom:67%;" />
 
 Now we want to find points for which the following is large:
 
@@ -291,4 +291,4 @@ i.e. we want to maximize the eigenvalues of $M$.
 
 *something something*
 
-![](./Figures/VisComp_Fig3-12.PNG)
+<img src="./Figures/VisComp_Fig3-12.PNG" style="zoom: 67%;" />

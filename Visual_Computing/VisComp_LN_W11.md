@@ -14,7 +14,7 @@
 
 Most light is _not visible_ to the human eye. The frequencies that are visible to the human eyes are called the **visible spectrum.** These frequencies are what we think of as color.
 
-![](./Figures/VisComp_Fig11-1.PNG)
+<img src="./Figures/VisComp_Fig11-1.PNG" style="zoom:50%;" />
 
 ### 6.1.2 Description Of Light
 
@@ -36,7 +36,7 @@ There are three types of cones: S, M, and L cones. These correspond to a peak re
 
 The human eye does not directly measure the spectrum of incoming light, but three response values `(S, M, L)` by integrating the incoming spectrum against response functions of S-, M-, and L-cones. The brain then interprets these functions as colors.
 
-![](./Figures/VisComp_Fig11-2.PNG)
+<img src="./Figures/VisComp_Fig11-2.PNG" style="zoom:50%;" />
 
 ## 6.3 Additive And Subtractive Color Models
 
@@ -71,7 +71,7 @@ The **radiant flux** describes the number of hits per second. Rather than record
 
 To make images, we also need to know where the hits occurred. So, we compute the hits per second in some unit area, which is called the **irradiance.**
 
-![](./Figures/VisComp_Fig11-3.PNG)
+<img src="./Figures/VisComp_Fig11-3.PNG" style="zoom: 33%;" />
 
 ### 6.4.2 Measuring Illumination
 
@@ -118,7 +118,7 @@ where $E$ is the irradiance, $L$ is the radiance in direction $\omega$, and $\co
 The radiance is the solid angle density of irradiance:
 
 $$
-L(p, \, \omega) = \lim_{\Delta \to 0} \frac{\Delta E_{\omega}(p)}{\Detla \omega} = \frac{\text{d}E_{\omega}(p)}{\text{d}\omega},
+L(p, \, \omega) = \lim_{\Delta \to 0} \frac{\Delta E_{\omega}(p)}{\Delta \omega} = \frac{\text{d}E_{\omega}(p)}{\text{d}\omega},
 $$
 
 where $E_{\omega}$ means that the differential surface area is oriented to face in the direction $\omega$. In other words, radiance is energy along a ray defined by some origin point $p$ and a direction $\omega$.
@@ -127,7 +127,7 @@ where $E_{\omega}$ means that the differential surface area is oriented to face 
 
 We somehow need to distinguish between incident radiance and exitant radiance functions at a point on a surface:
 
-![](./Figures/VisComp_Fig11-4.PNG)
+<img src="./Figures/VisComp_Fig11-4.PNG" style="zoom:50%;" />
 
 In general, $L_i(p, \, \omega) \neq L_o(p, \, \omega)$
 
@@ -135,7 +135,7 @@ In general, $L_i(p, \, \omega) \neq L_o(p, \, \omega)$
 
 The core functionality of photorealistic renderer is to estimate the radiance at a given point, in a given direction. This is summed up by the **rendering equation:**
 
-![](./Figures/VisComp_Fig11-5.PNG)
+<img src="./Figures/VisComp_Fig11-5.PNG" style="zoom:33%;" />
 
 ### 6.5.1 Scattering Function
 
@@ -160,7 +160,7 @@ The following properties hold:
 
 ### 7.1.1 Rasterization
 
-![](./Figures/VisComp_Fig11-6.PNG)
+<img src="./Figures/VisComp_Fig11-6.PNG" style="zoom:50%;" />
 
 The basic rasterization algorithm consists of obtaining 2D samples and then computing the coverage, i.e. whether a projected triangle covers a 2D sample point, and the occlusion, i.e. calculating the depth buffer.
 
@@ -170,7 +170,7 @@ Finding samples in this case is easy since they are distributed uniformly on scr
 
 An alternative to rasterization is **ray-casting.**
 
-![](./Figures/VisComp_Fig11-7.PNG)
+<img src="./Figures/VisComp_Fig11-7.PNG" style="zoom:50%;" />
 
 The basic ray casting algorithm looks as follows:
 
@@ -202,7 +202,7 @@ Shadow can be computed by _recursive ray tracing:_
 -  Shoot shadow rays towards the light source from points where camera rays intersect the scene
     - If they are unclouded, the point is directly lit by the light source
 
-![](./Figures/VisComp_Fig11-8.PNG)
+<img src="./Figures/VisComp_Fig11-8.PNG" style="zoom:50%;" />
 
 Shadows computed via ray tracing are correct hard shadows. If done via rasterization, shadow map texture can lead to aliasing.
 
@@ -210,7 +210,7 @@ Shadows computed via ray tracing are correct hard shadows. If done via rasteriza
 
 Similar to shadow, reflections can be computed with recursive ray tracing by "simply" adding more secondary arrays:
 
-![](./Figures/VisComp_Fig11-9.PNG)
+<img src="./Figures/VisComp_Fig11-9.PNG" style="zoom:50%;" />
 
 ## 7.4 Ray-Scene Intersections
 

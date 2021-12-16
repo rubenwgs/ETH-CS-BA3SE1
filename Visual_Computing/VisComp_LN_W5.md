@@ -119,7 +119,7 @@ The **Karhunen-Loeve transform** (_KL-transform_) describes the unitary transfor
 
 _Example:_
 
-![](./Figures/VisComp_Fig5-1.PNG)
+<img src="./Figures/VisComp_Fig5-1.PNG" style="zoom:33%;" />
 
 ### 6.3.6 Basis Images and Eigenimages
 
@@ -156,7 +156,7 @@ The key ideas of **Fisherfaces** are as follows:
 - Find directions where the ratio between/within individual variances are maximized
 - Linearly project to the basis where the dimensions with good signal/noise ratios are maximized
 
-![](./Figures/VisComp_Fig5-2.PNG)
+<img src="./Figures/VisComp_Fig5-2.PNG" style="zoom:33%;" />
 
 The eigenimage method maximizes _scatter_ within the linear subspace over the entire image set, regardless of the classification tasks:
 
@@ -166,13 +166,13 @@ $$
 
 The idea of the **Fisher linear discriminant analysis** is to maximize between-class scatter, while minimizing within-class scatter:
 
-![](./Figures/VisComp_Fig5-3.PNG)
+<img src="./Figures/VisComp_Fig5-3.PNG" style="zoom:33%;" />
 
 #### Fisher Images and Varying Illumination
 
 All images of the same Lambertian surface with different illumination (without shadows) lie in a 3D linear subspace. There is a single point source at infinity such that:
 
-![](./Figures/VisComp_Fig5-4.PNG)
+<img src="./Figures/VisComp_Fig5-4.PNG" style="zoom:33%;" />
 
 # 7. Image Compression
 
@@ -195,7 +195,7 @@ DCT enables _image compression_ by concentrating most image information in the l
 
 ## 7.2 Image Pyramid
 
-![](./Figures/VisComp_Fig5-6.PNG)
+<img src="./Figures/VisComp_Fig5-6.PNG" style="zoom: 50%;" />
 
 The application of **scaled representations,** such as _image pyramids_, is to look at coarse scaled and then refine with finer scaled. For example, a "good" edge at a finer scale has parents at some coarser scale.
 
@@ -225,14 +225,14 @@ The **Haar Transform** with the _Haar Basis_ has the following properties:
 
 _Comparison of DCT and Haar basis:_
 
-![](./Figures/VisComp_Fig5-9.PNG)
+<img src="./Figures/VisComp_Fig5-9.PNG" style="zoom:50%;" />
 
 ### 7.3.2 Lifting
 
 _Analysis filters:_
 
-![](./Figures/VisComp_Fig5-10.PNG)
+<img src="./Figures/VisComp_Fig5-10.PNG" style="zoom:50%;" />
 
 _Synthesis filters:_
 
-![](./Figures/VisComp_Fig5-11.PNG)
+<img src="./Figures/VisComp_Fig5-11.PNG" style="zoom:50%;" />

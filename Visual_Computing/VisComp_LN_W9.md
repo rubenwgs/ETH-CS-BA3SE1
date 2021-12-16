@@ -31,13 +31,13 @@ If a map can be expressed as $f(u) = \sum_{i = 1}^m u_i a_i$, with fixed vectors
 
 _Example:_
 
-![](./Figures/VisComp_Fig9-1.PNG)
+<img src="./Figures/VisComp_Fig9-1.PNG" style="zoom:33%;" />
 
 $u$ is a linear combination of $e_1$ and $e_2$. $f(u)$ is the _same_ linear combination, but of $a_1$ and $a_2$, and we have that $a_1 = f(e_1)$ and $a_2 = f(e_2)$.
 
 ## 3.2 Scale
 
-![](./Figures/VisComp_Fig9-2.PNG)
+<img src="./Figures/VisComp_Fig9-2.PNG" style="zoom:33%;" />
 
 **Scaling** is simply defined by either scalar multiplication of the whole vector (_uniform scale_) or scalar multiplication of specific basis vectors (_non-uniform scale_).
 
@@ -47,7 +47,7 @@ $$
 
 ## 3.3 Rotation
 
-![](./Figures/VisComp_Fig9-3.PNG)
+<img src="./Figures/VisComp_Fig9-3.PNG" style="zoom:33%;" />
 
 Mathematically, **rotations** can be defined by the following two formulae:
 
@@ -77,7 +77,7 @@ Those special cases are actually simple _non-uniform scales._
 
 A **shear operation** (in the $x$ direction) is done by moving the upper edge along the $x$-axis by some defined amount.
 
-![](./Figures/VisComp_Fig9-4.PNG)
+<img src="./Figures/VisComp_Fig9-4.PNG" style="zoom:33%;" />
 
 Mathematically, this operation is defined through:
 
@@ -89,7 +89,7 @@ $$
 
 **Translation** describes mappings of the following form:
 
-![](./Figures/VisComp_Fig9-5.PNG)
+<img src="./Figures/VisComp_Fig9-5.PNG" style="zoom:33%;" />
 
 We can denote this transformation by:
 
@@ -139,7 +139,7 @@ In computer graphics we often have to distinguish between _points_ and _vectors.
 
 We define a vector to have $x_3 = 0$ in 2D-H and a point to have $x_3 \neq 0$ in 2D-H. To get from a point in 2D-H back to 2D, we simply divide all components by $x_3$.
 
-![](./Figures/VisComp_Fig9-6.PNG)
+<img src="./Figures/VisComp_Fig9-6.PNG" style="zoom:33%;" />
 
 ## 3.8 Composition Of Linear Transformations
 
@@ -147,7 +147,7 @@ We can **compose linear transforms** via matrix multiplication. This enables for
 
 _Example:_ We take a look at the following transform: $R_{\pi / 4} S_{[1.5, \, 1.5]}x$
 
-![](./Figures/VisComp_Fig9-7.PNG)
+<img src="./Figures/VisComp_Fig9-7.PNG" style="zoom:33%;" />
 
 ## 3.9 Moving To 3D (And 3D-H)
 
@@ -210,13 +210,13 @@ The procedure for a basic perspective projection, follows 4 steps:
 3. Point projected to 2D-H by dropping the $z$ coordinate: $p_{2D-H} = (x_x, \, x_y, \, x_z)$
 4. Point in 2D by homogeneous divide: $p_{2D} = (\frac{x_x}{x_z}, \, \frac{x_y}{x_z})$
 
-![](./Figures/VisComp_Fig9-8.PNG)
+<img src="./Figures/VisComp_Fig9-8.PNG" style="zoom: 50%;" />
 
 ### 4.1.2 The View Frustum
 
 The **view frustum** denotes the region in space that will appear on the screen.
 
-![](./Figures/VisComp_Fig9-9.PNG)
+<img src="./Figures/VisComp_Fig9-9.PNG" style="zoom:50%;" />
 
 We want a transformation that maps view frustum to a unit cube, such that computing screen coordinates in that space becomes trivial.
 
@@ -232,7 +232,7 @@ $$
 P = \begin{bmatrix} \frac{f}{r} & 0 & 0 & 0 \\ 0 & f & 0 & 0 \\ 0 & 0 & \frac{zfar + znear}{znear - zfar} & \frac{2 \cdot zfar \cdot znear}{znear - zfar} \\ 0 & 0 & -1 & 0  \end{bmatrix}
 $$
 
-![](./Figures/VisComp_Fig9-10.PNG)
+<img src="./Figures/VisComp_Fig9-10.PNG" style="zoom: 50%;" />
 
 ## 4.2 Geometry
 
