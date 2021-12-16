@@ -955,7 +955,7 @@ We can avoid **noise amplification** by a _regularized reconstruction filter_ of
 
 $$
 \tilde{\mathcal{F}}[\tilde{h}](u, \, v) = \frac{\mathcal{F}[h]}{|\mathcal{F}[h]|^2 + \epsilon}
-$$.
+$$
 
 The size of $\epsilon$ implicitly determines an estimate of the noise level in the image, since we discard signal which are dampened below the size $\epsilon$.
 
