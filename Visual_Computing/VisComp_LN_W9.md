@@ -49,7 +49,7 @@ $$
 
 ![](./Figures/VisComp_Fig9-3.PNG)
 
-Mathematically, **rotations** can be defined by the following two formulaes:
+Mathematically, **rotations** can be defined by the following two formulae:
 
 $$
 R_{\theta}(e_1) = (\cos \theta, \, \sin \theta) = a_1 \\
@@ -195,7 +195,7 @@ $$
 
 ## 4.1 Perspective Projection Transformations
 
-### 4.1.1 Basic Perspective Projection
+### 4.1.1 Basic Perspective Projection
 
 When doing basic perspective projection, the desired _perspective projection result_ (some 2D point), is given by:
 
@@ -239,11 +239,11 @@ $$
 ### 4.2.1 Implicit Representations of Geometry
 
 In an **implicit representation**, points aren't known directly, but satisfy some relationship. For example, we might define a unit sphere as all points $x$ such that $x^2 + y^2 + z^2 = 1$.
-Implicit surfaces make some tasks easy, such as deciding whether some point is inside or outside our implicit suface.
+Implicit surfaces make some tasks easy, such as deciding whether some point is inside or outside our implicit surface.
 
 ### 4.2.2 Explicit Representations of Geometry
 
-In an **explicit representation,** all points are given directly. For example, the points on a sphere are $(\cos u \sin v, \, \sin u \sin v, \, \cos v)$ for $0 \le u \lt 2 \pi$ and $ 0 \le v \lt \pi$.
+In an **explicit representation,** all points are given directly. For example, the points on a sphere are $(\cos u \sin v, \, \sin u \sin v, \, \cos v)$ for $0 \le u \lt 2 \pi$ and $0 \le v \lt \pi$.
 There are many explicit representations in graphics, such as:
 
 - Triangle meshes
