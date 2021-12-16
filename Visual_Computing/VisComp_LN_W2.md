@@ -223,7 +223,7 @@ There are three key indicators which lead to variation:
 
 **Seed selection** can happen in different ways. This may be either by hand (point and click), or automatically by conservative thresholding.
 
-The **inclusion criteria** could either be done by greylevel thresholding or by a _greylevel distribution model_:
+The **inclusion criteria** could either be done by graylevel thresholding or by a _graylevel distribution model_:
 
 - Use mean `mu` and standard deviation `sigma` in seed region and then:
   - include if `(I(x, y) - mu)^2 < (n sigma)^2` (with for example `n = 3`)
@@ -312,7 +312,7 @@ The **closing** of `I` by `S` is defined by:
 ### Skeletonization and the Medial Axis Transform
 
 The **skeleton** and **medial axis transform (MAT)** are stick-figure representations of a region `X subset R^2`.
-Simply speaking, one might start a "grassfire" at the boundary of the region, and the skeleton is then defined as the set of points at which two fire fronts meet.
+Simply speaking, one might start a "grass fire" at the boundary of the region, and the skeleton is then defined as the set of points at which two fire fronts meet.
 
 Example:
 
