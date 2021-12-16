@@ -33,11 +33,15 @@ $$
 
 Any linear image processing algorithm can be written as:
 
-$$\vec{g} = H \vec{f}$$
+$$
+\vec{g} = H \vec{f}
+$$
 
 We define a **linear operator** $O[.]$ as:
 
-$$O[\alpha_1 \cdot \vec{f}_1 + \alpha_2 \cdot \vec{f}_2] = \alpha_1 \cdot O[\vec{f}_1] + \alpha_2 \cdot O[\vec{f}_2]$$
+$$
+O[\alpha_1 \cdot \vec{f}_1 + \alpha_2 \cdot \vec{f}_2] = \alpha_1 \cdot O[\vec{f}_1] + \alpha_2 \cdot O[\vec{f}_2]
+$$
 
 for all scalars $\alpha_1, \, \alpha_2$.
 
@@ -56,7 +60,9 @@ For a **unitary transform** we might proceed as follows:
 
 The transform $A$ is said to be **unitary**, if and only if:
 
-$$A^{-1} = A^{*T} = A^H$$
+$$
+A^{-1} = A^{*T} = A^H
+$$
 
 If $A$ is real valued, i.e. if $A = A^*$, then the transform is said to be **orthonormal**.
 
@@ -64,7 +70,9 @@ If $A$ is real valued, i.e. if $A = A^*$, then the transform is said to be **ort
 
 For any unitary transform $\vec{c} = A \vec{f}$, we obtain
 
-$$||\vec{c}||^2 = \vec{c}^H\vec{c} = \vec{f}^H A^H A \vec{f} = ||\vec{f}||^2$$
+$$
+||\vec{c}||^2 = \vec{c}^H\vec{c} = \vec{f}^H A^H A \vec{f} = ||\vec{f}||^2
+$$
 
 This means, that every unitary transform is simply a rotation of the coordinate system (and, possibly, sign flips). The vector lengths, i.e. the "energies", are conserved!
 
@@ -82,11 +90,15 @@ With unitary transforms, energy is conserved, but often will be _unevenly distri
 
 For the auto-correlation matrix, we have that:
 
-$$R_{cc} = E[\vec{c}\vec{c}^H] = E[A \vec{f} \cdot \vec{f}^H A^H] = A R_{ff}A^H$$
+$$
+R_{cc} = E[\vec{c}\vec{c}^H] = E[A \vec{f} \cdot \vec{f}^H A^H] = A R_{ff}A^H
+$$
 
-This leads to the mean squarede values (i.e. the "average energies") of the coefficients $c_i$ being on the diagonal of $R_{cc}$$:
+This leads to the mean squared values (i.e. the "average energies") of the coefficients $c_i$ being on the diagonal of $R_{cc}$:
 
-$$E[c_i^2] = [R_{cc}]_{i,i} = [AR_{ff}A^H]_{i,i}$$
+$$
+E[c_i^2] = [R_{cc}]_{i,i} = [AR_{ff}A^H]_{i,i}
+$$
 
 ### 6.3.4 Eigenmatrix of Auto-Correlation Matrix
 
@@ -112,7 +124,7 @@ _Example:_
 ### 6.3.6 Basis Images and Eigenimages
 
 For any unitary transform, the _inverse transform_ $\vec{f} = A^H \vec{c}$ can be interpreted in terms of the superposition of basis images (columns of $A^H$) of size $M \times N$.
-If the transform is a KL transform, the basis images, which are the eigenvectors of the autocorrelation matrix $R_{ff}$, are called **eigenimages.**
+If the transform is a KL transform, the basis images, which are the eigenvectors of the auto-correlation matrix $R_{ff}$, are called **eigenimages.**
 If energy concentration works well, only a limited number of eigenimages is needed to approximate a set of images with a small error. These eigenimages form an optimal linear subspace of dimensionality $J$.
 
 To recognize complex patterns, e.g. faces, large portions of an image might have to be considered. With a transform of the form $\vec{c} = W\vec{f}$ we can reduce the dimensionality from $M \times N$ to $J$ by representing the image by $J$ coefficients.
@@ -121,7 +133,9 @@ To recognize complex patterns, e.g. faces, large portions of an image might have
 
 For a **simple recognition** we can use the _simple euclidean distance (SSD)_ between two images and let the best match "win":
 
-$$\text{arg min}_i D_i = ||I_i - I||$$
+$$
+\text{arg min}_i D_i = ||I_i - I||
+$$
 
 However, this is computationally expensive, i.e. it requires the presented image to be correlated with every image in the database!
 
@@ -129,7 +143,9 @@ However, this is computationally expensive, i.e. it requires the presented image
 
 We consider the PCA (aka KLT aka closes rank-k approximation property of SVD) $\hat{I}_i \simeq Ep_i$. Then:
 
-$$I_i - I = \hat{I}_i - \hat{I} \simeq E(p_i - p) \\ ||I_i - I|| \simeq ||p_i - p|| \\ \text{arg min}_i D_i = ||I_i - I|| \simeq ||p_i - p||$$
+$$
+I_i - I = \hat{I}_i - \hat{I} \simeq E(p_i - p) \\ ||I_i - I|| \simeq ||p_i - p|| \\ \text{arg min}_i D_i = ||I_i - I|| \simeq ||p_i - p||
+$$
 
 with $\hat{I} = I - \bar{I}$ and $p = E^T \hat{I}$. This is _much cheaper to compute!_
 
@@ -144,9 +160,11 @@ The key ideas of **Fisherfaces** are as follows:
 
 The eigenimage method maximizes _scatter_ within the linear subspace over the entire image set, regardless of the classification tasks:
 
-$$W_{opt} = \text{arg max}_W \lparen \text{det} \lparen WRW^H \rparen \rparen$$
+$$
+W_{opt} = \text{arg max}_W \lparen \text{det} \lparen WRW^H \rparen \rparen
+$$
 
-The idea of the **Fisher linear discrimant analysis** is to maximize between-class scatter, while minimizing within-class scatter:
+The idea of the **Fisher linear discriminant analysis** is to maximize between-class scatter, while minimizing within-class scatter:
 
 ![](./Figures/VisComp_Fig5-3.PNG)
 
@@ -162,7 +180,7 @@ All images of the same Lambertian surface with different illumination (without s
 
 ### 7.1.1 Block-Based Discrete Cosine Transform (DCT)
 
-We essential discrete **Cosine Transform** on our image we wish to compress:
+We essentially do discrete **Cosine Transform** on our image we wish to compress:
 
 ![](./Figures/VisComp_Fig5-5.PNG)
 
@@ -173,13 +191,13 @@ We essential discrete **Cosine Transform** on our image we wish to compress:
 
 ### 7.1.2 Image Compression Using DCT
 
-DCT enables _image compression_ by concentrating most image information in the low frequencies. We loose unimportant image info, i.e. high frequencies, by cutting $B(u, \, v)$ at the bottom right corner. The decoder computes the inverse DCT (iDCT).
+DCT enables _image compression_ by concentrating most image information in the low frequencies. We loose unimportant image info, i.e. high frequencies, by cutting $B(u, \, v)$ in the bottom right corner. The decoder computes the inverse DCT (iDCT).
 
 ## 7.2 Image Pyramid
 
 ![](./Figures/VisComp_Fig5-6.PNG)
 
-The application of **scaled representations,** such as _image pyramids_, is to look at corase scaled and then refine with finer scaled. For example, a "good" edge at a finer scale has parents at some coarser scale.
+The application of **scaled representations,** such as _image pyramids_, is to look at coarse scaled and then refine with finer scaled. For example, a "good" edge at a finer scale has parents at some coarser scale.
 
 ### 7.2.1 Gaussian Pyramid
 
