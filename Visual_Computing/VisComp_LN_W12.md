@@ -18,7 +18,7 @@ How we describe motion on a computer is probably the most important question to 
 
 ### 8.1.2 Keyframing
 
-**Keyframing** is an important yet quite "simple" idea of describing motion. The basic idea is to specify important events in our motion only, and let the computer to fill in the rest via interpolation or approximation.
+**Keyframing** is an important yet quite "simple" idea of describing motion. The basic idea is to specify important events in our motion only, and let the computer fill in the rest via interpolation or approximation.
 
 ![](./Figures/VisComp_Fig12-1.PNG)
 
@@ -26,7 +26,7 @@ How we describe motion on a computer is probably the most important question to 
 
 ### 8.2.1 Interpolation
 
-The basic idea behin **interpolation** data is to connect the dots, i.e. the given sample points. One such technique is _piecewise linear interpoaltion:_
+The basic idea behind **interpolation** data is to connect the dots, i.e. the given sample points. One such technique is _piecewise linear interpolation:_
 
 ![](./Figures/VisComp_Fig12-2.PNG)
 
@@ -50,7 +50,7 @@ $$
 f(t_i) = f_i \quad \forall i
 $$
 
-The only other condition is that the function is a _polynomial_ when restriczed to any interval between the knots:
+The only other condition is that the function is a _polynomial_ when restricted to any interval between the knots:
 
 $$
 \text{for } t_i \leq t \leq t_{i+1}, \, f(t) = \sum_{j = 1}^d c_it^j =: p_i(t)
@@ -60,7 +60,7 @@ The splines most commonly used for interpolation are _cubic,_ i.e. $d = 3.$
 
 ### 8.2.3 Fitting Cubic Polynomials To Endpoints
 
-If we want to connect two end points with a cubic polynomial, there are many different solutions! Cubic polynomials have four _degrees of freedom,_ namely the four coefficients $(a, \, b, \, c, \, d)$ that we can manipulate and control.
+If we want to connect two end points with a cubic polynomial, there are many solutions! Cubic polynomials have four _degrees of freedom,_ namely the four coefficients $(a, \, b, \, c, \, d)$ that we can manipulate and control.
 
 However, we only need two degrees of freedom to specify the endpoints!
 
@@ -130,11 +130,11 @@ $$
 
 ### 8.3.1 Introduction
 
-**Animation rigs** are user-defined mappings between a small number of parameters and the deformations of a high-res mesh. Animations are simply time trajectories specified for rig parameters.
+**Animation rigs** are user-defined mappings between a few parameters and the deformations of a high-res mesh. Animations are simply time trajectories specified for rig parameters.
 
 ### 8.3.2 Blend Shape Rigs
 
-**Blend Shape rigs** are simple rigs based on a set of meshes (the input). The output is a blenden mesh obtained through interpolation. The splines (or keyframes) specify the blending weights over time.
+**Blend Shape rigs** are simple rigs based on a set of meshes (the input). The output is a blended mesh obtained through interpolation. The splines (or keyframes) specify the blending weights over time.
 
 _Mathematically:_
 
@@ -153,7 +153,7 @@ $$
 
 Very often, shape implies the existence of a _skeleton,_ and a skeleton imposes a lot of structure in ho a character can move.
 
-The key idea behin **skeletal animation** is to animate just the skeleton (much less DOFs), and then have the mesh to follow automatically.
+The key idea behind **skeletal animation** is to animate just the skeleton (much less DOFs), and then have the mesh to follow automatically.
 
 ### 8.3.5 Forward Kinematics
 
@@ -162,7 +162,7 @@ We define _kinematic skeletons_ as follows:
 - Joints: local coordinate frames
 - Bones: vectors between consecutive pairs of joints
 - Each non-root bone defined in the frame of a unique parent
-- Changes to parent frame affects all descendent bones
+- Changes to parent frame affects all descendant bones
 - Both skeleton and skin are designed in a rest pose
 
 Assuming $n+1$ joints $0, \, 1,..., \, n$, where joint $0$ is the root, then each joint corresponds to a frame. $p(j)$ denotes the parent of joint $j$, and the frame of joint $j$ is expressed w.r.t the frame of $p(j)$:
@@ -179,7 +179,7 @@ The transformation from frame $j$ to world is then given by:
 
 ### 8.3.6 Skinning
 
-THe basic idea behind the _skinning process_ is that we simply move the vertices of the skin along with the bones! In a first attempt, we might assign each vertex to the closest bone, compute the world coordinates according to the bone's transformation and move the skin vertices along with it:
+The basic idea behind the _skinning process_ is that we simply move the vertices of the skin along with the bones! In a first attempt, we might assign each vertex to the closest bone, compute the world coordinates according to the bone's transformation and move the skin vertices along with it:
 
 ![](./Figures/VisComp_Fig12-8.PNG)
 
@@ -187,7 +187,7 @@ This process is also called **rigid skinning.**
 
 #### Linear Blend Skinning
 
-The attempt is similar to above, however we assign each vertext to multiple bones, and then compute the world coordinates as a convex combination. Weights define the influence of each bone on the vertex. This leads to an overall smoother deformation of the skin:
+The attempt is similar to above, however we assign each vertex to multiple bones, and then compute the world coordinates as a convex combination. Weights define the influence of each bone on the vertex. This leads to an overall smoother deformation of the skin:
 
 $$
 v = \sum_j \alpha_j \,_wR_j \,_{\bar{w}}\bar{R}_j^{-1}v'
@@ -197,22 +197,22 @@ $$
 
 ### 8.3.7 Inverse Kinematics
 
-**Inverse kinematics** describes the problem that given some position of our character, compute the joint angles. This is one of the msot fundamental techniques in animation and robotics!
+**Inverse kinematics** describes the problem that given some position of our character, compute the joint angles. This is one of the most fundamental techniques in animation and robotics!
 
 The basic idea behind an IK algorithm is as follows:
 
 1. Write down the distance between the final point and the target and set up the objective
-2. Compute the gradiant with respect to angles
+2. Compute the gradient with respect to angles
 3. Go downhill from there
 
 ### 8.3.8 The Uncanny Valley
 
-> The uncanny valley is a concept first introduced in the 1970s by Masahiro Mori, then a professor at the Tokyo Institute of Technology. Mori coined the term “uncanny valley" to describe his observation that as robots appear more humanlike, they become more appealing—but only up to a certain point. Upon reaching the uncanny valley, our affinity descends into a feeling of strangeness, a sense of unease, and a tendency to be scared or freaked out. So the uncanny valley can be defined as people's negative reaction to certain lifelike robots.
+> The uncanny valley is a concept first introduced in the 1970s by Masahiro Mori, then a professor at the Tokyo Institute of Technology. Mori coined the term "uncanny valley" to describe his observation that as robots appear more humanlike, they become more appealing—but only up to a certain point. Upon reaching the uncanny valley, our affinity descends into a feeling of strangeness, a sense of unease, and a tendency to be scared or freaked out. So the uncanny valley can be defined as people's negative reaction to certain lifelike robots.
 
 ![](./Figures/VisComp_Fig12-10.PNG)
 
 ### 8.3.9 Motion Capture
 
-**Motion capture** provides sparse signals, such as marker trajectories, from which a full body motion needs to be recosntructed.
+**Motion capture** provides sparse signals, such as marker trajectories, from which a full body motion needs to be reconstructed.
 
 This is a problem which is often-times posed as an optimization problem, for example in inverse kinematics.
