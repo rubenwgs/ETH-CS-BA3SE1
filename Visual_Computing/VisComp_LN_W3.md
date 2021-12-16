@@ -19,11 +19,15 @@
 
 $L$ is a **linear** operation if:
 
-$$L[\alpha I_1 + \beta I_2] = \alpha L [I_1] + \beta L [I_2]$$
+$$
+L[\alpha I_1 + \beta I_2] = \alpha L [I_1] + \beta L [I_2]
+$$
 
 Linear operations can be written as:
 
-$$I'(x, \, y) = \sum_{(i, \, j) \in \mathcal{N}(x, \, y)} K(x, \, y; \, i, \, j)I(i, \, j)$$
+$$
+I'(x, \, y) = \sum_{(i, \, j) \in \mathcal{N}(x, \, y)} K(x, \, y; \, i, \, j)I(i, \, j)
+$$
 
 Where $I$ is the input image, $I'$ is the output of the operation, and $K$ is the **kernel** of the operation. $\mathcal{N}(m, \, n)$ denotes the _neighborhood_ of $(m, \, n)$.
 
@@ -41,7 +45,9 @@ This would look as follows:
 
 The linear operation of correlation looks as follows:
 
-$$I' = K \circ I \\ I'(x, \, y) = \sum_{(i, \, j) \in \mathcal{N}(x, \, y)}K(i, \, j)I(x+i, \, y + j)$$
+$$
+I' = K \circ I \\ I'(x, \, y) = \sum_{(i, \, j) \in \mathcal{N}(x, \, y)}K(i, \, j)I(x+i, \, y + j)
+$$
 
 This represents the linear weights as an image.
 
@@ -53,7 +59,9 @@ This represents the linear weights as an image.
 
 The linear operation of convolution is given by:
 
-$$I' = K * I \\ I' (x, \, y) = \sum_{(i, \, j) \in \mathcal{N}(x, \, y)}K(i, \, j)I(x-i, \, y-j)$$
+$$
+I' = K * I \\ I' (x, \, y) = \sum_{(i, \, j) \in \mathcal{N}(x, \, y)}K(i, \, j)I(x-i, \, y-j)
+$$
 
 This too represents the linear weights as an image, it is actually the same as correlation, but with a reversed kernel.
 
@@ -65,7 +73,9 @@ This too represents the linear weights as an image, it is actually the same as c
 
 **Separable filters** can be written as $K(m, \, n) = f(m)g(n)$. For a rectangular neighborhood with size $(2M + 1) \times (2N + 1)$, $I'(m, \, n) = f * (g * I(\mathcal{N}(m, \, n)))$. We can rewrite this to:
 
-$$I''(m, \, n) = \sum_{j = -N}^N g(j)I(m, \, n-j) \\ I'(m, \, n) = \sum_{i = -M}^Mf(i)I''(m-i, \, n)$$
+$$
+I''(m, \, n) = \sum_{j = -N}^N g(j)I(m, \, n-j) \\ I'(m, \, n) = \sum_{i = -M}^Mf(i)I''(m-i, \, n)
+$$
 
 ## 3.5 Gaussian Kernel
 
@@ -91,37 +101,45 @@ The top 5 reasons to use Gaussian smoothing are:
 
 - _Prewitt operator:_
 
-$$\begin{bmatrix}
+$$
+\begin{bmatrix}
     -1 & 0 & 1 \\
     -1 & 0 & 1 \\
     -1 & 0 & 1
-\end{bmatrix}$$
+\end{bmatrix}
+$$
 
 - _Sobel operator:_
 
-$$\begin{bmatrix}
+$$
+\begin{bmatrix}
     -1 & 0 & 1 \\
     -2 & 0 & 2 \\
     -1 & 0 & 1
-\end{bmatrix}$$
+\end{bmatrix}
+$$
 
 **High-pass filters**
 
 - _Laplacian operator:_
 
-$$\begin{bmatrix}
+$$
+\begin{bmatrix}
     0 & 1 & 0 \\
     1 & -4 & 1 \\
     0 & 1 & 0
-\end{bmatrix}$$
+\end{bmatrix}
+$$
 
 - _High-pass filter:_
 
-$$\begin{bmatrix}
+$$
+\begin{bmatrix}
     -1 & -1 & -1 \\
     -1 & 8 & -1 \\
     -1 & -1 & -1
-\end{bmatrix}$$
+\end{bmatrix}
+$$
 
 # 4. Image Features
 
@@ -129,14 +147,18 @@ $$\begin{bmatrix}
 
 **Template matching** describes the problem of locating an object, described by a template $t(x, \, y)$, in the image $s(x, \, y)$. This is done by searching for the best match by minimizing mean-squared error:
 
-$$\begin{aligned}
+$$
+\begin{aligned}
     E(p, \, q) &= \sum_{x = - \infty}^{\infty} \sum_{y = - \infty}^{\infty} \lbrack s(x, \, y) - t(x-p, \, y-q) \rbrack^2 \\
     &= \sum_{x = - \infty}^{\infty} \sum_{y = - \infty}^{\infty} |s(x, \, y)|^2 + \sum_{x = - \infty}^{\infty} \sum_{y = - \infty}^{\infty} |t(x, \, y)|^2 - 2 \cdot \sum_{x = - \infty}^{\infty} \sum_{y = - \infty}^{\infty} s(x, \, y) \cdot t(x-p, \, y-q)
-\end{aligned}$$
+\end{aligned}
+$$
 
 Equivalently, we can _maximize_ the **area correlation**:
 
-$$r(p, \, q) = \sum_{x = - \infty}^{\infty} \sum_{y = - \infty}^{\infty} s(x, \, y) \cdot t(x-p, \, y-q) = s(p, \, q) * t(-p, \, -q)$$
+$$
+r(p, \, q) = \sum_{x = - \infty}^{\infty} \sum_{y = - \infty}^{\infty} s(x, \, y) \cdot t(x-p, \, y-q) = s(p, \, q) * t(-p, \, -q)
+$$
 
 The area correlation is equivalent to the convolution of image $s(x, \, y)$ with impulse response $t(-x, \, -y)$.
 
@@ -144,7 +166,9 @@ The area correlation is equivalent to the convolution of image $s(x, \, y)$ with
 
 One idea, in a continuous-space, is to detect the local gradient:
 
-$$|\text{grad}(f(x, \, y))| = \sqrt{\lparen \frac{\partial f}{\partial x} \rparen^2 + \lparen \frac{\partial f}{\partial y} \rparen^2}$$
+$$
+|\text{grad}(f(x, \, y))| = \sqrt{\lparen \frac{\partial f}{\partial x} \rparen^2 + \lparen \frac{\partial f}{\partial y} \rparen^2}
+$$
 
 We mostly use the following **edge detection filters**:
 
@@ -154,13 +178,16 @@ We mostly use the following **edge detection filters**:
 
 The idea of a **Laplacian operator** is to detect discontinuities by considering the second derivative and searching for _zero-crossings_ (those mark edge locations):
 
-$$\nabla^2 f(x, \, y) = \frac{\partial^2 fx, \, y()}{\partial x^2} + \frac{\partial^2 f(x, \, y)}{\partial y^2}$$
+$$
+\nabla^2 f(x, \, y) = \frac{\partial^2 fx, \, y()}{\partial x^2} + \frac{\partial^2 f(x, \, y)}{\partial y^2}
+$$
 
 ![](./Figures/VisComp_Fig3-6.PNG)
 
 We can do a _discrete-space approximation_ by convolution with a $3 \times 3$ impulse response:
 
-$$\begin{bmatrix}
+$$
+\begin{bmatrix}
     0 & 1 & 0 \\
     1 & -4 & 1 \\
     0 & 1 & 0
@@ -168,7 +195,8 @@ $$\begin{bmatrix}
     1 & 1 & 1 \\
     1 & -8 & 1 \\
     1 & 1 & 1
-\end{bmatrix}$$
+\end{bmatrix}
+$$
 
 However, the Laplacian operator is sensitive to very fine detail and noise, so we might want to blur the image first.
 
@@ -176,7 +204,9 @@ However, the Laplacian operator is sensitive to very fine detail and noise, so w
 
 Blurring the image with Gaussian and Laplacian operator can be combined into convolution with **Laplacian of Gaussian operator** (LoG):
 
-$$\text{LoG}(x, \, y) = - \frac{1}{\pi \sigma^4} \lbrack 1 - \frac{x^2 + y^2}{2 \sigma^2} \rbrack exp \lparen - \frac{x^2 + y^2}{2 \sigma^2} \rparen$$
+$$
+\text{LoG}(x, \, y) = - \frac{1}{\pi \sigma^4} \lbrack 1 - \frac{x^2 + y^2}{2 \sigma^2} \rbrack exp \lparen - \frac{x^2 + y^2}{2 \sigma^2} \rparen
+$$
 
 ### 4.2.2 Canny Edge Detector
 
@@ -185,7 +215,9 @@ The **Canny edge detector** works with the following steps:
 1. Smooth the image with a Gaussian filter
 2. Compute the gradient magnitude and angle (Sobel, Prewitt, etc.):
 
-$$M(x, \, y) = \sqrt{\lparen \frac{\partial f}{\partial x} \rparen^2 + \lparen \frac{\partial f}{\partial y} \rparen^2} \quad \text{and} \quad \alpha(x, \, y) = \tan^{-1} \lparen \frac{\partial f}{\partial y} \big / \frac{\partial f}{\partial x} \rparen$$
+$$
+M(x, \, y) = \sqrt{\lparen \frac{\partial f}{\partial x} \rparen^2 + \lparen \frac{\partial f}{\partial y} \rparen^2} \quad \text{and} \quad \alpha(x, \, y) = \tan^{-1} \lparen \frac{\partial f}{\partial y} \big / \frac{\partial f}{\partial x} \rparen
+$$
 
 3. Apply nonmaxima suppression to gradient magnitude image
 4. Double thresholding to detect strong and weak edge pixels
@@ -249,7 +281,9 @@ We have that $SSD \simeq \delta^T M \delta$. Now if we shift our patterns over t
 
 Now we want to find points for which the following is large:
 
-$$\min \delta^T M \delta \text{ for } ||\delta || = 1$$
+$$
+\min \delta^T M \delta \text{ for } ||\delta || = 1
+$$
 
 i.e. we want to maximize the eigenvalues of $M$.
 
