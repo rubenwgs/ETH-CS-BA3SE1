@@ -12,7 +12,7 @@
 
 **Computer graphics** describes the use of computers to synthesize and manipulate visual information.
 
-It is used in many, if not all of the movies we see today to synthesize movie scenes which are fictional or too expensive to shoot in real life.
+It is used in many, if not all the movies we see today to synthesize movie scenes which are fictional or too expensive to shoot in real life.
 
 In general, computer graphics is about building computational models of the real world!
 
@@ -97,15 +97,15 @@ D: (3/4, 1)         H: (1/2, 2/3)
 ### 1.5.1 Introduction
 
 Considering we have solved our cube representation, a natural question to ask would be how a computer can draw lines.
-A common abstraction is that a image is represented as a _2D grid of pixels._ Each pixel can take on a unique color value.
+A common abstraction is that an image is represented as a _2D grid of pixels._ Each pixel can take on a unique color value.
 
-**Rasterization** describes the process of converting a continuous object to a discrete representation on a pixel grid (or _raster grid_). However this approach leads to a fundamental question which we must solve: Which pixels should we color in to depict the line?
+**Rasterization** describes the process of converting a continuous object to a discrete representation on a pixel grid (or _raster grid_). However, this approach leads to a fundamental question which we must solve: Which pixels should we color in to depict the line?
 
 1. One simple approach is to light up all pixels intersected by the line:
 
 ![](./Figures/VisComp_Fig8-4.PNG)
 
-2. In modern graphics hardware, we use a approached called the _diamond rule:_
+2. In modern graphics hardware, we use an approached called the _diamond rule:_
 
 ![](./Figures/VisComp_Fig8-5.PNG)
 
@@ -167,20 +167,20 @@ _Example:_
 
 ![](./Figures/VisComp_Fig8-7.PNG)
 
-But what do we do with pixels that are only _partially covered_ by the triangle? One option is to compute the fraction of pixel area which is covered by the triangle, and then colo the pixel according to this fraction:
+But what do we do with pixels that are only _partially covered_ by the triangle? One option is to compute the fraction of pixel area which is covered by the triangle, and then color the pixel according to this fraction:
 
 ![](./Figures/VisComp_Fig8-8.PNG)
 
 However, computing the area covered by a triangle can get tricky very fast, for example when dealing with the interactions between multiple triangles.
-We may estiamte the amount of overlap between a triangle and a pixel through _sampling._
+We may estimate the amount of overlap between a triangle and a pixel through _sampling._
 
 ## 2.4 Sampling 101
 
-Consider a continuous functions and 5 discrete measurement, our _samples:_
+Consider a continuous function and 5 discrete measurement, our _samples:_
 
 ![](./Figures/VisComp_Fig8-9.PNG)
 
-We can _reconstruct_ (or approximate) our original continuous functions with our descrete values through **sampling.**
+We can _reconstruct_ (or approximate) our original continuous functions with our discrete values through **sampling.**
 
 ### 2.4.1 Piecewise Constant Approximation
 
@@ -188,7 +188,7 @@ We define the reconstructed function $f_{recon}(x)$ to be the value of the sampl
 
 ![](./Figures/VisComp_Fig8-10.PNG)
 
-### 2.4.2 Picewise Linear Approximation
+### 2.4.2 Piecewise Linear Approximation
 
 We define the reconstructed function $f_{recon}(x)$ to be the linear interpolation between two samples closest to $x$.
 
@@ -196,13 +196,13 @@ We define the reconstructed function $f_{recon}(x)$ to be the linear interpolati
 
 ### 2.4.3 More Accuracy
 
-The simplest and most obvious way to reconstruct our original 1D signal more accurately is to sample the signal more densly, i.e. to _increase the sampling rate._
+The simplest and most obvious way to reconstruct our original 1D signal more accurately is to sample the signal more densely, i.e. to _increase the sampling rate._
 
 ![](./Figures/VisComp_Fig8-12.PNG)
 
 ### 2.4.4 Mathematical Representation Of Sampling
 
-Consider the _dirac delta:_
+Consider the _Dirac delta:_
 
 $$
 \begin{align*}
@@ -211,13 +211,13 @@ $$
 \end{align*}
 $$
 
-A _impulse_ has a **sifting property** which we define as follows:
+An _impulse_ has a **sifting property** which we define as follows:
 
 $$
 \int_{- \infty}^{\infty} f(x)\delta(x-a) \, dx = f(a),
 $$
 
-with an impulse occuring at $x = a$. Sampling the function is equivalent to multiplying it (inner product) by the Dirac delta!
+with an impulse occurring at $x = a$. Sampling the function is equivalent to multiplying it (inner product) by the Dirac delta!
 
 #### Reconstruction As Convolution
 
@@ -252,7 +252,7 @@ When an edge falls directly on a screen sample point, the sample is classified a
 
 ### 2.6.1 1D Example
 
-**Aliasing** describes the observation that high frequencies in a original signal masquerade as low frequencies after reconstruction due to undersampling:
+**Aliasing** describes the observation that high frequencies in an original signal masquerade as low frequencies after reconstruction due to undersampling:
 
 ![](./Figures/VisComp_Fig8-17.PNG)
 
@@ -276,7 +276,7 @@ However, we now have more samples than pixels! This means we have to **resample*
 
 ### 2.7.1 Point-In-Triangle Test
 
-To decide whether a sample point is inside the triangle we have to test whether it is "inside" all of the three edges of the triangle.
+To decide whether a sample point is inside the triangle we have to test whether it is "inside" all the three edges of the triangle.
 
 For a point with the tree vertices $P_0, \, P_1, \, P_2$, we define:
 
@@ -306,6 +306,6 @@ Another approach is based on the idea that rather than testing all possible poin
 
 ### 2.7.3 Tiled Triangle Traversal
 
-A moder approach is to traverse the triangle in blocks. We test all samples in the block against the triangle in parallel:
+A modern approach is to traverse the triangle in blocks. We test all samples in the block against the triangle in parallel:
 
 ![](./Figures/VisComp_Fig8-21.PNG)
