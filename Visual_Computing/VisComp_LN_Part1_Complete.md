@@ -1,5 +1,3 @@
-**WORK IN PROGRESS**
-
 **Visual Computing - Lecture notes week 1**
 
 - Author: Ruben Schenk
@@ -66,15 +64,15 @@ There are several things where pictures can come from:
 
 Simplified, the **digital camera** consists of the following parts and is said to be a _Charge Coupled Device (CCD)_:
 
-![](./Figures/VisComp_Fig1-1.PNG)
+<img src="./Figures/VisComp_Fig1-1.PNG" style="zoom:50%;" />
 
-The **sensor array** can be < 1 cm^2 and is an array of _photosites_. Each photosite is a bucket of electrical charge, and this charge is proportional to the incident light intensity during the exposure.
+The **sensor array** can be < 1 cm^2 and is an array of _photosites_. Each photosite is a bucket of electrical charge, and this charge is proportional to the incident light intensity during the exposure.
 
 The **analog to digital conversion (ADC)** measure the charge and digitizes the result. The conversion happens line by line in that charges in each photosite move down through the sensor array.
 
 Example:
 
-![](./Figures/VisComp_Fig1-2.PNG)
+<img src="./Figures/VisComp_Fig1-2.PNG" style="zoom:50%;" />
 
 Because each bucket has a finite capacity, if a photosite bucket is full, it can overflow to other buckets, which leads to **blooming**.
 
@@ -115,7 +113,7 @@ By resetting each line in the sensor line by line (the "shutter"), each line wil
 
 Example:
 
-![](./Figures/VisComp_Fig1-3.PNG)
+<img src="./Figures/VisComp_Fig1-3.PNG" style="zoom:50%;" />
 
 Sampling solves one problem with working with continuous functions. How do we store and compute with them? A common scheme for representing continuous functions is with **samples**: we simply write down the function's values as discrete values at many sample points.
 
@@ -135,15 +133,15 @@ Example: If we undersample the following `sin` wave, it gets indistinguishable f
 
 _Sample:_
 
-![](./Figures/VisComp_Fig1-4.PNG)
+<img src="./Figures/VisComp_Fig1-4.PNG" style="zoom:50%;" />
 
 _Reconstruction 1:_
 
-![](./Figures/VisComp_Fig1-5.PNG)
+<img src="./Figures/VisComp_Fig1-5.PNG" style="zoom:50%;" />
 
 _Reconstruction 2:_
 
-![](./Figures/VisComp_Fig1-6.PNG)
+<img src="./Figures/VisComp_Fig1-6.PNG" style="zoom:50%;" />
 
 This effect is what we call **aliasing**, i.e. _"Signals travelling in disguise as other frequencies"_.
 
@@ -155,11 +153,11 @@ Example:
 
 _Function:_
 
-![](./Figures/VisComp_Fig1-7.PNG)
+<img src="./Figures/VisComp_Fig1-7.PNG" style="zoom: 67%;" />
 
 _Sample:_
 
-![](./Figures/VisComp_Fig1-8.PNG)
+<img src="./Figures/VisComp_Fig1-8.PNG" style="zoom: 67%;" />
 
 ### Reconstruction
 
@@ -167,7 +165,7 @@ In 2D, a simple way to reconstruct a function from a sample is to use **bilinear
 
 Example:
 
-![](./Figures/VisComp_Fig1-9.PNG)
+<img src="./Figures/VisComp_Fig1-9.PNG" style="zoom: 67%;" />
 
 ## 1.6 Nyquist Frequency
 
@@ -209,17 +207,17 @@ Tells us how much information each pixel can store.
 
 A common model is the **additive Gaussian noise**, which means that we measure some signal with our processor but have some deviation/noise in our measurement:
 
-![](./Figures/VisComp_Fig1-10.PNG)
+<img src="./Figures/VisComp_Fig1-10.PNG" style="zoom: 67%;" />
 
 One might also use the much more meaningful assumption of **Poisson noise**:
 
-![](./Figures/VisComp_Fig1-11.PNG)
+<img src="./Figures/VisComp_Fig1-11.PNG" style="zoom:67%;" />
 
 ### SNR
 
-The **signal to noise ration (SNR)** `s` is an index of image quality:
+The **signal-to-noise ration (SNR)** `s` is an index of image quality:
 
-![](./Figures/VisComp_Fig1-12.PNG)
+<img src="./Figures/VisComp_Fig1-12.PNG" style="zoom:67%;" />
 
 **Visual Computing - Lecture notes week 2**
 
@@ -261,7 +259,7 @@ For static scenes, we can rotate multiple filters in front of the lens. This all
 
 ### Color CMOS sensor (Foveon's X3)
 
-![](./Figures/VisComp_Fig2-1.PNG)
+<img src="./Figures/VisComp_Fig2-1.PNG" style="zoom: 75%;" />
 
 In contrast to a filter mosaic, we truly measure each color at each pixel, instead of either red, blue or green per pixel.
 
@@ -275,7 +273,7 @@ In contrast to a filter mosaic, we truly measure each color at each pixel, inste
 
 A _complete segmentation_ of an image `I` is a finite set of regions `R_1,..., R_N`, such that:
 
-![](./Figures/VisComp_Fig2-2.PNG)
+<img src="./Figures/VisComp_Fig2-2.PNG" style="zoom:67%;" />
 
 _Excluding dark pixels from an image:_
 
@@ -299,7 +297,7 @@ The **quality** of a segmentation depends on what you want to do with it. Segmen
 
 **Thresholding** is a simple segmentation process. It produces a binary image `B` by labeling each pixel in or out of the region of interest by comparison of the graylevel with a threshold `T`:
 
-![](./Figures/VisComp_Fig2-3.PNG)
+<img src="./Figures/VisComp_Fig2-3.PNG" style="zoom:67%;" />
 
 ### How do we choose T?
 
@@ -315,7 +313,7 @@ If we can control the background of a picture, segmentation becomes easier. Assu
 
 **Chromakeying** describes the process of plain distance measuring, in this case for green:
 
-![](./Figures/VisComp_Fig2-4.PNG)
+<img src="./Figures/VisComp_Fig2-4.PNG" style="zoom:50%;" />
 
 This has some problems:
 
@@ -335,7 +333,7 @@ On way which can make segmentation easier is to **normalize colors** (per pixel)
 
 A **Receiver Operating Characteristic (ROC)** curve characterizes the performance of a binary classifier. A binary classifier distinguishes between two different types of things, e.g.:
 
-- Healty/afflicted patients
+- Healthy/afflicted patients
 - Pregnancy tests
 - Object detection
 - Foreground/background image pixels
@@ -363,7 +361,7 @@ The **ROC curve** characterizes the error trade-off in binary classification tas
 
 The result could look something like this:
 
-![](./Figures/VisComp_Fig2-5.PNG)
+<img src="./Figures/VisComp_Fig2-5.PNG" style="zoom: 50%;" />
 
 ### Operating points
 
@@ -376,7 +374,7 @@ We can choose an **operating point** by assigning relative costs and values to e
 
 When we assigned these costs, we can choose the point on the ROC curve with **gradient**:
 
-![](./Figures/VisComp_Fig2-6.PNG)
+<img src="./Figures/VisComp_Fig2-6.PNG" style="zoom:50%;" />
 
 For simplicity, we often set `V_TN = V_TP = 0`.
 ¨
@@ -395,7 +393,7 @@ We need to define which pixels are connected/neighbors.
 
 We define two different types of **pixel neighborhoods**:
 
-![](./Figures/VisComp_Fig2-7.PNG)
+<img src="./Figures/VisComp_Fig2-7.PNG" style="zoom:50%;" />
 
 ### Pixel paths
 
@@ -446,11 +444,102 @@ There are three key indicators which lead to variation:
 
 **Seed selection** can happen in different ways. This may be either by hand (point and click), or automatically by conservative thresholding.
 
-The **inclusion criteria** could either be done by greylevel thresholding or by a _greylevel distribution model_:
+The **inclusion criteria** could either be done by graylevel thresholding or by a _graylevel distribution model_:
 
 - Use mean `mu` and standard deviation `sigma` in seed region and then:
   - include if `(I(x, y) - mu)^2 < (n sigma)^2` (with for example `n = 3`)
   - this also leads to the ability to update the mean and standard deviation after every iteration
+
+### Snakes
+
+A **snake** is an active contour. It is a polygon, i.e., an ordered set of points joined up by lines. Each point on the contour moves away from the seed while its image neighborhood satisfies an inclusion criterion.
+
+## 2.8 Distance Measures
+
+With a **plain background-subtraction metric** we do the following calculations:
+
+- `I_alpha = | I - I_bg | > T`
+- `T = [20 20 10]` (for example)
+- `I_bg` is the background image
+
+The background image is obtained by a "previous image", for example before a car drives into the scene. The color of the background is determined on a per-pixel basis.
+
+When possible, we should fit a Gaussian model per pixel, just as we did for an entire green-screen. This leads to the following, better way of doing distance measurements:
+
+<img src="./Figures/VisComp_Fig2-8.PNG" style="zoom: 25%;" />
+
+## 2.9 Spatial Relations
+
+We introduce the concept of **Markov Random Field** for spatial relations:
+
+- _Markov chains_ have a 1D structure. At every time, there is one state (which enables use of dynamic programming)
+- _Markov Random Fields_ break this 1D structure. It is a field of sites, each of which has a label. The labels at one site depend on others, there are no 1D structure dependencies.
+
+### Solving MRFs with graph cuts
+
+_something something_
+
+## 2.10 Morphological Operations
+
+**Morphological operators** are local pixel transformers for processing region shapes. They are most often used on binary images. Logical transformations are based on comparison of pixel neighborhoods with a pattern.
+
+### Example: 8-neighbor erode
+
+The **8-neighbor erode** works by simply erasing any foreground pixel that has one eight-connected neighbor that belongs to the background.
+
+_Example:_
+
+<img src="./Figures/VisComp_Fig2-9.PNG" style="zoom: 33%;" />
+
+The contrast to this function is the **8-neighbor dilate**, where we simply paint any background pixel that has one 8-connected neighbor that is foreground.
+
+### Structuring elements
+
+Morphological operations take two arguments:
+
+- A binary image
+- A structuring element
+
+We compare the structuring element to the neighborhood of each pixel, which determines the output of the morphological operation.
+
+We can think of **binary images** and the structuring elements as _sets_ containing the pixels with value `1`.
+
+<img src="./Figures/VisComp_Fig2-10.PNG" style="zoom: 33%;" />
+
+### Fitting, Hitting and Missing
+
+We define the following three terms:
+
+- `S` _fits_ `I` at `x` if `{y : y = x + s, s in S} subset I`
+- `S` _hits_ `I` at `x` if `{y : y = x - s, s in S} intersection I != emptyset`
+- `S` _misses_ `I` at `x` if `{y : y = x - s, s in S} intersection I = emptyset`
+
+### Erosion
+
+The image `E = I circ- S` is the **erosion** of image `I` by structuring element `S`:
+
+<img src="./Figures/VisComp_Fig2-11.PNG" style="zoom:25%;" />
+
+### Opening and Closing
+
+The **opening** of `I` by `S` is defined by:
+
+<img src="./Figures/VisComp_Fig2-12.PNG" style="zoom:25%;" />
+
+The **closing** of `I` by `S` is defined by:
+
+<img src="./Figures/VisComp_Fig2-13.PNG" style="zoom:25%;" />
+
+### Skeletonization and the Medial Axis Transform
+
+The **skeleton** and **medial axis transform (MAT)** are stick-figure representations of a region `X subset R^2`.
+Simply speaking, one might start a "grass fire" at the boundary of the region, and the skeleton is then defined as the set of points at which two fire fronts meet.
+
+Example:
+
+<img src="./Figures/VisComp_Fig2-14.PNG" style="zoom:33%;" />
+
+With a **medial axis transform** you remember for each point on the skeleton the distance you travelled to get to that point. This way, the whole shape can be reconstructed from a MAT.
 
 **Visual Computing - Lecture notes week 3**
 
@@ -473,11 +562,15 @@ The **inclusion criteria** could either be done by greylevel thresholding or by 
 
 $L$ is a **linear** operation if:
 
-$$L[\alpha I_1 + \beta I_2] = \alpha L [I_1] + \beta L [I_2]$$
+$$
+L[\alpha I_1 + \beta I_2] = \alpha L [I_1] + \beta L [I_2]
+$$
 
 Linear operations can be written as:
 
-$$I'(x, \, y) = \sum_{(i, \, j) \in \mathcal{N}(x, \, y)} K(x, \, y; \, i, \, j)I(i, \, j)$$
+$$
+I'(x, \, y) = \sum_{(i, \, j) \in \mathcal{N}(x, \, y)} K(x, \, y; \, i, \, j)I(i, \, j)
+$$
 
 Where $I$ is the input image, $I'$ is the output of the operation, and $K$ is the **kernel** of the operation. $\mathcal{N}(m, \, n)$ denotes the _neighborhood_ of $(m, \, n)$.
 
@@ -491,11 +584,13 @@ In this approach, we take a **correlation mask** and apply it to an image.
 
 This would look as follows:
 
-![](./Figures/VisComp_Fig3-1.PNG)
+<img src="./Figures/VisComp_Fig3-1.PNG" style="zoom: 67%;" />
 
 The linear operation of correlation looks as follows:
 
-$$I' = K \circ I \\ I'(x, \, y) = \sum_{(i, \, j) \in \mathcal{N}(x, \, y)}K(i, \, j)I(x+i, \, y + j)$$
+$$
+I' = K \circ I \\ I'(x, \, y) = \sum_{(i, \, j) \in \mathcal{N}(x, \, y)}K(i, \, j)I(x+i, \, y + j)
+$$
 
 This represents the linear weights as an image.
 
@@ -503,29 +598,33 @@ This represents the linear weights as an image.
 
 > Compared to correlation, where we looked at the neighborhood of a pixel and applied what we learned from the neighborhood to the single pixel, in convolution we look at a single pixel and apply what we can learn from it to its neighborhood.
 
-![](./Figures/VisComp_Fig3-2.PNG)
+<img src="./Figures/VisComp_Fig3-2.PNG" style="zoom:67%;" />
 
 The linear operation of convolution is given by:
 
-$$I' = K * I \\ I' (x, \, y) = \sum_{(i, \, j) \in \mathcal{N}(x, \, y)}K(i, \, j)I(x-i, \, y-j)$$
+$$
+I' = K * I \\ I' (x, \, y) = \sum_{(i, \, j) \in \mathcal{N}(x, \, y)}K(i, \, j)I(x-i, \, y-j)
+$$
 
 This too represents the linear weights as an image, it is actually the same as correlation, but with a reversed kernel.
 
 ### 3.3.1 Correlation vs Convolution
 
-![](./Figures/VisComp_Fig3-3.PNG)
+<img src="./Figures/VisComp_Fig3-3.PNG" style="zoom:67%;" />
 
 ## 3.4 Separable Kernels
 
 **Separable filters** can be written as $K(m, \, n) = f(m)g(n)$. For a rectangular neighborhood with size $(2M + 1) \times (2N + 1)$, $I'(m, \, n) = f * (g * I(\mathcal{N}(m, \, n)))$. We can rewrite this to:
 
-$$I''(m, \, n) = \sum_{j = -N}^N g(j)I(m, \, n-j) \\ I'(m, \, n) = \sum_{i = -M}^Mf(i)I''(m-i, \, n)$$
+$$
+I''(m, \, n) = \sum_{j = -N}^N g(j)I(m, \, n-j) \\ I'(m, \, n) = \sum_{i = -M}^Mf(i)I''(m-i, \, n)
+$$
 
 ## 3.5 Gaussian Kernel
 
 The idea of the **Gaussian kernel** is that we weight the contributions of neighboring pixels by their nearness:
 
-![](./Figures/VisComp_Fig3-4.PNG)
+<img src="./Figures/VisComp_Fig3-4.PNG" style="zoom:67%;" />
 
 ### 3.5.1 Gaussian Smoothing Kernels
 
@@ -545,37 +644,45 @@ The top 5 reasons to use Gaussian smoothing are:
 
 - _Prewitt operator:_
 
-$$\begin{bmatrix}
+$$
+\begin{bmatrix}
     -1 & 0 & 1 \\
     -1 & 0 & 1 \\
     -1 & 0 & 1
-\end{bmatrix}$$
+\end{bmatrix}
+$$
 
 - _Sobel operator:_
 
-$$\begin{bmatrix}
+$$
+\begin{bmatrix}
     -1 & 0 & 1 \\
     -2 & 0 & 2 \\
     -1 & 0 & 1
-\end{bmatrix}$$
+\end{bmatrix}
+$$
 
 **High-pass filters**
 
 - _Laplacian operator:_
 
-$$\begin{bmatrix}
+$$
+\begin{bmatrix}
     0 & 1 & 0 \\
     1 & -4 & 1 \\
     0 & 1 & 0
-\end{bmatrix}$$
+\end{bmatrix}
+$$
 
 - _High-pass filter:_
 
-$$\begin{bmatrix}
+$$
+\begin{bmatrix}
     -1 & -1 & -1 \\
     -1 & 8 & -1 \\
     -1 & -1 & -1
-\end{bmatrix}$$
+\end{bmatrix}
+$$
 
 # 4. Image Features
 
@@ -583,14 +690,18 @@ $$\begin{bmatrix}
 
 **Template matching** describes the problem of locating an object, described by a template $t(x, \, y)$, in the image $s(x, \, y)$. This is done by searching for the best match by minimizing mean-squared error:
 
-$$\begin{aligned}
+$$
+\begin{aligned}
     E(p, \, q) &= \sum_{x = - \infty}^{\infty} \sum_{y = - \infty}^{\infty} \lbrack s(x, \, y) - t(x-p, \, y-q) \rbrack^2 \\
     &= \sum_{x = - \infty}^{\infty} \sum_{y = - \infty}^{\infty} |s(x, \, y)|^2 + \sum_{x = - \infty}^{\infty} \sum_{y = - \infty}^{\infty} |t(x, \, y)|^2 - 2 \cdot \sum_{x = - \infty}^{\infty} \sum_{y = - \infty}^{\infty} s(x, \, y) \cdot t(x-p, \, y-q)
-\end{aligned}$$
+\end{aligned}
+$$
 
 Equivalently, we can _maximize_ the **area correlation**:
 
-$$r(p, \, q) = \sum_{x = - \infty}^{\infty} \sum_{y = - \infty}^{\infty} s(x, \, y) \cdot t(x-p, \, y-q) = s(p, \, q) * t(-p, \, -q)$$
+$$
+r(p, \, q) = \sum_{x = - \infty}^{\infty} \sum_{y = - \infty}^{\infty} s(x, \, y) \cdot t(x-p, \, y-q) = s(p, \, q) * t(-p, \, -q)
+$$
 
 The area correlation is equivalent to the convolution of image $s(x, \, y)$ with impulse response $t(-x, \, -y)$.
 
@@ -598,23 +709,28 @@ The area correlation is equivalent to the convolution of image $s(x, \, y)$ with
 
 One idea, in a continuous-space, is to detect the local gradient:
 
-$$|\text{grad}(f(x, \, y))| = \sqrt{\lparen \frac{\partial f}{\partial x} \rparen^2 + \lparen \frac{\partial f}{\partial y} \rparen^2}$$
+$$
+|\text{grad}(f(x, \, y))| = \sqrt{\lparen \frac{\partial f}{\partial x} \rparen^2 + \lparen \frac{\partial f}{\partial y} \rparen^2}
+$$
 
 We mostly use the following **edge detection filters**:
 
-![](./Figures/VisComp_Fig4-1.PNG)
+<img src="./Figures/VisComp_Fig3-5.PNG" style="zoom:67%;" />
 
 ### 4.2.1 Laplacian Operator
 
 The idea of a **Laplacian operator** is to detect discontinuities by considering the second derivative and searching for _zero-crossings_ (those mark edge locations):
 
-$$\nabla^2 f(x, \, y) = \frac{\partial^2 fx, \, y()}{\partial x^2} + \frac{\partial^2 f(x, \, y)}{\partial y^2}$$
+$$
+\nabla^2 f(x, \, y) = \frac{\partial^2 fx, \, y()}{\partial x^2} + \frac{\partial^2 f(x, \, y)}{\partial y^2}
+$$
 
-![](./Figures/VisComp_Fig4-2.PNG)
+<img src="./Figures/VisComp_Fig3-6.PNG" style="zoom: 67%;" />
 
 We can do a _discrete-space approximation_ by convolution with a $3 \times 3$ impulse response:
 
-$$\begin{bmatrix}
+$$
+\begin{bmatrix}
     0 & 1 & 0 \\
     1 & -4 & 1 \\
     0 & 1 & 0
@@ -622,7 +738,8 @@ $$\begin{bmatrix}
     1 & 1 & 1 \\
     1 & -8 & 1 \\
     1 & 1 & 1
-\end{bmatrix}$$
+\end{bmatrix}
+$$
 
 However, the Laplacian operator is sensitive to very fine detail and noise, so we might want to blur the image first.
 
@@ -630,7 +747,9 @@ However, the Laplacian operator is sensitive to very fine detail and noise, so w
 
 Blurring the image with Gaussian and Laplacian operator can be combined into convolution with **Laplacian of Gaussian operator** (LoG):
 
-$$\text{LoG}(x, \, y) = - \frac{1}{\pi \sigma^4} \lbrack 1 - \frac{x^2 + y^2}{2 \sigma^2} \rbrack exp \lparen - \frac{x^2 + y^2}{2 \sigma^2} \rparen$$
+$$
+\text{LoG}(x, \, y) = - \frac{1}{\pi \sigma^4} \lbrack 1 - \frac{x^2 + y^2}{2 \sigma^2} \rbrack exp \lparen - \frac{x^2 + y^2}{2 \sigma^2} \rparen
+$$
 
 ### 4.2.2 Canny Edge Detector
 
@@ -639,7 +758,9 @@ The **Canny edge detector** works with the following steps:
 1. Smooth the image with a Gaussian filter
 2. Compute the gradient magnitude and angle (Sobel, Prewitt, etc.):
 
-$$M(x, \, y) = \sqrt{\lparen \frac{\partial f}{\partial x} \rparen^2 + \lparen \frac{\partial f}{\partial y} \rparen^2} \quad \text{and} \quad \alpha(x, \, y) = \tan^{-1} \lparen \frac{\partial f}{\partial y} \big / \frac{\partial f}{\partial x} \rparen$$
+$$
+M(x, \, y) = \sqrt{\lparen \frac{\partial f}{\partial x} \rparen^2 + \lparen \frac{\partial f}{\partial y} \rparen^2} \quad \text{and} \quad \alpha(x, \, y) = \tan^{-1} \lparen \frac{\partial f}{\partial y} \big / \frac{\partial f}{\partial x} \rparen
+$$
 
 3. Apply nonmaxima suppression to gradient magnitude image
 4. Double thresholding to detect strong and weak edge pixels
@@ -669,17 +790,17 @@ It works the following way:
 
 1. For an edge pixel in the $(x, \, y)$ plane we can draw the different lines that cross the edge pixel (all lines have the form $y = mx + c$). We can draw the $m$ and $c$ values in a $(m, \, c)$ plane and see that all those lines are linearly dependent:
 
-![](./Figures/VisComp_Fig4-3.PNG)
+<img src="./Figures/VisComp_Fig3-7.PNG" style="zoom:67%;" />
 
 2. If we have multiple edge pixels, we can do the same procedure for each of those, giving us a line in the $(m, \, c)$ plane for each edge pixel.
 3. We then subdivide the $(m, \, c)$ plane into discrete "bins" and initialize the bin count of each bin to $0$. Each time a bin is crossed by one of the lines of the different edge pixels, we increase its count by one.
 4. We then simply have to detect the peaks in the $(m, \, c)$ plane to get our fitted straight line:
 
-![](./Figures/VisComp_Fig4-4.PNG)
+<img src="./Figures/VisComp_Fig3-8.PNG" style="zoom:67%;" />
 
 We might encounter an infinite-slope problem, which can be avoided with an alternative parameterization:
 
-![](./Figures/VisComp_Fig4-5.PNG)
+<img src="./Figures/VisComp_Fig3-9.PNG" style="zoom: 33%;" />
 
 ## 4.3 Detecting Corner Points
 
@@ -693,17 +814,19 @@ The desirable properties of a corner detector are:
 
 *something something what patterns can be localized most accurately?*
 
-![](./Figures/VisComp_Fig4-6.PNG)
+<img src="./Figures/VisComp_Fig3-10.PNG" style="zoom: 67%;" />
 
 ### 4.3.1 Feature Point Extraction
 
 We have that $SSD \simeq \delta^T M \delta$. Now if we shift our patterns over the picture, we assume it to change the following way:
 
-![](./Figures/VisComp_Fig4-7.PNG)
+<img src="./Figures/VisComp_Fig3-11.PNG" style="zoom:67%;" />
 
 Now we want to find points for which the following is large:
 
-$$\min \delta^T M \delta \text{ for } ||\delta || = 1$$
+$$
+\min \delta^T M \delta \text{ for } ||\delta || = 1
+$$
 
 i.e. we want to maximize the eigenvalues of $M$.
 
@@ -711,7 +834,7 @@ i.e. we want to maximize the eigenvalues of $M$.
 
 *something something*
 
-![](./Figures/VisComp_Fig4-8.PNG)
+<img src="./Figures/VisComp_Fig3-12.PNG" style="zoom: 67%;" />
 
 **Visual Computing - Lecture notes week 4**
 
@@ -727,11 +850,15 @@ The idea of the **Fourier Transform** is to represent functions in a new basis. 
 
 In the expressions, $u$ and $v$ select the basis elements, so a function of $x$ and $y$ becomes a function of $u$ and $v$. The **basis elements** have the form $e^{-i2 \pi (ux + vy)} = \cos 2 \pi (ux + vy) - i \sin 2 \pi (ux + vy)$. Or:
 
-$$F(g(x, \, y))(u, \, v) = \int \int_{\mathbb{R}^2} g(x, \, y)e^{i2 \pi (ux + vy)}\text{d}x \text{dy}$$
+$$
+F(g(x, \, y))(u, \, v) = \int \int_{\mathbb{R}^2} g(x, \, y)e^{i2 \pi (ux + vy)}\text{d}x \text{dy}
+$$
 
-The **discrete fourier transform** therefore is of the form:
+The **discrete Fourier transform** therefore is of the form:
 
-$$F = Uf$$
+$$
+F = Uf
+$$
 
 where:
 
@@ -741,7 +868,7 @@ where:
 
 ## 5.2 Fourier Basis Functions
 
-![](./Figures/VisComp_Fig4-1.PNG)
+<img src="./Figures/VisComp_Fig4-1.PNG" style="zoom: 33%;" />
 
 ## 5.3 Phase and Magnitude
 
@@ -763,13 +890,15 @@ The idea of **sampling** is to go from a continuous world to a discrete world, i
 
 For example, we might want to be able to approximate integrals sensibly.
 
-$$\text{Sample}_{\text{2D}}(f(x, \, y)) = \sum_{i = - \infty}^{\infty} \sum_{j = - \infty}^{\infty} f(x, \, y) \delta (x-i, \, y-j) = f(x, \, y) \sum_{i = - \infty}^{\infty} \sum_{j = - \infty}^{\infty} \delta (x-i, \, y-j)$$
+$$
+\text{Sample}_{\text{2D}}(f(x, \, y)) = \sum_{i = - \infty}^{\infty} \sum_{j = - \infty}^{\infty} f(x, \, y) \delta (x-i, \, y-j) = f(x, \, y) \sum_{i = - \infty}^{\infty} \sum_{j = - \infty}^{\infty} \delta (x-i, \, y-j)
+$$
 
 ### 5.5.1 Fourier Transform of a Sampled Signal
 
 The _Fourier transform of a sampled signal_ is given by the following equalities:
 
-![](./Figures/VisComp_Fig4-2.PNG)
+<img src="./Figures/VisComp_Fig4-2.PNG" style="zoom:33%;" />
 
 ### 5.5.2 Nyquist Sampling Theorem
 
@@ -781,15 +910,21 @@ The **Nyquist theorem** says that the sampling frequency must be at least twice 
 
 If we have an image transformation of the form:
 
-$$f(x) \to h(x) \to g(x) \to \tilde{h}(x) \to f(x)$$
+$$
+f(x) \to h(x) \to g(x) \to \tilde{h}(x) \to f(x)
+$$
 
 Then, the **inverse kernel** $\tilde{h}(x)$ should compensate the effect of the _image degradation_ $h(x)$, i.e.
 
-$$(\tilde{h} * h)(x) = \delta(x)$$
+$$
+(\tilde{h} * h)(x) = \delta(x)
+$$
 
 $\tilde{h}$ may be determined more easily in the Fourier space, since:
 
-$$\mathcal{F}[\tilde{h}](u, \, v) \cdot \mathcal{F}[h](u, \, v) = 1.$$
+$$
+\mathcal{F}[\tilde{h}](u, \, v) \cdot \mathcal{F}[h](u, \, v) = 1.
+$$
 
 To determine $\mathcal{F}[\tilde{h}]$ we need to estimate:
 
@@ -802,7 +937,7 @@ The **kernel for motion blur** is given by: $h(x) = \frac{1}{2l}(\theta(x_1 + l)
 
 The Fourier transformation of this is given by:
 
-![](./Figures/VisComp_Fig4-3.PNG)
+<img src="./Figures/VisComp_Fig4-3.PNG" style="zoom:33%;" />
 
 Which leads to:
 
@@ -818,7 +953,9 @@ However, the following problems arise:
 
 We can avoid **noise amplification** by a _regularized reconstruction filter_ of the form:
 
-$$\tilde{\mathcal{F}}[\tilde{h}](u, \, v) = \frac{\mathcal{F}[h]}{|\mathcal{F}[h]|^2 + \epsilon}$$.
+$$
+\tilde{\mathcal{F}}[\tilde{h}](u, \, v) = \frac{\mathcal{F}[h]}{|\mathcal{F}[h]|^2 + \epsilon}
+$$.
 
 The size of $\epsilon$ implicitly determines an estimate of the noise level in the image, since we discard signal which are dampened below the size $\epsilon$.
 
@@ -857,11 +994,15 @@ $$
 
 Any linear image processing algorithm can be written as:
 
-$$\vec{g} = H \vec{f}$$
+$$
+\vec{g} = H \vec{f}
+$$
 
 We define a **linear operator** $O[.]$ as:
 
-$$O[\alpha_1 \cdot \vec{f}_1 + \alpha_2 \cdot \vec{f}_2] = \alpha_1 \cdot O[\vec{f}_1] + \alpha_2 \cdot O[\vec{f}_2]$$
+$$
+O[\alpha_1 \cdot \vec{f}_1 + \alpha_2 \cdot \vec{f}_2] = \alpha_1 \cdot O[\vec{f}_1] + \alpha_2 \cdot O[\vec{f}_2]
+$$
 
 for all scalars $\alpha_1, \, \alpha_2$.
 
@@ -880,7 +1021,9 @@ For a **unitary transform** we might proceed as follows:
 
 The transform $A$ is said to be **unitary**, if and only if:
 
-$$A^{-1} = A^{*T} = A^H$$
+$$
+A^{-1} = A^{*T} = A^H
+$$
 
 If $A$ is real valued, i.e. if $A = A^*$, then the transform is said to be **orthonormal**.
 
@@ -888,7 +1031,9 @@ If $A$ is real valued, i.e. if $A = A^*$, then the transform is said to be **ort
 
 For any unitary transform $\vec{c} = A \vec{f}$, we obtain
 
-$$||\vec{c}||^2 = \vec{c}^H\vec{c} = \vec{f}^H A^H A \vec{f} = ||\vec{f}||^2$$
+$$
+||\vec{c}||^2 = \vec{c}^H\vec{c} = \vec{f}^H A^H A \vec{f} = ||\vec{f}||^2
+$$
 
 This means, that every unitary transform is simply a rotation of the coordinate system (and, possibly, sign flips). The vector lengths, i.e. the "energies", are conserved!
 
@@ -906,11 +1051,15 @@ With unitary transforms, energy is conserved, but often will be _unevenly distri
 
 For the auto-correlation matrix, we have that:
 
-$$R_{cc} = E[\vec{c}\vec{c}^H] = E[A \vec{f} \cdot \vec{f}^H A^H] = A R_{ff}A^H$$
+$$
+R_{cc} = E[\vec{c}\vec{c}^H] = E[A \vec{f} \cdot \vec{f}^H A^H] = A R_{ff}A^H
+$$
 
-This leads to the mean squarede values (i.e. the "average energies") of the coefficients $c_i$ being on the diagonal of $R_{cc}$$:
+This leads to the mean squared values (i.e. the "average energies") of the coefficients $c_i$ being on the diagonal of $R_{cc}$:
 
-$$E[c_i^2] = [R_{cc}]_{i,i} = [AR_{ff}A^H]_{i,i}$$
+$$
+E[c_i^2] = [R_{cc}]_{i,i} = [AR_{ff}A^H]_{i,i}
+$$
 
 ### 6.3.4 Eigenmatrix of Auto-Correlation Matrix
 
@@ -931,12 +1080,12 @@ The **Karhunen-Loeve transform** (_KL-transform_) describes the unitary transfor
 
 _Example:_
 
-![](./Figures/VisComp_Fig5-1.PNG)
+<img src="./Figures/VisComp_Fig5-1.PNG" style="zoom:33%;" />
 
 ### 6.3.6 Basis Images and Eigenimages
 
 For any unitary transform, the _inverse transform_ $\vec{f} = A^H \vec{c}$ can be interpreted in terms of the superposition of basis images (columns of $A^H$) of size $M \times N$.
-If the transform is a KL transform, the basis images, which are the eigenvectors of the autocorrelation matrix $R_{ff}$, are called **eigenimages.**
+If the transform is a KL transform, the basis images, which are the eigenvectors of the auto-correlation matrix $R_{ff}$, are called **eigenimages.**
 If energy concentration works well, only a limited number of eigenimages is needed to approximate a set of images with a small error. These eigenimages form an optimal linear subspace of dimensionality $J$.
 
 To recognize complex patterns, e.g. faces, large portions of an image might have to be considered. With a transform of the form $\vec{c} = W\vec{f}$ we can reduce the dimensionality from $M \times N$ to $J$ by representing the image by $J$ coefficients.
@@ -945,7 +1094,9 @@ To recognize complex patterns, e.g. faces, large portions of an image might have
 
 For a **simple recognition** we can use the _simple euclidean distance (SSD)_ between two images and let the best match "win":
 
-$$\text{arg min}_i D_i = ||I_i - I||$$
+$$
+\text{arg min}_i D_i = ||I_i - I||
+$$
 
 However, this is computationally expensive, i.e. it requires the presented image to be correlated with every image in the database!
 
@@ -953,7 +1104,9 @@ However, this is computationally expensive, i.e. it requires the presented image
 
 We consider the PCA (aka KLT aka closes rank-k approximation property of SVD) $\hat{I}_i \simeq Ep_i$. Then:
 
-$$I_i - I = \hat{I}_i - \hat{I} \simeq E(p_i - p) \\ ||I_i - I|| \simeq ||p_i - p|| \\ \text{arg min}_i D_i = ||I_i - I|| \simeq ||p_i - p||$$
+$$
+I_i - I = \hat{I}_i - \hat{I} \simeq E(p_i - p) \\ ||I_i - I|| \simeq ||p_i - p|| \\ \text{arg min}_i D_i = ||I_i - I|| \simeq ||p_i - p||
+$$
 
 with $\hat{I} = I - \bar{I}$ and $p = E^T \hat{I}$. This is _much cheaper to compute!_
 
@@ -964,21 +1117,23 @@ The key ideas of **Fisherfaces** are as follows:
 - Find directions where the ratio between/within individual variances are maximized
 - Linearly project to the basis where the dimensions with good signal/noise ratios are maximized
 
-![](./Figures/VisComp_Fig5-2.PNG)
+<img src="./Figures/VisComp_Fig5-2.PNG" style="zoom:33%;" />
 
 The eigenimage method maximizes _scatter_ within the linear subspace over the entire image set, regardless of the classification tasks:
 
-$$W_{opt} = \text{arg max}_W \lparen \text{det} \lparen WRW^H \rparen \rparen$$
+$$
+W_{opt} = \text{arg max}_W \lparen \text{det} \lparen WRW^H \rparen \rparen
+$$
 
-The idea of the **Fisher linear discrimant analysis** is to maximize between-class scatter, while minimizing within-class scatter:
+The idea of the **Fisher linear discriminant analysis** is to maximize between-class scatter, while minimizing within-class scatter:
 
-![](./Figures/VisComp_Fig5-3.PNG)
+<img src="./Figures/VisComp_Fig5-3.PNG" style="zoom:33%;" />
 
 #### Fisher Images and Varying Illumination
 
 All images of the same Lambertian surface with different illumination (without shadows) lie in a 3D linear subspace. There is a single point source at infinity such that:
 
-![](./Figures/VisComp_Fig5-4.PNG)
+<img src="./Figures/VisComp_Fig5-4.PNG" style="zoom:33%;" />
 
 # 7. Image Compression
 
@@ -986,7 +1141,7 @@ All images of the same Lambertian surface with different illumination (without s
 
 ### 7.1.1 Block-Based Discrete Cosine Transform (DCT)
 
-We essential discrete **Cosine Transform** on our image we wish to compress:
+We essentially do discrete **Cosine Transform** on our image we wish to compress:
 
 ![](./Figures/VisComp_Fig5-5.PNG)
 
@@ -997,13 +1152,13 @@ We essential discrete **Cosine Transform** on our image we wish to compress:
 
 ### 7.1.2 Image Compression Using DCT
 
-DCT enables _image compression_ by concentrating most image information in the low frequencies. We loose unimportant image info, i.e. high frequencies, by cutting $B(u, \, v)$ at the bottom right corner. The decoder computes the inverse DCT (iDCT).
+DCT enables _image compression_ by concentrating most image information in the low frequencies. We loose unimportant image info, i.e. high frequencies, by cutting $B(u, \, v)$ in the bottom right corner. The decoder computes the inverse DCT (iDCT).
 
 ## 7.2 Image Pyramid
 
-![](./Figures/VisComp_Fig5-6.PNG)
+<img src="./Figures/VisComp_Fig5-6.PNG" style="zoom: 50%;" />
 
-The application of **scaled representations,** such as _image pyramids_, is to look at corase scaled and then refine with finer scaled. For example, a "good" edge at a finer scale has parents at some coarser scale.
+The application of **scaled representations,** such as _image pyramids_, is to look at coarse scaled and then refine with finer scaled. For example, a "good" edge at a finer scale has parents at some coarser scale.
 
 ### 7.2.1 Gaussian Pyramid
 
@@ -1031,14 +1186,418 @@ The **Haar Transform** with the _Haar Basis_ has the following properties:
 
 _Comparison of DCT and Haar basis:_
 
-![](./Figures/VisComp_Fig5-9.PNG)
+<img src="./Figures/VisComp_Fig5-9.PNG" style="zoom:50%;" />
 
 ### 7.3.2 Lifting
 
 _Analysis filters:_
 
-![](./Figures/VisComp_Fig5-10.PNG)
+<img src="./Figures/VisComp_Fig5-10.PNG" style="zoom:50%;" />
 
 _Synthesis filters:_
 
-![](./Figures/VisComp_Fig5-11.PNG)
+<img src="./Figures/VisComp_Fig5-11.PNG" style="zoom:50%;" />
+
+**Visual Computing - Lecture notes week 6**
+
+- Author: Ruben Schenk
+- Date: 11.11.2021
+- Contact: ruben.schenk@inf.ethz.ch
+
+# 8. Optical Flow
+
+## 8.1 Brightness Constancy
+
+We define **optical flow** as the apparent motion of brightness patterns. Ideally, the optical flow is the _projection_ of the three-dimensional velocity vectors of the image.
+
+$I(x, \, y, \, t)$ is the brightness at $(x, \, y)$ at time $t$. This way we can define:
+
+_Brightness constancy assumption:_
+
+$$
+I(x + \frac{dx}{dt}\delta t, \, y + \frac{dy}{dt}\delta t, \, t + \delta t) = I(x, \, y, \, t)
+$$
+
+_Optical flow constraint equation:_
+
+$$
+\frac{dI}{dt} = \frac{\partial I}{\partial x} \frac{dx}{dt} + \frac{\partial I}{\partial y} \frac{dy}{dt} + \frac{\partial I}{\partial t} = 0
+$$
+
+## 8.2 The Aperture Problem
+
+If we do the following substitution:
+
+$$
+u = \frac{dx}{dt}, \, v = \frac{dy}{dt}, \, I_x = \frac{\partial I}{\partial x}, \, I_y = \frac{\partial I}{\partial y}, \, I_t = \frac{\partial I}{\partial t}
+$$
+
+we arrive at the following equation:
+
+$$
+I_x u + I_y v + I_t = 0
+$$
+
+However, this is one equation in two unknowns, which is known as the **Aperture Problem.**
+
+<img src="./Figures/VisComp_Fig6-1.PNG" style="zoom: 33%;" />
+
+Optical flow is not always well-defined! We can compare the different kinds of flows:
+
+- _Motion Field:_ Projection of 3D motion field
+- _Normal Flow:_ Observed tangent motion
+- _Optical Flow:_ Apparent motion of the brightness pattern, hopefully equal to motion field
+
+<img src="./Figures/VisComp_Fig6-2.PNG" style="zoom:33%;" />
+
+## 8.3 Regularization
+
+We might use the **Horn & Schuck algorithm,** described as follows:
+
+- We have an additional smoothness constraint
+
+$$
+e_s = \int \int ((u_x^2 + u_y^2) + (v_x^2 + v_y^2)) dxdy
+$$
+
+- besides our Optical Flow constraint equation term:
+
+$$
+e_c = \int \int (I_x u + I_y v + I_t)^2 dxdy
+$$
+
+The goal is to _minimize_ $e_s + \lambda e_c$ !s
+
+## 8.4 Lucas-Kanade
+
+<img src="./Figures/VisComp_Fig6-3.PNG" style="zoom:33%;" />
+
+With respect to singularities and the aperture problem, we proceed as follows. Let:
+
+$$
+M = \sum (\nabla I)(\nabla I)^T \quad \text{and} \quad b = \begin{bmatrix} - \sum I_x I_t \\ - \sum I_y I_t  \end{bmatrix}
+$$
+
+Then, the algorithm is as simple as solving at each pixel for $U$ in $MU = b$. $M$ is _singular_ if all gradient vectors point in the same direction.
+
+## 8.5 Coarse To Fine
+
+The local gradient method has some limitation:
+
+- Fails when the intensity structure within the window is poor
+- Fails when the displacement is large (typical operating range is motion of 1 pixel per iteration!)
+
+We can combat this with a Pyramid or "_Coarse-to-fine_" estimation:
+
+<img src="./Figures/VisComp_Fig6-4.PNG" style="zoom:33%;" />
+
+## 8.6 Parametric Motion Models
+
+_Global_ motion models offer:
+
+- more constrained solutions than smoothness models (Horn-Schunck)
+- integration over a larger area than a translation-only model can accommodate (Lucas-Kanade)
+
+**Visual Computing - Lecture notes week 7**
+
+- Author: Ruben Schenk
+- Date: 15.11.2021
+- Contact: ruben.schenk@inf.ethz.ch
+
+## 8.7 Bayesian Flow
+
+Some low-level human motion illusions can be explained by adding an uncertainty model to the Lucas-Kanade tracking.
+
+This will result in the brightness constancy equation _with noise_ to be:
+
+$$
+I(x, \, y, \, t) = I(x + v_x \delta t, \, y + v_y \delta t, \, t + \delta t) + \eta
+$$
+
+## 8.8 SSD Tracking
+
+For large displacements, we do _template matching_ as we used in stereo disparity search:
+
+1. Define a small area around a pixel as the template
+2. Match the template against each pixel within a search are in the next image
+3. Use a mean measure such as correlation, normalized correlation, or sum-of-squares difference
+4. Choose the maximum (or minimum) as the match
+
+<img src="./Figures/VisComp_Fig7-1.PNG" style="zoom:33%;" />
+
+# 9. Video Compression
+
+## 9.1 Perception Of Motion
+
+The human visual system is specifically sensitive to motion. Our eyes follow motion automatically. Some distortions, however, are not as perceivable as in image coding.
+
+Visual perception is limited to <24Hz, therefore, a succession of images will be perceived as continuous if the frequency is sufficiently high. We still need to avoid aliasing (i.e. the "wheel effect"), therefore high-rendering frame-rates desired in computer games (needed due to absence of motion blur).
+
+## 9.2 Bloch's Law
+
+**Bloch's Law** states that for human perception, it doesn't really matter whether we see something at 100% brightness for 10ms, or something at 50% for 20ms.
+
+## 9.3 Video Format
+
+A **video** is essentially a sequence of 2D images, so for storing a video, we need to simply store each 2D image and their corresponding place in time.
+
+### 9.3.1 Interlaced Video Format
+
+The **interlaced video format** consists of two temporally shifted half images, which increases the frequency from 25 to 50 Hz (for example).
+
+<img src="./Figures/VisComp_Fig7-2.PNG" style="zoom:33%;" />
+
+This results in a reduction of spatial resolution.
+
+## 9.4 Lossy Video Compression
+
+With **lossy video compression** we take advantage of redundancy:
+
+- Spatial correlation between neighboring pixels
+- Temporal correlation between frames
+
+With the above information, we can _drop perceptually unimportant details._
+
+### 9.4.1 Temporal Processing
+
+With a usually high frame rate, we have significant temporal redundancy. We have two possible representations along temporal dimension:
+
+- _Transform/subband methods:_
+    - Good for textbook case of constant velocity uniform global motion
+    - Inefficient for nonuniform motion, i.e. real-world motion
+    - Requires many frame stores
+- _Predictive methods:_
+    - Good performance using only two frame stores
+    - However, simple frame differencing is not enough
+
+The goal is to exploit temporal redundancy by **predicting the current frame** based on previously coded frames. There are three types of **coded frames:**
+
+- _I-frame:_ Intra-coded frame, coded independently of all other frames
+- _P-frame:_ Predicatively coded frame, coded based on previously coded frame
+- _B-frame:_ Bi-directionally predicted frame, coded based on both previous and future coded frames
+
+<img src="./Figures/VisComp_Fig7-3.PNG" style="zoom:50%;" />
+
+Temporal redundancy reduction may be _ineffective_ when there are many scene changes or when there is high motion.
+
+### 9.4.2 Video Compressor Diagram
+
+<img src="./Figures/VisComp_Fig7-4.PNG" style="zoom:33%;" />
+
+### 9.4.3 Motion-compensated Prediction
+
+Simple frame differencing fails when there is motion. We can account for motion with a **motion-compensated (MC) prediction.** The practical approach to this is so called **Block-Matching Motion Estimation:**
+
+- Partition each frame into blocks, e.g. 16x16 pixels
+- Describe the motion of each block
+- No object identification required
+- Good, robust performance
+
+<img src="./Figures/VisComp_Fig7-5.PNG" style="zoom: 33%;" />
+
+_Example of fast motion estimation search: 3-step log search_
+
+<img src="./Figures/VisComp_Fig7-6.PNG" style="zoom:33%;" />
+
+### 9.4.4 Bidirectional MC Prediction
+
+<img src="./Figures/VisComp_Fig7-7.PNG" style="zoom:33%;" />
+
+**Bidirectional MC-Prediction** is used to estimate a block in the current frame from a block in:
+
+1. Previous frame
+2. Future frame
+3. Average of a block from the previous frame and a block from the future frame
+4. Neither, i.e. code the current block without prediction
+
+## 9.5 Basic Video Compression Architecture
+
+### 9.5.1 Example Video Encoder
+
+<img src="./Figures/VisComp_Fig7-8.PNG" style="zoom:33%;" />
+
+### 9.5.2 Example Video Decoder
+
+<img src="./Figures/VisComp_Fig7-9.PNG" style="zoom:33%;" />
+
+## 9.6 Objective Quality Measure: PSNR
+
+The error for one pixel, as the difference between the original and decoded value:
+
+$$
+e(v, \, h) = \hat{x}(v, \, h) - x(v, \, h))
+$$
+
+The mean-squared-error, MSE, over an image:
+
+$$
+e_{mse} = \sqrt{\frac{1}{N \cdot M} \sum_{v = 1}^N \sum_{h = 1}^M e^2(v, \, h)}
+$$
+
+The peak-signal-to-noise-ration is then given by:
+
+$$
+PSNR = \frac{(\text{maximum value of } x)^2}{e_{mse}^2} = 10 \cdot \log_10 \Big(\frac{(2^K)^2}{e_{mse}^2} \Big) \text{dB}
+$$
+
+# 10. Radon Transform
+
+## 10.1 Medical Imaging
+
+There are two forms of _radiation sources:_
+
+- Outside the body: X-rays and ultrasound
+- Inside the body: magnetic resonance imaging (MRI), positron emission tomography (PET), and single photon emission computed tomography (SPECT)
+
+### 10.1.1 Computed Tomography (CT)
+
+The idea behind _CT data collection_ is to quantify the tendency of objects to absorb or scatter x-rays given by the optical density of the material measured in terms of attenuation coefficient.
+
+A _CT image setup_ could look as follows:
+
+<img src="./Figures/VisComp_Fig7-10.PNG" style="zoom:33%;" />
+
+### 10.1.2 Image Reconstruction
+
+The mathematical problem posed by **CT reconstruction** is to calculate the image data from the projection values. For the simple image of four pixels shown, algebra can be used to solve for the pixel values. For the larger images of clinical CT, algebraic solutions become unfeasible.
+
+<img src="./Figures/VisComp_Fig7-11.PNG" style="zoom:33%;" />
+
+### 10.1.3 Image Acquisition
+
+The basic principle setup for **CT image acquisition** looks as follows:
+
+<img src="./Figures/VisComp_Fig7-12.PNG" style="zoom: 50%;" />
+
+The intensity of the X-ray where it hits the detector depends on the width of the object and the length of the path travelled through the object and the air.
+
+X-rays, moving along a straight line, have at distance $s$ the _intensity_ $I(s)$. This means, that if the x-ray travelled $\delta s$ distance, its intensity will be reduced by $\delta I(s)$.
+The reduction depends on the intensity and _optical density_ $u(s)$ of the material. For small $\delta s$, it holds that:
+
+$$
+\frac{\delta I(s)}{I(s)} = - u(s) \delta s
+$$
+
+Combining all the contributions to the reduction in the intensity of an X-ray travelling along line $L$ given by all the parts of the body that it travels through, the **attenuation** (i.e. reduction in intensity) is given by:
+
+$$
+Rf(L) = \int_L f(x) |dx|
+$$
+
+This is also called the **Radon transform** of function $f(x, \, y)$.
+
+## 10.2 The Radon Transform
+
+### 10.2.1 Introduction
+
+<img src="./Figures/VisComp_Fig7-13.PNG" style="zoom:50%;" />
+
+This X-ray will pass through a series of points $(x, \, y)$ at which the optical density is $u(x, \, y)$. Using the equation for a straight line these points are given by:
+
+$$
+(x, \, y) = (\rho \cos(\theta) - s \sin(\theta), \, \rho \sin(\theta) + s \cos(\theta)),
+$$
+
+where $s$ is the arc length. In this case, we now have:
+
+$$
+I_{finish} = I_{start}^{-R(\rho, \, \theta)}
+$$
+
+where:
+
+$$
+R(\rho, \, \theta) = \int_{- \infty}^{\infty} \int_{- \infty}^{\infty} u(x, \, y) \delta(\rho - x \cos(\theta) - y \sin (\theta)) \, dx \, dy,
+$$
+
+where $\delta(x, \, y)$ is the Dirac Delta function.
+
+### 10.2.2 Properties
+
+_Linearity:_
+
+$$
+g(x, \, y) = \sum_q \alpha_q g_q (x, \, y) \implies \hat{g}(\rho, \, \theta) = \sum_q \alpha q \hat{g}_q(\rho, \, \theta))
+$$
+
+_Shifting:_
+
+$$
+h(x, \, y) = g(x-x_0, \, y-y_0) \implies \\ \hat{h}(\rho, \, \theta) = \hat{g}(\rho - x_0 \cos(\theta) - y_0 \sin(\theta), \, \theta)
+$$
+
+_Rotation:_
+
+$$
+h(r, \, \phi) = g(r, \, \phi - \phi_0) \implies \\ \hat{h}(\rho, \, \theta) = \hat{g}(\rho, \, \theta - \phi_0)
+$$
+
+_Convolution:_
+
+$$
+h(x, \, y) = f(x, \, y) ** g(x, \, y) \implies \\ \hat{h}(\rho, \, \theta) = \hat{f}(\rho, \, \theta) * \hat{g}(\rho, \theta)
+$$
+
+### 10.2.3 Point Source
+
+Here, an arbitrary point source $(x^*, \, y^*)$ is assumed:
+
+$$
+g(x, \, y) = \delta(x-x^*) \delta(y-y^*) \implies \\ \hat{g}(\rho, \, \theta) = \delta(\rho - x^* \cos(\theta) - y^* \sin(\theta))
+$$
+
+The figure below illustrates a point source and the corresponding Radon transform:
+
+<img src="./Figures/VisComp_Fig7-14.PNG" style="zoom:50%;" />
+
+### 10.2.4 Image Reconstruction: Algebraic Formulation
+
+We assume that the attenuation of the material within each pixel is constant and proportional to the area of the pixel illuminated by the beam, i.e.:
+
+$$
+k_{ij} = \frac{\text{area of pixel } j \text{ illuminated by ray } i}{\text{total area of pixel } j}, \quad i = 1, \, ..., \, l, \, \, j = 1, \, ..., \, nm
+$$
+
+Hence, the algebraic model reads as:
+
+$$
+Kf = g,
+$$
+
+where $f$ is the BW plane/volumetric image to be retrieved (reshaped into a vector) and $g$ is the attenuation measurements from the CT system.
+
+We can then transform the over determined matrix $K$ into a system of _normal equations:_
+
+$$
+K^TKf = K^Tg
+$$
+
+However, this solution does not exist, is not unique or not continuously dependent on the given data.
+
+## 10.3 Fourier / Central Slice Theorem
+
+The **Fourier / Central Slice Theorem** is as following:
+
+$$
+\mathcal{G}(q, \, 0) = \mathcal{F}(q \cos(0), \, q \sin(0)),
+$$
+
+where $\mathcal{G}$ is the 1D Fourier transform of the attenuation measurements $g = Rf$ and $\mathcal{F}$ is the 2D Fourier transform of the object slice $f(x, \, y)$ evaluated at a particular point.
+
+In words:
+
+> The Fourier transform of a parallel projection of an image $f(x, \, y)$ taken at an angle $\theta$ gives a slice of the two-dimensional transform, $F(u, \, v)$, subtending an angle $\theta$ with the $u$-axis. In other words, the Fourier transform of $P_{\theta}(t)$ gives the values of $F(u, \, v)$ along line $BB$ in the following figure:
+
+<img src="./Figures/VisComp_Fig7-15.PNG" style="zoom:50%;" />
+
+## 10.4 Filtered Backprojection
+
+### 10.4.1 Algorithm
+
+<img src="./Figures/VisComp_Fig7-16.PNG" style="zoom:33%;" />
+
+### 10.4.2 Improvements
+
+We can apply a high-pass filter after the 1D FT projection. This will help with improving blurriness when using the naive backprojection algorithm:
+
+<img src="./Figures/VisComp_Fig7-17.PNG" style="zoom: 67%;" />
