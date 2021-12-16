@@ -12,11 +12,15 @@ The idea of the **Fourier Transform** is to represent functions in a new basis. 
 
 In the expressions, $u$ and $v$ select the basis elements, so a function of $x$ and $y$ becomes a function of $u$ and $v$. The **basis elements** have the form $e^{-i2 \pi (ux + vy)} = \cos 2 \pi (ux + vy) - i \sin 2 \pi (ux + vy)$. Or:
 
-$$F(g(x, \, y))(u, \, v) = \int \int_{\mathbb{R}^2} g(x, \, y)e^{i2 \pi (ux + vy)}\text{d}x \text{dy}$$
+$$
+F(g(x, \, y))(u, \, v) = \int \int_{\mathbb{R}^2} g(x, \, y)e^{i2 \pi (ux + vy)}\text{d}x \text{dy}
+$$
 
-The **discrete fourier transform** therefore is of the form:
+The **discrete Fourier transform** therefore is of the form:
 
-$$F = Uf$$
+$$
+F = Uf
+$$
 
 where:
 
@@ -48,7 +52,9 @@ The idea of **sampling** is to go from a continuous world to a discrete world, i
 
 For example, we might want to be able to approximate integrals sensibly.
 
-$$\text{Sample}_{\text{2D}}(f(x, \, y)) = \sum_{i = - \infty}^{\infty} \sum_{j = - \infty}^{\infty} f(x, \, y) \delta (x-i, \, y-j) = f(x, \, y) \sum_{i = - \infty}^{\infty} \sum_{j = - \infty}^{\infty} \delta (x-i, \, y-j)$$
+$$
+\text{Sample}_{\text{2D}}(f(x, \, y)) = \sum_{i = - \infty}^{\infty} \sum_{j = - \infty}^{\infty} f(x, \, y) \delta (x-i, \, y-j) = f(x, \, y) \sum_{i = - \infty}^{\infty} \sum_{j = - \infty}^{\infty} \delta (x-i, \, y-j)
+$$
 
 ### 5.5.1 Fourier Transform of a Sampled Signal
 
@@ -66,15 +72,21 @@ The **Nyquist theorem** says that the sampling frequency must be at least twice 
 
 If we have an image transformation of the form:
 
-$$f(x) \to h(x) \to g(x) \to \tilde{h}(x) \to f(x)$$
+$$
+f(x) \to h(x) \to g(x) \to \tilde{h}(x) \to f(x)
+$$
 
 Then, the **inverse kernel** $\tilde{h}(x)$ should compensate the effect of the _image degradation_ $h(x)$, i.e.
 
-$$(\tilde{h} * h)(x) = \delta(x)$$
+$$
+(\tilde{h} * h)(x) = \delta(x)
+$$
 
 $\tilde{h}$ may be determined more easily in the Fourier space, since:
 
-$$\mathcal{F}[\tilde{h}](u, \, v) \cdot \mathcal{F}[h](u, \, v) = 1.$$
+$$
+\mathcal{F}[\tilde{h}](u, \, v) \cdot \mathcal{F}[h](u, \, v) = 1.
+$$
 
 To determine $\mathcal{F}[\tilde{h}]$ we need to estimate:
 
@@ -103,6 +115,8 @@ However, the following problems arise:
 
 We can avoid **noise amplification** by a _regularized reconstruction filter_ of the form:
 
-$$\tilde{\mathcal{F}}[\tilde{h}](u, \, v) = \frac{\mathcal{F}[h]}{|\mathcal{F}[h]|^2 + \epsilon}$$.
+$$
+\tilde{\mathcal{F}}[\tilde{h}](u, \, v) = \frac{\mathcal{F}[h]}{|\mathcal{F}[h]|^2 + \epsilon}
+$$.
 
 The size of $\epsilon$ implicitly determines an estimate of the noise level in the image, since we discard signal which are dampened below the size $\epsilon$.
