@@ -12,14 +12,14 @@
 
 **Light** is electromagnetic radiation, and **color** is its frequency, in other word: Light is oscillating electric and magnetic fields and its frequency determines the color of the light.
 
-Most light is _not visible_ to the human eye. The frequencies that are visible to the human eyes are valled the **visible spectrum.** These frequencies are what we think of as color.
+Most light is _not visible_ to the human eye. The frequencies that are visible to the human eyes are called the **visible spectrum.** These frequencies are what we think of as color.
 
 ![](./Figures/VisComp_Fig11-1.PNG)
 
 ### 6.1.2 Description Of Light
 
 We already saw the **emission spectrum** for the sun. In general, it tells us how much light is _produced_ and is useful to compare against other sources of light, such as lightbulbs.
-Another very useful description is the **absorption spectrum**, which tells us how much ligh is _absorbed,_ e.g. turned into heat. It is useful to characterize color of paint, ink, etc.
+Another very useful description is the **absorption spectrum**, which tells us how much light is _absorbed,_ e.g. turned into heat. It is useful to characterize color of paint, ink, etc.
 
 While the emission spectrum is intensity as a function of frequency, the absorption spectrum is a fraction absorbed as a function of frequency. Light that is not absorbed is _reflected._
 
@@ -32,7 +32,7 @@ The eye consists of two types of photoreceptor cells: rods and cones.
 - _Rods_ are primary photoreceptors under dark conditions.
 - _Cones_ are primary receptors under high-light viewing conditions.
 
-There are three types of cones: S, M, andL cones. These correspond to a peak response at short, medium, and long wavelengths.
+There are three types of cones: S, M, and L cones. These correspond to a peak response at short, medium, and long wavelengths.
 
 The human eye does not directly measure the spectrum of incoming light, but three response values `(S, M, L)` by integrating the incoming spectrum against response functions of S-, M-, and L-cones. The brain then interprets these functions as colors.
 
@@ -49,7 +49,7 @@ Just like we had emission and absorption spectra, we have _additive_ and _subtra
 
 ### 6.3.2 Practical Encoding Of Color Values
 
-One might ask how we encode colors digitally. One common encoding is through 8-bit per color _hexadecimal values._ Each hexadecimal number repsents the intensity of red, green, and blue:
+One might ask how we encode colors digitally. One common encoding is through 8-bit per color _hexadecimal values._ Each hexadecimal number represents the intensity of red, green, and blue:
 
 - `#000000` represents black
 - `#ffffff` represents white
@@ -61,11 +61,11 @@ One might ask how we encode colors digitally. One common encoding is through 8-b
 - Photons are massless and travel at the speed of light in a vacuum
 - They bounce around when they interact with matter
 - They travel in straight lines
-- A ray of light informally means a whole lot of photons all moving in the same direction
+- A ray of light informally means a lot of photons all moving in the same direction
 
 ### 6.4.1 Radiometry
 
-One idea to to capture photons hitting some surface is to just store the total number of hits that occur anywhere in the scene, over the complete duration of the scene. This captures the total energy of all the photons hitting the scene and is said to be the **radiant energy** (total number of hits).
+One idea to capture photons hitting some surface is to just store the total number of hits that occur anywhere in the scene, over the complete duration of the scene. This captures the total energy of all the photons hitting the scene and is said to be the **radiant energy** (total number of hits).
 
 The **radiant flux** describes the number of hits per second. Rather than recording the total energy over some arbitrary duration, it makes much more sense to record the total hits per second.
 
@@ -75,7 +75,7 @@ To make images, we also need to know where the hits occurred. So, we compute the
 
 ### 6.4.2 Measuring Illumination
 
-For the radiant energy, we need to know how much enery is carried by a photon:
+For the radiant energy, we need to know how much energy is carried by a photon:
 
 $$
 Q = \frac{hc}{\lambda},
@@ -113,7 +113,7 @@ $$
 E = \int_{H^2} L(\omega) \cos \theta \, \text{d} \omega,
 $$
 
-whre $E$ is the irradiance, $L$ is the radiance in direction $\omega$, and $\cos \theta$ is the angle between the normal and $\omega$.
+where $E$ is the irradiance, $L$ is the radiance in direction $\omega$, and $\cos \theta$ is the angle between the normal and $\omega$.
 
 The radiance is the solid angle density of irradiance:
 
@@ -139,7 +139,7 @@ The core functionality of photorealistic renderer is to estimate the radiance at
 
 ### 6.5.1 Scattering Function
 
-How can we model the **scattering** of light? There are many different things that could happen to a photon:
+How can we model the **scattering** of light? There are many things that could happen to a photon:
 
 - Bounces of the surface
 - Transmitted through the surface
@@ -162,20 +162,20 @@ The following properties hold:
 
 ![](./Figures/VisComp_Fig11-6.PNG)
 
-The basic rasterization algorithm consists of obtaining 2D samples and then computing the coverag, i.e. whether a projected triangle covers a 2D sample point, and the occlusion, i.e. calculating the depth buffer.
+The basic rasterization algorithm consists of obtaining 2D samples and then computing the coverage, i.e. whether a projected triangle covers a 2D sample point, and the occlusion, i.e. calculating the depth buffer.
 
 Finding samples in this case is easy since they are distributed uniformly on screen.
 
 ## 7.1.2 Ray-Casting
 
-A alternative to rasterization is **ray-casting.**
+An alternative to rasterization is **ray-casting.**
 
 ![](./Figures/VisComp_Fig11-7.PNG)
 
 The basic ray casting algorithm looks as follows:
 
 - Sample: some ray in 3D
-- Coverage: doeas a ray hit the triangle? (ray-triangle intersection tests)
+- Coverage: does a ray hit the triangle? (ray-triangle intersection tests)
 - Occlusion: closest intersection along the ray
 
 ### 7.1.3 Rasterization vs. Ray-Casting
@@ -232,11 +232,11 @@ One very important question to answer is where a ray pierces a surface, since th
 - Simulation: collision detection
 - Interaction: mouse picking
 
-The parametric equation of a ray is given by: $r(t) = o + t\text{d}$, where $r(t)$ is a point along the ray, $o$ is the origin, and $\text{d}$ is soem unit direction.
+The parametric equation of a ray is given by: $r(t) = o + t\text{d}$, where $r(t)$ is a point along the ray, $o$ is the origin, and $\text{d}$ is some unit direction.
 
 #### Intersection With Implicit Surface
 
-Recall that implicit surfaces are given by some function $f(x)$, i.e. all points such that $f(x) = 0$. If we want to find all points where a ray intersects a sruface, we can simply plug in $r(t)$ for $x$ in $f(x)$ and then solve for $t$.
+Recall that implicit surfaces are given by some function $f(x)$, i.e. all points such that $f(x) = 0$. If we want to find all points where a ray intersects a surface, we can simply plug in $r(t)$ for $x$ in $f(x)$ and then solve for $t$.
 
 #### Ray-Plane Intersection
 
@@ -250,7 +250,7 @@ $$
 
 If we want to find the intersection of a ray and a triangle, we proceed as follows:
 
-1. Parameterize the triangle by vertices $p_0, \, p_1, \, p_2$ using the barycentric coordiantes:
+1. Parameterize the triangle by vertices $p_0, \, p_1, \, p_2$ using the barycentric coordinates:
 
 $$
 f(u, \, v) = (1-u-v)p_0 + up_1 + vp_2
