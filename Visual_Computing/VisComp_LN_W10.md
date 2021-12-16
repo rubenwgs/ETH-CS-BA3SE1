@@ -14,7 +14,7 @@ The underlying computational system to **L-systems** is simple:
 - The end result has interesting, useful, and surprising properties
 - **L** stands for _Lindenmayer,_ the inventor of these types of systems
 
-A **L-system** is a set of grammar rules, a start symbol, and semantics, i.e. a way of interpreting the grammar strings.
+An **L-system** is a set of grammar rules, a start symbol, and semantics, i.e. a way of interpreting the grammar strings.
 
 _Example:_ We define our grammar to have a start string `AAA` and the following two rules:
 
@@ -36,7 +36,7 @@ This can lead to something like the following geometry:
 
 ![](./Figures/VisComp_Fig10-1.PNG)
 
-#### von Kock Snowflake Curve
+#### von Koch Snowflake Curve
 
 We define the following grammar:
 
@@ -54,12 +54,12 @@ Semantics:
 
 #### Branching Structures
 
-We assume that `[` pushes the state onto the stack and `]` pops the state from the stack. We use `[` to start a branch and `]` when finished to return to its base.
+We assume that `[` pushes the state onto the stack and `]` pops the state from the stack. Furthermore, we use `[` to start a branch and `]` when finished returning to its base.
 
 With those additional symbols, we can define three rules for different types of branching:
 
 - _Monopodial:_ The trunk extends undeviated to the top and branches extend perpendicularly: `T -> T[+B][-B]T`
-- _Sympodial:_ The trunk deviates to the top and branches extend perpedicularly: `T -> T[--B]+T`
+- _Sympodial:_ The trunk deviates to the top and branches extend perpendicularly: `T -> T[--B]+T`
 - _Binary:_ Trunk terminates at the first branching point and branches deviate uniformly: `T -> T[+B][-B]`
 
 _Example:_ The following figure shows an example of the L-System `F -> F[+F]F[-F]F`:
@@ -123,13 +123,13 @@ With **mesh datastructures** we can store the geometry and topology of some obje
 - _Geometry:_ The vertex locations
 - _Topology:_ How vertices are connected (i.e. the edges and faces)
 
-The simplest storage option for mesh datastructures is to simply store them in a **indexed face set:**
+The simplest storage option for mesh datastructures is to simply store them in an **indexed face set:**
 
 ![](./Figures/VisComp_Fig10-6.PNG)
 
 ### 4.2.6 Surface Normals
 
-We can describe the power of a (light) beam in terms of it's **irradiance,** i.e. the enery per time, per area, or:
+We can describe the power of a (light) beam in terms of its **irradiance,** i.e. the energy per time, per area, or:
 
 $$
 E = \frac{\Phi}{A},
@@ -147,7 +147,7 @@ $$
 
 #### N-dot-L Lightning
 
-**N-dot-L lightning** is one of the most basic ways to shade a suface: One simply takes the dot product of a unit surface normal (_N_) and the unit direction to the light source (_L_).
+**N-dot-L lightning** is one of the most basic ways to shade a surface: One simply takes the dot product of a unit surface normal (_N_) and the unit direction to the light source (_L_).
 
 ![](./Figures/VisComp_Fig10-8.PNG)
 
@@ -161,7 +161,7 @@ $$
 
 ### 4.3.2 Texture Space Samples
 
-To do a texture mapping, we need some space samples. WE can sample some some positions in the $XY$ screen space and then use the same sample positions in the texture sapce.
+To do a texture mapping, we need some space samples. We can sample some positions in the $XY$ screen space and then use the same sample positions in the texture space.
 However, this can lead to **perspective-incorrect interpolation:**
 
 ![](./Figures/VisComp_Fig10-10.PNG)
@@ -174,12 +174,12 @@ This is due to perspective projection. Barycentric interpolation of values in $X
 
 Due to resizing, our rendering pixels from our image may be much larger or smaller than the pixels available of our texture. This leads to minification and magnification:
 
-- _Minification:_ The area of screen pixel maps to a large region of texture (filtering required). One texel corresponds to far lesse than a pixel on the screen.
+- _Minification:_ The area of screen pixel maps to a large region of texture (filtering required). One texel corresponds to far less than a pixel on the screen.
 - _Magnification:_ The area of screen pixel maps to a tiny region of texture (interpolation required). One texel maps to many screen pixels.
 
 #### Mipmap (L. Williams 83)
 
-The idea of the **Mipmap** is to prefilter the texture data to remove high frequencies. Texels at higher levels store the itnegral of the texture function over a region of texture space (downsampled images), i.e. they represent low-pass filtered versions of the original texture signal.
+The idea of the **Mipmap** is to prefilter the texture data to remove high frequencies. Texels at higher levels store the integral of the texture function over a region of texture space (downsampled images), i.e. they represent low-pass filtered versions of the original texture signal.
 
 ![](./Figures/VisComp_Fig10-12.PNG)
 
@@ -193,13 +193,13 @@ To decide which level $d$ to use, we calculate the differences between texture c
 
 ### 5.1.1 Introduction
 
-**Occlusion** tries to answer a important question we have already seen: Given some number of overlapping triangles, which triangle is visible at each pixel?
+**Occlusion** tries to answer an important question we have already seen: Given some number of overlapping triangles, which triangle is visible at each pixel?
 
-We will explore some technqiues to solve this problem in the following sub-chapters.
+We will explore some techniques to solve this problem in the following subchapters.
 
 ### 5.1.2 The Depth Buffer (Z-Buffer)
 
-We can determine the occlusion by using a **Z-buffer.** For each voerage sample point, the depth-buffer stores the depth of the closest triangle at this sample point that has been processed by the render so far. We use a grayscale value for each sample point to indicate the distance:
+We can determine the occlusion by using a **Z-buffer.** For each coverage sample point, the depth-buffer stores the depth of the closest triangle at this sample point that has been processed by the render so far. We use a grayscale value for each sample point to indicate the distance:
 
 - Black = indicates a small distance
 - White = indicates a large distance
@@ -245,10 +245,10 @@ depth_test(tri_d, tri_color, x, y) {
 
 ### 5.2.1 Alpha / RGBA
 
-We can represent _opacity_ as alpha. **Alpha** describes the opacityof an object:
+We can represent _opacity_ as alpha. **Alpha** describes the opacity of an object:
 
 - Fully opaque: $\alpha = 1$
-- 50% transaprent: $\alpha = 0.5$
+- 50% transparent: $\alpha = 0.5$
 - Fully transparent: $\alpha = 0$
 
 ![](./Figures/VisComp_Fig10-19.PNG)
@@ -352,7 +352,7 @@ Apply the perspective projection transform to transform the triangle vertices in
 
 #### Step 3
 
-Discard triangles that lie completely outside the unit cube (since they are off screen) and clip triangles that extend beyon the unit cube to the unit cube:
+Discard triangles that lie completely outside the unit cube (since they are off-screen) and clip triangles that extend beyond the unit cube to the unit cube:
 
 ![](./Figures/VisComp_Fig10-23.PNG)
 
@@ -368,7 +368,7 @@ Preprocess the triangles, i.e. compute the triangle edge equations and the trian
 
 #### Step 6
 
-Do the sample coverage and evaluate attributes `Z, u, v` at all overed samples:
+Do the sample coverage and evaluate attributes `Z, u, v` at all covered samples:
 
 ![](./Figures/VisComp_Fig10-25.PNG)
 
@@ -395,7 +395,7 @@ Update the color buffer if the depth test passed:
 **Shadow mapping** is a multi-pass rasterization approach:
 
 - We render every scene (depth buffer only) from the location of the light source. Everything "seen" from this point of view is directly lit.
-- We then render the scene from the location of the camera. We need to transform every screen sample to ligh coordinate frames and perform a depth test (if the test fails, the sample is in the shadow).
+- We then render the scene from the location of the camera. We need to transform every screen sample to light coordinate frames and perform a depth test (if the test fails, the sample is in the shadow).
 
 ## 5.4 Reflections
 
@@ -404,8 +404,8 @@ Update the color buffer if the depth test passed:
 Reflections are modelled based on an environment mapping:
 
 1. Place the camera at the origin of the location of the reflective object, and render 6 different views.
-2. Use the real camera ray relfected about the surface normal to determine which texel in the cube map it hits.
-3. This will approxiamte the appearance of the reflective surface.
+2. Use the real camera ray reflected about the surface normal to determine which texel in the cube map it hits.
+3. This will approximate the appearance of the reflective surface.
 
 ### 5.4.2 GPUs
 
