@@ -84,7 +84,7 @@ Then we end up with 4 equations and 4 unknowns, which lets us uniquely identify 
 
 ![](./Figures/VisComp_Fig12-5.PNG)
 
-We want three conditions to hold for our natural splines:
+We want three conditions to hold for natural splines:
 
 1. Interpolation at both endpoints:
 
@@ -103,3 +103,116 @@ $$
 $$
 p''_i(t_{i+1}) P p''_{i+1}(t_{i+1}), \quad i = 0,...,n-2
 $$
+
+If we look at the picture above, we see that for $n+1$ points we have $4n$ DOFs, which leads us to $2n + (n-1) + (n-1) = 4n-2$ equations. WE can pin down the remaining DOFs by setting the curvature to zero at the endpoints. This is what makes the curvature "_natural_".
+
+### 8.2.5 Hermite/Bézier Splines
+
+**Hermite/Bézier splines** are based on the idea that each cubic piece is specified by the endpoints and tangents, in contrast to natural splines where we define an additional point on which we have to exactly meet:
+
+![](./Figures/VisComp_Fig12-6.PNG)
+
+Hermite splines have the following properties:
+
+1. Endpoints interpolate data:
+
+$$
+p_i(t_i) = f_i, \, p_i(t_{i+1}) = f_{i + 1}, \quad i = 0,...,n-1
+$$
+
+2. Tangents interpolate some given data:
+
+$$
+p'_i(t_i) = u_i, \, p'_i(t_{i+1}) = u_{i+1}, \quad i = 0,...,n-1
+$$
+
+## 8.3 Rigging
+
+### 8.3.1 Introduction
+
+**Animation rigs** are user-defined mappings between a small number of parameters and the deformations of a high-res mesh. Animations are simply time trajectories specified for rig parameters.
+
+### 8.3.2 Blend Shape Rigs
+
+**Blend Shape rigs** are simple rigs based on a set of meshes (the input). The output is a blenden mesh obtained through interpolation. The splines (or keyframes) specify the blending weights over time.
+
+_Mathematically:_
+
+- Input: set of meshes $M_i$ with vertices $x_i^j$ and blending weights $\alpha = (\alpha_1,...,\alpha_n)$
+- Output: blended mesh $M$ through linear combination: $M = \sum_i\alpha_iM_i$, i.e. $x^j = \sum_i \alpha_ix_i^j$
+
+### 8.3.3 Cage-Base Deformers
+
+The idea behind **cage-based deformers** is to embed the model in a coarse mesh (cage), then deform the coarse mesh and reconstruct the hi-res geometry. For example, we can model the vertices as weighted sums of the cage vertices:
+
+$$
+v = \sum_{j = 1}^m w_j(v)c_j
+$$
+
+### 8.3.4 Skeletal Animation
+
+Very often, shape implies the existence of a _skeleton,_ and a skeleton imposes a lot of structure in ho a character can move.
+
+The key idea behin **skeletal animation** is to animate just the skeleton (much less DOFs), and then have the mesh to follow automatically.
+
+### 8.3.5 Forward Kinematics
+
+We define _kinematic skeletons_ as follows:
+
+- Joints: local coordinate frames
+- Bones: vectors between consecutive pairs of joints
+- Each non-root bone defined in the frame of a unique parent
+- Changes to parent frame affects all descendent bones
+- Both skeleton and skin are designed in a rest pose
+
+Assuming $n+1$ joints $0, \, 1,..., \, n$, where joint $0$ is the root, then each joint corresponds to a frame. $p(j)$ denotes the parent of joint $j$, and the frame of joint $j$ is expressed w.r.t the frame of $p(j)$:
+
+$$
+_{p(j)}R_j = \begin{bmatrix} r_{11}(j) & r_{12}(j) & r_{13}(j) & t_1(j) \\ r_{21}(j) & r_{22}(j) & r_{23}(j) & t_2(j) \\ r_{31}(j) & r_{32}(j) & r_{33}(j) & t_3(j) \\ 0 & 0 & 0 & 1  \end{bmatrix} = \begin{bmatrix} Rot(j) & t(j) \\ 0 & 1  \end{bmatrix},
+$$
+
+where $t(j)$ typically comes from a bind pose and $Rot(j)$ comes from some animation.
+
+The transformation from frame $j$ to world is then given by:
+
+![](./Figures/VisComp_Fig12-7.PNG)
+
+### 8.3.6 Skinning
+
+THe basic idea behind the _skinning process_ is that we simply move the vertices of the skin along with the bones! In a first attempt, we might assign each vertex to the closest bone, compute the world coordinates according to the bone's transformation and move the skin vertices along with it:
+
+![](./Figures/VisComp_Fig12-8.PNG)
+
+This process is also called **rigid skinning.**
+
+#### Linear Blend Skinning
+
+The attempt is similar to above, however we assign each vertext to multiple bones, and then compute the world coordinates as a convex combination. Weights define the influence of each bone on the vertex. This leads to an overall smoother deformation of the skin:
+
+$$
+v = \sum_j \alpha_j \,_wR_j \,_{\bar{w}}\bar{R}_j^{-1}v'
+$$
+
+![](./Figures/VisComp_Fig12-9.PNG)
+
+### 8.3.7 Inverse Kinematics
+
+**Inverse kinematics** describes the problem that given some position of our character, compute the joint angles. This is one of the msot fundamental techniques in animation and robotics!
+
+The basic idea behind an IK algorithm is as follows:
+
+1. Write down the distance between the final point and the target and set up the objective
+2. Compute the gradiant with respect to angles
+3. Go downhill from there
+
+### 8.3.8 The Uncanny Valley
+
+> The uncanny valley is a concept first introduced in the 1970s by Masahiro Mori, then a professor at the Tokyo Institute of Technology. Mori coined the term “uncanny valley" to describe his observation that as robots appear more humanlike, they become more appealing—but only up to a certain point. Upon reaching the uncanny valley, our affinity descends into a feeling of strangeness, a sense of unease, and a tendency to be scared or freaked out. So the uncanny valley can be defined as people's negative reaction to certain lifelike robots.
+
+![](./Figures/VisComp_Fig12-10.PNG)
+
+### 8.3.9 Motion Capture
+
+**Motion capture** provides sparse signals, such as marker trajectories, from which a full body motion needs to be recosntructed.
+
+This is a problem which is often-times posed as an optimization problem, for example in inverse kinematics.
