@@ -12,7 +12,7 @@ The **operating system** for a unit of computing hardware is that part of the so
 
 - As a **Referee**, the OS multiplexes the hardware of the machine among different principals (users, programs, etc.), and protects these principals from each other.
 - As an **Illusionist**, the OS provides the illusion of *real* hardware resources to resource principals through *virtualization*.
-- As **Glue**, the OS provides abstractions to tie different resources together, and hides details of the hardware to allow programs portability across different platforms.
+- As a **Glue**, the OS provides abstractions to tie different resources together, and hides details of the hardware to allow programs portability across different platforms.
 
 ## 3.2 Domains
 
@@ -63,7 +63,7 @@ A **multikernel**-based system targets multiprocessor machines, and runs differe
 
 ## 3.5 Bootstrap
 
-**Bootstrapping**, or more commonly these day simply **booting**, is the process of starting the operating system when the machine is powered on or reset up to the point where it is running regular processes.
+**Bootstrapping**, or more commonly these days simply **booting**, is the process of starting the operating system when the machine is powered on or reset up to the point where it is running regular processes.
 
 
 The *boot sequence steps* are as follows:
@@ -71,7 +71,7 @@ The *boot sequence steps* are as follows:
 1. When a processor is powered on, it starts executing instructions at a fixed address in memory.
 2. The *Basic Input/Output System* (**BIOS**) starts initializing the hardware.
 3. The BIOS sets up a standard execution environment for the next program to run such that it does not need to know specifics of the system.
-4. The next program is typically the **boot loader**, and its job is to find the operating system kernel itself, load it into memory, and start executing it.
+4. The next program is typically the **bootloader**, and its job is to find the operating system kernel itself, load it into memory, and start executing it.
 5. The OS kernel itself, once it is entered, initializes its own data structures and creates the first processes. Finally, it starts this new process executing, and the system is now in regular steady state.
 
 ## 3.6 Entering and leaving the kernel
