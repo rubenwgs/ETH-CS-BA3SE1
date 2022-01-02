@@ -6,7 +6,7 @@
 
 # Chapter 1 : Introduction
 
-**Computer Systems** is the field of computer science that studies the design, implementation, and behaviour of real, complete systems of hardware and software.
+**Computer Systems** is the field of computer science that studies the design, implementation, and behavior of real, complete systems of hardware and software.
 
 # Chapter 2 : Naming
 
@@ -54,7 +54,7 @@ A **search path** is an ordered list of contexts which are treated as a single c
 
 > Remark: The UNIX shell `PATH` variable, for example:
 > `/home/ruben/bin:/usr/bin:/bin:/sbin:/usr/sbin:/etc`
-> - is a search path context for resolving command names: each directory in the search path is tried in turn to looking for a command.
+> - is a search path context for resolving command names: each directory in the search path is tried in turn to look for a command.
 
 ## 2.6 Synonyms and Homonyms
 
