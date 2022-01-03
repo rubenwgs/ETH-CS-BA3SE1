@@ -111,3 +111,35 @@ Another function of the I/O subsystem is to perform protection:
 - Ensuring that a device cannot be configured to do something malicious to the rest of the system.
 
 There are a number of mechanisms for achieving this. Putting device drivers in the kernel makes it easy to control access to the hardware, but you have to trust the device drivers to do the right thing since they are now part of the kernel. UNIX controls access to the drivers themselves by representing them as files, and thereby leveraging the protection model of the file system.
+
+# Chapter 8: Memory Management and Virtual Memory
+
+## 8.1 Segments
+
+Before paging, there were segments. Segments evolved from basic protection mechanisms.
+
+A **base and limit register pair** is a couple of hardware registers containing two addresses $B$ and $L$. A CPU access to an address $a$ is permitted IFF $B \leq a \lt L$.
+
+A **relocation register** is an enhanced form of base register. All CPU accesses are relocated by adding the offset: a CPU access to an address $a$ is translated to $B + a$ and allowed IFF $B \leq B + a \lt L$.
+
+> Remarks:
+>
+> - With relocation registers, each program can be compiled to run at the same address, e.g. `0x0000`.
+> - Relocation registers don't allow sharing code and data between processes, since each process has a single region of memory.
+
+A **segment** is a triple $(I, \, B_I, \, L_I)$ of values specifying a contiguous region of memory address space with base $B_I$, limit $L_I$, and an associated _segment identifier_ $I$ which names the segment. Memory in a segmented system uses a form of _logical addressing:_ each address is a pair $(I, \, O)$ of segment identifier and offset. A load or store to or from a logical address $(i, \, o)$ succeeds IFF $0 \leq o \lt L_i$ and the running process is authorized to access segment $i$. If it does succeed, it will access physical address $B_i + o$.
+
+A **segment table** is an in-memory array of base and limit values $(B_i, \, L_i)$ indexed by segment identifier, and possibly with additional protection information. The _Memory Management Unit (MMU)_ in a segmentation system holds the location and size of this table in a **segment table base register (STBR)** and **segment table length register (STLR).** Logical memory accesses cause the MMU to look up the segment ID in this table to obtain the physical address and protection information.
+
+> Remarks:
+>
+> - Segmentation is fast. As with pages, segment information can be cached in a TLB.
+> - Sharing is trivially easy at a segment granularity.
+> - The OS and hardware might have a single, system-wide segment table, or a per-process table.
+> - The principal downside of segmentation is that segments are still contiguous in physical memory, which leads to external fragmentation.
+
+Paging solves the external fragmentation problem associated with segments, at some cost in efficiency.
+
+A paging system divides the physical address space into fixed-size regions called _frames_ or _physical pages,_ indexed by a **physical frame (or page) number (PFN),** the high bits of the address. The virtual address space is similarly divided into fixed-size regions called _virtual pages,_ identified by a **virtual page number (VPN),** the high bits of the virtual address. The MMU translates from virtual addresses to physical addresses by looking up the VPN in a **page table** to obtain a PFN. Page table entries (PTEs) also hold protection metadata for the virtual page, including validity information. Access via invalid PTE causes a _page fault_ processor exception. VPN-to-PFN translations are cached in a **Translation Lookaside Buffer (TLB).**
+
+A **hierarchical page table** is organized in multiple layers, each one translating a different set of bits in the virtual address.
