@@ -143,3 +143,131 @@ Paging solves the external fragmentation problem associated with segments, at so
 A paging system divides the physical address space into fixed-size regions called _frames_ or _physical pages,_ indexed by a **physical frame (or page) number (PFN),** the high bits of the address. The virtual address space is similarly divided into fixed-size regions called _virtual pages,_ identified by a **virtual page number (VPN),** the high bits of the virtual address. The MMU translates from virtual addresses to physical addresses by looking up the VPN in a **page table** to obtain a PFN. Page table entries (PTEs) also hold protection metadata for the virtual page, including validity information. Access via invalid PTE causes a _page fault_ processor exception. VPN-to-PFN translations are cached in a **Translation Lookaside Buffer (TLB).**
 
 A **hierarchical page table** is organized in multiple layers, each one translating a different set of bits in the virtual address.
+
+The process of translating a virtual address to physical address using a hierarchical page table is called a **page table walk.** Most MMUs have a _hardware table walker_ which is used on TLB-misses to find and load the appropriate page table entry into TLB, but others require the OS to provide a _software page table walker._
+
+In practice, software in the operating system always has to map virtual to physical addresses:
+
+- A software-loaded TLB simply has no hardware to walk the page table.
+- In a case, when a page fault occurs, the OS needs to map the faulting (virtual) address to the relevant PTE, so that it can figure out what kind of fault occurred and also where to find a physical page to satisfy the fault. This requires a table walk.
+
+To facilitate tracking the mappings between virtual and physical addresses, an OS typically divides an address space into a set of contiguous _virtual memory regions._
+
+## 8.3 Segment Paging
+
+It is possible to combine segmentation and paging: A **page segmentation** memory management scheme is one where memory is addresses by a pair `(segment_id, offset)`, as in a segmentation scheme, but each segment is itself composed of fixed-size pages whose page numbers are then translated to physical page numbers by a paged MMU.
+
+## 8.4 Page Mapping Operations
+
+Each process has its own page table. At high level, all operating systems provide three basic operations on page mappings, which in turn manipulate the page table for a given process:
+
+A page **map** operation on an address space $A$
+
+$$
+A.map(v, \, p)
+$$
+
+takes a virtual page number $v$ and a physical page number $p$, and creates a mapping $v \to p$ in the address space.
+
+A page **unmap** operation on an address space $A$:
+
+$$
+A.unmap(v)
+$$
+
+takes a virtual page number $v$ and removes any mapping from $v$ in the address space.
+
+A page **protect** operation on an address space $A$:
+
+$$
+A.protect(v, \, rights)
+$$
+
+takes a virtual page number $v$ and changes the page protection on the page.
+
+An MMU typically allows different protection rights on pages:
+
+- `READABLE`: the process can read from the virtual address
+- `WRITABLE`: the process can write to the virtual address
+- `EXECUTABLE`: the process can fetch machine code instructions from the virtual address
+
+## 8.5 Copy-On-Write
+
+Recall that the `fork()` operation in UNIX makes a complete copy of the address space of the parent process, and that this might be an expensive operation.
+
+To avoid allocating all the physical pages needed for a process at startup time, **on-demand page allocation** is used to allocate physical pages lazily when they are first touched.
+
+```pseudo
+# Algorithm 8.16: On-demand page allocation
+inputs:
+    A {An address space}
+    {(v_i), i = 1...n} {A set of virtual pages in A}
+    # Setup the region
+for i = 1...n do:
+    A.unmap(v_i) {Ensure al mappings in region are invalid}
+end for
+    # Page fault
+inputs:
+    v' {Faulting virtual address}
+    n <- VPN(v')
+    p <- AllocateNewPhysicalPage()
+    A.map(v' -> p)
+return
+```
+
+**Copy-on-write** or COW is a technique which optimizes the copying of large regions of virtual memory when the subsequent changes to either copy are expected to be small.
+
+```pseudo
+# Algorithm 8.18: Copy-On-Write
+inputs:
+    A_p {Parent address space}
+    A_c {Child address space}
+    {(v_i, p_i), i = 1...n} {A set of virtual to physical mappings in A_p}
+    # Setup
+for i = 1...n do:
+    A_p.protect(v_i, READONLY)
+    A_c.map(v_i -> p_i)
+    A_c.protect(v_i, READONLY)
+end for
+    #Page fault in child
+inputs:
+    V {VAulting virtal address}
+n <- VPN(V)
+p' <- AllocateNewPhyiscalPAge()
+CopyPageContent(p' <- p_n)
+A_c.map(v_n -> p')
+A_p.protect(v_n, WRITABLE)
+return
+```
+
+## 8.6 Managing Caches
+
+Before looking at why and how the OS needs to manage the processor caches, let's go through the operations it can use from software on a cache:
+
+- An **invalidate** operation on a cache (or cache line) marks the contents of the cache (or line) as invalid, effectively discarding the data.
+- A **clean** operation on a cache writes any dirty data held in the cache to memory.
+- A **flush** operation writes back any dirty data from the cache and then invalidates the line (or the whole cache).
+
+### 8.6.1 Homonyms and Synonyms
+
+**Synonyms** are different cache entries (virtual addresses) that refer to the same physical addresses. Synonyms can result in cache _aliasing,_ where the same data appears in several copies in the cache at the same time. Synonyms case problems because an update to one copy in the cache will not necessarily update others, leaving the view of physical memory inconsistent.
+
+In contrast, cache **homonyms** are multiple physical addresses referred to using the same virtual address (for example, in different address spaces). Homonyms are a problem since the cache tag may not uniquely identify cache data, leading to the cache accessing the wrong data.
+
+### 8.6.2 Cache Types
+
+These days, almost all processor caches are write-back, write-allocate, and set-associative. The main differences are to do with where the tag and index bits come from during a lookup.
+
+- A _virtually-indexed, virtually-tagged_ or _VIVT_ cache is one where the virtual address of the access determines both the cache index and cache tag to lookup. VIVT caches are simple to implement, and fast. However, they suffer from homonyms. The problem can be alleviated by allowing cache entries to be annotated with "address space tags".
+
+**Address-space tags** or _ASIDs_ are small additional cache or TLB tags which match different processes or address spaces and therefore allow multiple contexts in a cache or TLB at the same time.
+
+- A _physically-indexed, physically-tagged_ or _PIPT_ cache is one where the physical address after TLB translation determines the cache index and tag. PIPT caches are easier to manage, since nothing needs to change on a context switch, and they do not suffer from homonyms or synonyms. The downside is that they are slow: you can only start to access a PIPT cache after the TLB has translated the address.
+- A _virtually-indexed, physically-tagged_ or _VIPT_ cache is one where the virtual address before TLB translation determines the cache index, but the physical address after translation gives the tag. VIPT caches are a great choice for L1 D-caches these days, if they can be made to work.
+- A _physically-indexed, virtually-tagged_ or _PIVT_ cache is one where the physical address after TLB translation determines the cache index to look up, but the virtual address before translation supplies the tag to then look up in the set. It is hard to imagine anyone building such a cache, and even harder to figure out why, but they do exist.
+
+## 8.7 Managing The TLB
+
+The **TLB coverage** of a processor is the total number of bytes of virtual address space which can be translated by a TLB at a given point in time. Modern processors are quite complex, with multiple TLBs: primary and secondary TLBs (as with L1 and L2 caches), separate TLBs for instructions and data, and even different TLBs for different page sizes.
+
+**TLB shootdown** on a multiprocessor is the process of ensuring that no out-of-date virtual-to-physical translations are held in any TLB in the system following a change to a page table. Since the TLB is a cache, it should be coherent with other TLBs in the system, and with each process' page tables. Shootdown is basically a way to invalidate certain mappings in every TLB, if they refer to the affected process.
