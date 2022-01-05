@@ -1,5 +1,3 @@
-**_WORK IN PROGRESS!_**
-
 **Visual Computing - Lecture notes week 8**
 
 - Author: Ruben Schenk
@@ -66,7 +64,7 @@ But how do we draw our 3D vertices as a 2D flat image? The basic strategy is:
 
 The **perspective projection** describes what a simple _pinhole_ model of a camera does:
 
-<img src="./Figures/VisComp_Fig8-1.PNG" style="zoom:50%;" />
+<img src="./Figures/VisComp_Fig8-1.PNG" style="zoom: 25%;" />
 
 With this simple projection we can answer the following question: Where does a point `p = (x, y, z)` from our real world end up in the image `q = (u, v)`?
 
@@ -77,7 +75,7 @@ $$
 \end{align*}
 $$
 
-<img src="./Figures/VisComp_Fig8-2.PNG" style="zoom:50%;" />
+<img src="./Figures/VisComp_Fig8-2.PNG" style="zoom: 25%;" />
 
 Applying the above learned information, we can draw our cube, assuming that the camera is at `c = (2, 3, 5)`, as follows:
 
@@ -92,7 +90,7 @@ D: (3/4, 1)         H: (1/2, 2/3)
 
 2. We can draw the points on a 2D grid and connect the points which belong to our previously defined edges:
 
-<img src="./Figures/VisComp_Fig8-3.PNG" style="zoom:50%;" />
+<img src="./Figures/VisComp_Fig8-3.PNG" style="zoom: 25%;" />
 
 ## 1.5 Drawing On A Raster Display
 
@@ -105,11 +103,11 @@ A common abstraction is that an image is represented as a _2D grid of pixels._ E
 
 1. One simple approach is to light up all pixels intersected by the line:
 
-<img src="./Figures/VisComp_Fig8-4.PNG" style="zoom:50%;" />
+<img src="./Figures/VisComp_Fig8-4.PNG" style="zoom: 25%;" />
 
 2. In modern graphics hardware, we use an approached called the _diamond rule:_
 
-<img src="./Figures/VisComp_Fig8-5.PNG" style="zoom: 50%;" />
+<img src="./Figures/VisComp_Fig8-5.PNG" style="zoom: 25%;" />
 
 The last question we might want to answer is how do we find the pixels satisfying a chosen rasterization rule? We could check every single pixel in the image to see if it meets the condition.
 However, considering the `O(n)` pixels in an image with respect to the at most `O(n)` "lit up" pixels, we have to do way too much computation.
@@ -154,7 +152,7 @@ This question somewhat corresponds to out two definitions from before:
 - What scene geometry projects into a screen pixel? (_coverage_)
 - Which geometry is visible from the camera at that pixel? (_occlusion_)
 
-<img src="./Figures/VisComp_Fig8-6.PNG" style="zoom: 50%;" />
+<img src="./Figures/VisComp_Fig8-6.PNG" style="zoom: 25%;" />
 
 Said differently, in terms of _rays,_ the visibility problem becomes:
 
@@ -167,11 +165,11 @@ Similar to the line problem from the previous chapter, the main question we have
 
 _Example:_
 
-<img src="./Figures/VisComp_Fig8-7.PNG" style="zoom: 33%;" />
+<img src="./Figures/VisComp_Fig8-7.PNG" style="zoom: 25%;" />
 
 But what do we do with pixels that are only _partially covered_ by the triangle? One option is to compute the fraction of pixel area which is covered by the triangle, and then color the pixel according to this fraction:
 
-<img src="./Figures/VisComp_Fig8-8.PNG" style="zoom: 33%;" />
+<img src="./Figures/VisComp_Fig8-8.PNG" style="zoom: 25%;" />
 
 However, computing the area covered by a triangle can get tricky very fast, for example when dealing with the interactions between multiple triangles.
 We may estimate the amount of overlap between a triangle and a pixel through _sampling._
@@ -180,7 +178,7 @@ We may estimate the amount of overlap between a triangle and a pixel through _sa
 
 Consider a continuous function and 5 discrete measurement, our _samples:_
 
-<img src="./Figures/VisComp_Fig8-9.PNG" style="zoom:33%;" />
+<img src="./Figures/VisComp_Fig8-9.PNG" style="zoom: 25%;" />
 
 We can _reconstruct_ (or approximate) our original continuous functions with our discrete values through **sampling.**
 
@@ -188,19 +186,19 @@ We can _reconstruct_ (or approximate) our original continuous functions with our
 
 We define the reconstructed function $f_{recon}(x)$ to be the value of the sample closest to $x$, i.e. the nearest neighbor:
 
-<img src="./Figures/VisComp_Fig8-10.PNG" style="zoom:33%;" />
+<img src="./Figures/VisComp_Fig8-10.PNG" style="zoom: 25%;" />
 
 ### 2.4.2 Piecewise Linear Approximation
 
 We define the reconstructed function $f_{recon}(x)$ to be the linear interpolation between two samples closest to $x$.
 
-<img src="./Figures/VisComp_Fig8-11.PNG" style="zoom:33%;" />
+<img src="./Figures/VisComp_Fig8-11.PNG" style="zoom: 25%;" />
 
 ### 2.4.3 More Accuracy
 
 The simplest and most obvious way to reconstruct our original 1D signal more accurately is to sample the signal more densely, i.e. to _increase the sampling rate._
 
-<img src="./Figures/VisComp_Fig8-12.PNG" style="zoom:33%;" />
+<img src="./Figures/VisComp_Fig8-12.PNG" style="zoom: 25%;" />
 
 ### 2.4.4 Mathematical Representation Of Sampling
 
@@ -223,9 +221,9 @@ with an impulse occurring at $x = a$. Sampling the function is equivalent to mul
 
 #### Reconstruction As Convolution
 
-<img src="./Figures/VisComp_Fig8-13.PNG" style="zoom:33%;" />
+<img src="./Figures/VisComp_Fig8-13.PNG" style="zoom: 25%;" />
 
-<img src="./Figures/VisComp_Fig8-14.PNG" style="zoom:33%;" />
+<img src="./Figures/VisComp_Fig8-14.PNG" style="zoom: 25%;" />
 
 ## 2.5 Coverage As A 2D Signal
 
@@ -239,7 +237,7 @@ We choose a point in the pixel which is said to be the _coverage sample point._
 
 _Example:_
 
-<img src="./Figures/VisComp_Fig8-15.PNG" style="zoom:33%;" />
+<img src="./Figures/VisComp_Fig8-15.PNG" style="zoom: 25%;" />
 
 One (literal) edge case we have to consider is what happens if the edge of a triangle exactly falls onto our sample point. The OpenGL/Direct3D **edge rules** are:
 
@@ -248,7 +246,7 @@ When an edge falls directly on a screen sample point, the sample is classified a
 - Top edge: horizontal edge that is above all other edges
 - Left edge: edge that is not exactly horizontal and is on the left side of the triangle
 
-<img src="./Figures/VisComp_Fig8-16.PNG" style="zoom: 50%;" />
+<img src="./Figures/VisComp_Fig8-16.PNG" style="zoom: 25%;" />
 
 ## 2.6 Aliasing
 
@@ -256,7 +254,7 @@ When an edge falls directly on a screen sample point, the sample is classified a
 
 **Aliasing** describes the observation that high frequencies in an original signal masquerade as low frequencies after reconstruction due to undersampling:
 
-<img src="./Figures/VisComp_Fig8-17.PNG" style="zoom:33%;" />
+<img src="./Figures/VisComp_Fig8-17.PNG" style="zoom: 25%;" />
 
 This leads to one obvious question when sampling: How densely should we be sampling?
 
@@ -268,11 +266,11 @@ The _Nyquist-Shannon theorem_ says that a signal can be perfectly reconstructed 
 
 We can increase the density of the sampling coverage signal. The following example shows _stratified sampling_ using four samples per pixel:
 
-<img src="./Figures/VisComp_Fig8-18.PNG" style="zoom:33%;" />
+<img src="./Figures/VisComp_Fig8-18.PNG" style="zoom: 25%;" />
 
 However, we now have more samples than pixels! This means we have to **resample**, i.e. converting from one discrete sampled representation to another:
 
-<img src="./Figures/VisComp_Fig8-19.PNG" style="zoom:33%;" />
+<img src="./Figures/VisComp_Fig8-19.PNG" style="zoom: 25%;" />
 
 ## 2.7 Sampling Triangle Coverage
 
@@ -304,13 +302,13 @@ $$
 
 Another approach is based on the idea that rather than testing all possible points on a screen, we traverse them incrementally:
 
-<img src="./Figures/VisComp_Fig8-20.PNG" style="zoom:33%;" />
+<img src="./Figures/VisComp_Fig8-20.PNG" style="zoom: 25%;" />
 
 ### 2.7.3 Tiled Triangle Traversal
 
 A modern approach is to traverse the triangle in blocks. We test all samples in the block against the triangle in parallel:
 
-<img src="./Figures/VisComp_Fig8-21.PNG" style="zoom:33%;" />
+<img src="./Figures/VisComp_Fig8-21.PNG" style="zoom: 25%;" />
 
 **Visual Computing - Lecture notes week 9**
 
@@ -345,13 +343,13 @@ If a map can be expressed as $f(u) = \sum_{i = 1}^m u_i a_i$, with fixed vectors
 
 _Example:_
 
-<img src="./Figures/VisComp_Fig9-1.PNG" style="zoom:33%;" />
+<img src="./Figures/VisComp_Fig9-1.PNG" style="zoom: 25%;" />
 
 $u$ is a linear combination of $e_1$ and $e_2$. $f(u)$ is the _same_ linear combination, but of $a_1$ and $a_2$, and we have that $a_1 = f(e_1)$ and $a_2 = f(e_2)$.
 
 ## 3.2 Scale
 
-<img src="./Figures/VisComp_Fig9-2.PNG" style="zoom:33%;" />
+<img src="./Figures/VisComp_Fig9-2.PNG" style="zoom: 25%;" />
 
 **Scaling** is simply defined by either scalar multiplication of the whole vector (_uniform scale_) or scalar multiplication of specific basis vectors (_non-uniform scale_).
 
@@ -361,7 +359,7 @@ $$
 
 ## 3.3 Rotation
 
-<img src="./Figures/VisComp_Fig9-3.PNG" style="zoom:33%;" />
+<img src="./Figures/VisComp_Fig9-3.PNG" style="zoom: 25%;" />
 
 Mathematically, **rotations** can be defined by the following two formulae:
 
@@ -391,7 +389,7 @@ Those special cases are actually simple _non-uniform scales._
 
 A **shear operation** (in the $x$ direction) is done by moving the upper edge along the $x$-axis by some defined amount.
 
-<img src="./Figures/VisComp_Fig9-4.PNG" style="zoom:33%;" />
+<img src="./Figures/VisComp_Fig9-4.PNG" style="zoom: 25%;" />
 
 Mathematically, this operation is defined through:
 
@@ -403,7 +401,7 @@ $$
 
 **Translation** describes mappings of the following form:
 
-<img src="./Figures/VisComp_Fig9-5.PNG" style="zoom:33%;" />
+<img src="./Figures/VisComp_Fig9-5.PNG" style="zoom: 25%;" />
 
 We can denote this transformation by:
 
@@ -453,7 +451,7 @@ In computer graphics we often have to distinguish between _points_ and _vectors.
 
 We define a vector to have $x_3 = 0$ in 2D-H and a point to have $x_3 \neq 0$ in 2D-H. To get from a point in 2D-H back to 2D, we simply divide all components by $x_3$.
 
-<img src="./Figures/VisComp_Fig9-6.PNG" style="zoom:33%;" />
+<img src="./Figures/VisComp_Fig9-6.PNG" style="zoom: 25%;" />
 
 ## 3.8 Composition Of Linear Transformations
 
@@ -461,7 +459,7 @@ We can **compose linear transforms** via matrix multiplication. This enables for
 
 _Example:_ We take a look at the following transform: $R_{\pi / 4} S_{[1.5, \, 1.5]}x$
 
-<img src="./Figures/VisComp_Fig9-7.PNG" style="zoom:33%;" />
+<img src="./Figures/VisComp_Fig9-7.PNG" style="zoom: 25%;" />
 
 ## 3.9 Moving To 3D (And 3D-H)
 
@@ -524,13 +522,13 @@ The procedure for a basic perspective projection, follows 4 steps:
 3. Point projected to 2D-H by dropping the $z$ coordinate: $p_{2D-H} = (x_x, \, x_y, \, x_z)$
 4. Point in 2D by homogeneous divide: $p_{2D} = (\frac{x_x}{x_z}, \, \frac{x_y}{x_z})$
 
-<img src="./Figures/VisComp_Fig9-8.PNG" style="zoom: 50%;" />
+<img src="./Figures/VisComp_Fig9-8.PNG" style="zoom: 25%;" />
 
 ### 4.1.2 The View Frustum
 
 The **view frustum** denotes the region in space that will appear on the screen.
 
-<img src="./Figures/VisComp_Fig9-9.PNG" style="zoom:50%;" />
+<img src="./Figures/VisComp_Fig9-9.PNG" style="zoom: 25%;" />
 
 We want a transformation that maps view frustum to a unit cube, such that computing screen coordinates in that space becomes trivial.
 
@@ -546,7 +544,7 @@ $$
 P = \begin{bmatrix} \frac{f}{r} & 0 & 0 & 0 \\ 0 & f & 0 & 0 \\ 0 & 0 & \frac{zfar + znear}{znear - zfar} & \frac{2 \cdot zfar \cdot znear}{znear - zfar} \\ 0 & 0 & -1 & 0  \end{bmatrix}
 $$
 
-<img src="./Figures/VisComp_Fig9-10.PNG" style="zoom: 50%;" />
+<img src="./Figures/VisComp_Fig9-10.PNG" style="zoom: 25%;" />
 
 ## 4.2 Geometry
 
@@ -603,7 +601,7 @@ C = disc diameter rand(2, 5), forward 10
 
 This can lead to something like the following geometry:
 
-<img src="./Figures/VisComp_Fig10-1.PNG" style="zoom: 33%;" />
+<img src="./Figures/VisComp_Fig10-1.PNG" style="zoom: 25%;" />
 
 #### von Koch Snowflake Curve
 
@@ -619,7 +617,7 @@ Semantics:
 - - = rotate right 60
 ```
 
-<img src="./Figures/VisComp_Fig10-2.PNG" style="zoom:33%;" />
+<img src="./Figures/VisComp_Fig10-2.PNG" style="zoom: 25%;" />
 
 #### Branching Structures
 
@@ -633,7 +631,7 @@ With those additional symbols, we can define three rules for different types of 
 
 _Example:_ The following figure shows an example of the L-System `F -> F[+F]F[-F]F`:
 
-<img src="./Figures/VisComp_Fig10-3.PNG" style="zoom:33%;" />
+<img src="./Figures/VisComp_Fig10-3.PNG" style="zoom: 25%;" />
 
 #### Stochastic L-System
 
@@ -655,7 +653,7 @@ F -> F[-F]F : 0.34
 
 Multiple applications of the above rules will lead to a geometry similar to the figure below:
 
-<img src="./Figures/VisComp_Fig10-4.PNG" style="zoom:33%;" />
+<img src="./Figures/VisComp_Fig10-4.PNG" style="zoom: 25%;" />
 
 ### 4.2.4 Point Cloud (Explicit)
 
@@ -683,7 +681,7 @@ Let's introduce some useful definitions:
 - _Vertex degree (Valence):_ Number of edges incident to a vertex.
 - _Boundary:_ The set of all edges that belong to only one polygon
 
-<img src="./Figures/VisComp_Fig10-5.PNG" style="zoom: 33%;" />
+<img src="./Figures/VisComp_Fig10-5.PNG" style="zoom: 25%;" />
 
 #### Mesh Data Structures
 
@@ -694,7 +692,7 @@ With **mesh datastructures** we can store the geometry and topology of some obje
 
 The simplest storage option for mesh datastructures is to simply store them in an **indexed face set:**
 
-<img src="./Figures/VisComp_Fig10-6.PNG" style="zoom:33%;" />
+<img src="./Figures/VisComp_Fig10-6.PNG" style="zoom: 25%;" />
 
 ### 4.2.6 Surface Normals
 
@@ -712,13 +710,13 @@ $$
 E = \frac{\Phi}{A'} = \frac{\Phi \cos \theta}{A}
 $$
 
-<img src="./Figures/VisComp_Fig10-7.PNG" style="zoom:33%;" />
+<img src="./Figures/VisComp_Fig10-7.PNG" style="zoom: 25%;" />
 
 #### N-dot-L Lightning
 
 **N-dot-L lightning** is one of the most basic ways to shade a surface: One simply takes the dot product of a unit surface normal (_N_) and the unit direction to the light source (_L_).
 
-<img src="./Figures/VisComp_Fig10-8.PNG" style="zoom: 50%;" />
+<img src="./Figures/VisComp_Fig10-8.PNG" style="zoom: 25%;" />
 
 ## 4.3 Texture Mapping
 
@@ -726,18 +724,18 @@ $$
 
 **Texture coordinates** define a mapping from surface coordinates (points on a triangle) to points in the texture domain.
 
-<img src="./Figures/VisComp_Fig10-9.PNG" style="zoom: 50%;" />
+<img src="./Figures/VisComp_Fig10-9.PNG" style="zoom: 25%;" />
 
 ### 4.3.2 Texture Space Samples
 
 To do a texture mapping, we need some space samples. We can sample some positions in the $XY$ screen space and then use the same sample positions in the texture space.
 However, this can lead to **perspective-incorrect interpolation:**
 
-<img src="./Figures/VisComp_Fig10-10.PNG" style="zoom:33%;" />
+<img src="./Figures/VisComp_Fig10-10.PNG" style="zoom: 25%;" />
 
 This is due to perspective projection. Barycentric interpolation of values in $XY$ screen coordinates do not correspond to values that vary linearly on the original triangle!
 
-<img src="./Figures/VisComp_Fig10-11.PNG" style="zoom: 50%;" />
+<img src="./Figures/VisComp_Fig10-11.PNG" style="zoom: 25%;" />
 
 ### 4.3.3 Filtering Textures
 
@@ -750,11 +748,11 @@ Due to resizing, our rendering pixels from our image may be much larger or small
 
 The idea of the **Mipmap** is to prefilter the texture data to remove high frequencies. Texels at higher levels store the integral of the texture function over a region of texture space (downsampled images), i.e. they represent low-pass filtered versions of the original texture signal.
 
-<img src="./Figures/VisComp_Fig10-12.PNG" style="zoom: 33%;" />
+<img src="./Figures/VisComp_Fig10-12.PNG" style="zoom: 25%;" />
 
 To decide which level $d$ to use, we calculate the differences between texture coordinate values of neighboring screen samples:
 
-<img src="./Figures/VisComp_Fig10-13.PNG" style="zoom: 50%;" />
+<img src="./Figures/VisComp_Fig10-13.PNG" style="zoom: 25%;" />
 
 # 5. The Rasterization Pipeline
 
@@ -777,23 +775,23 @@ _Example: Rendering three opaque triangles_
 
 1. We start by processing a yellow triangle with depth 0.5:
 
-<img src="./Figures/VisComp_Fig10-14.PNG" style="zoom: 33%;" />
+<img src="./Figures/VisComp_Fig10-14.PNG" style="zoom: 25%;" />
 
 2. After processing the first triangle, we end up with a color buffer and depth buffer as shown below:
 
-<img src="./Figures/VisComp_Fig10-15.PNG" style="zoom:33%;" />
+<img src="./Figures/VisComp_Fig10-15.PNG" style="zoom: 25%;" />
 
 3. Next we process a blue triangle with depth 0.75. We end up with buffers like this:
 
-<img src="./Figures/VisComp_Fig10-16.PNG" style="zoom:33%;" />
+<img src="./Figures/VisComp_Fig10-16.PNG" style="zoom: 25%;" />
 
 4. Finally, we process a red triangle with depth 0.25. Our final color and depth buffer looks like this:
 
-<img src="./Figures/VisComp_Fig10-17.PNG" style="zoom:33%;" />
+<img src="./Figures/VisComp_Fig10-17.PNG" style="zoom: 25%;" />
 
 5. The final picture is:
 
-<img src="./Figures/VisComp_Fig10-18.PNG" style="zoom:33%;" />
+<img src="./Figures/VisComp_Fig10-18.PNG" style="zoom: 25%;" />
 
 The occlusion algorithm using the depth buffer is simple and given by:
 
@@ -820,7 +818,7 @@ We can represent _opacity_ as alpha. **Alpha** describes the opacity of an objec
 - 50% transparent: $\alpha = 0.5$
 - Fully transparent: $\alpha = 0$
 
-<img src="./Figures/VisComp_Fig10-19.PNG" style="zoom: 33%;" />
+<img src="./Figures/VisComp_Fig10-19.PNG" style="zoom: 25%;" />
 
 ### 5.2.2 The Over Operator
 
@@ -872,7 +870,7 @@ _Remark:_ Triangles must be rendered in back to front order!
 
 ### 5.3.1 The Real-time Graphics Pipeline
 
-<img src="./Figures/VisComp_Fig10-20.PNG" style="zoom:50%;" />
+<img src="./Figures/VisComp_Fig10-20.PNG" style="zoom: 25%;" />
 
 ### 5.3.2 Drawing Triangles: Step-by-step
 
@@ -911,19 +909,19 @@ Additionally:
 
 Transform the triangle vertices into the camera space:
 
-<img src="./Figures/VisComp_Fig10-21.PNG" style="zoom: 50%;" />
+<img src="./Figures/VisComp_Fig10-21.PNG" style="zoom: 25%;" />
 
 #### Step 2
 
 Apply the perspective projection transform to transform the triangle vertices into a normalized coordinate space:
 
-<img src="./Figures/VisComp_Fig10-22.PNG" style="zoom: 33%;" />
+<img src="./Figures/VisComp_Fig10-22.PNG" style="zoom: 25%;" />
 
 #### Step 3
 
 Discard triangles that lie completely outside the unit cube (since they are off-screen) and clip triangles that extend beyond the unit cube to the unit cube:
 
-<img src="./Figures/VisComp_Fig10-23.PNG" style="zoom:33%;" />
+<img src="./Figures/VisComp_Fig10-23.PNG" style="zoom: 25%;" />
 
 #### Step 4
 
@@ -939,25 +937,25 @@ Preprocess the triangles, i.e. compute the triangle edge equations and the trian
 
 Do the sample coverage and evaluate attributes `Z, u, v` at all covered samples:
 
-<img src="./Figures/VisComp_Fig10-25.PNG" style="zoom:33%;" />
+<img src="./Figures/VisComp_Fig10-25.PNG" style="zoom: 25%;" />
 
 #### Step 7
 
 Compute the triangle color at the sample point through color interpolation, sample texture map, or more advanced shading algorithms:
 
-<img src="./Figures/VisComp_Fig10-26.PNG" style="zoom:33%;" />
+<img src="./Figures/VisComp_Fig10-26.PNG" style="zoom: 25%;" />
 
 #### Step 8
 
 Perform the depth test and update the depth value at the covered samples:
 
-<img src="./Figures/VisComp_Fig10-27.PNG" style="zoom:33%;" />
+<img src="./Figures/VisComp_Fig10-27.PNG" style="zoom: 25%;" />
 
 #### Step 9
 
 Update the color buffer if the depth test passed:
 
-<img src="./Figures/VisComp_Fig10-28.PNG" style="zoom:33%;" />
+<img src="./Figures/VisComp_Fig10-28.PNG" style="zoom: 25%;" />
 
 ### 5.3.3 Shadow Mapping
 
@@ -1001,7 +999,7 @@ GPU's are specialized processor for executing graphics pipeline computations. Th
 
 Most light is _not visible_ to the human eye. The frequencies that are visible to the human eyes are called the **visible spectrum.** These frequencies are what we think of as color.
 
-<img src="./Figures/VisComp_Fig11-1.PNG" style="zoom:50%;" />
+<img src="./Figures/VisComp_Fig11-1.PNG" style="zoom: 25%;" />
 
 ### 6.1.2 Description Of Light
 
@@ -1023,7 +1021,7 @@ There are three types of cones: S, M, and L cones. These correspond to a peak re
 
 The human eye does not directly measure the spectrum of incoming light, but three response values `(S, M, L)` by integrating the incoming spectrum against response functions of S-, M-, and L-cones. The brain then interprets these functions as colors.
 
-<img src="./Figures/VisComp_Fig11-2.PNG" style="zoom:50%;" />
+<img src="./Figures/VisComp_Fig11-2.PNG" style="zoom: 25%;" />
 
 ## 6.3 Additive And Subtractive Color Models
 
@@ -1058,7 +1056,7 @@ The **radiant flux** describes the number of hits per second. Rather than record
 
 To make images, we also need to know where the hits occurred. So, we compute the hits per second in some unit area, which is called the **irradiance.**
 
-<img src="./Figures/VisComp_Fig11-3.PNG" style="zoom: 33%;" />
+<img src="./Figures/VisComp_Fig11-3.PNG" style="zoom: 25%;" />
 
 ### 6.4.2 Measuring Illumination
 
@@ -1114,7 +1112,7 @@ where $E_{\omega}$ means that the differential surface area is oriented to face 
 
 We somehow need to distinguish between incident radiance and exitant radiance functions at a point on a surface:
 
-<img src="./Figures/VisComp_Fig11-4.PNG" style="zoom:50%;" />
+<img src="./Figures/VisComp_Fig11-4.PNG" style="zoom: 25%;" />
 
 In general, $L_i(p, \, \omega) \neq L_o(p, \, \omega)$
 
@@ -1122,7 +1120,7 @@ In general, $L_i(p, \, \omega) \neq L_o(p, \, \omega)$
 
 The core functionality of photorealistic renderer is to estimate the radiance at a given point, in a given direction. This is summed up by the **rendering equation:**
 
-<img src="./Figures/VisComp_Fig11-5.PNG" style="zoom:33%;" />
+<img src="./Figures/VisComp_Fig11-5.PNG" style="zoom: 25%;" />
 
 ### 6.5.1 Scattering Function
 
@@ -1147,7 +1145,7 @@ The following properties hold:
 
 ### 7.1.1 Rasterization
 
-<img src="./Figures/VisComp_Fig11-6.PNG" style="zoom:50%;" />
+<img src="./Figures/VisComp_Fig11-6.PNG" style="zoom: 25%;" />
 
 The basic rasterization algorithm consists of obtaining 2D samples and then computing the coverage, i.e. whether a projected triangle covers a 2D sample point, and the occlusion, i.e. calculating the depth buffer.
 
@@ -1157,7 +1155,7 @@ Finding samples in this case is easy since they are distributed uniformly on scr
 
 An alternative to rasterization is **ray-casting.**
 
-<img src="./Figures/VisComp_Fig11-7.PNG" style="zoom:50%;" />
+<img src="./Figures/VisComp_Fig11-7.PNG" style="zoom: 25%;" />
 
 The basic ray casting algorithm looks as follows:
 
@@ -1189,7 +1187,7 @@ Shadow can be computed by _recursive ray tracing:_
 -  Shoot shadow rays towards the light source from points where camera rays intersect the scene
     - If they are unclouded, the point is directly lit by the light source
 
-<img src="./Figures/VisComp_Fig11-8.PNG" style="zoom:50%;" />
+<img src="./Figures/VisComp_Fig11-8.PNG" style="zoom: 25%;" />
 
 Shadows computed via ray tracing are correct hard shadows. If done via rasterization, shadow map texture can lead to aliasing.
 
@@ -1197,7 +1195,7 @@ Shadows computed via ray tracing are correct hard shadows. If done via rasteriza
 
 Similar to shadow, reflections can be computed with recursive ray tracing by "simply" adding more secondary arrays:
 
-<img src="./Figures/VisComp_Fig11-9.PNG" style="zoom:50%;" />
+<img src="./Figures/VisComp_Fig11-9.PNG" style="zoom: 25%;" />
 
 ## 7.4 Ray-Scene Intersections
 
@@ -1295,7 +1293,7 @@ How we describe motion on a computer is probably the most important question to 
 
 **Keyframing** is an important yet quite "simple" idea of describing motion. The basic idea is to specify important events in our motion only, and let the computer fill in the rest via interpolation or approximation.
 
-<img src="./Figures/VisComp_Fig12-1.PNG" style="zoom: 33%;" />
+<img src="./Figures/VisComp_Fig12-1.PNG" style="zoom: 25%;" />
 
 ## 8.2 Spline Interpolation
 
@@ -1303,13 +1301,13 @@ How we describe motion on a computer is probably the most important question to 
 
 The basic idea behind **interpolation** data is to connect the dots, i.e. the given sample points. One such technique is _piecewise linear interpolation:_
 
-<img src="./Figures/VisComp_Fig12-2.PNG" style="zoom:33%;" />
+<img src="./Figures/VisComp_Fig12-2.PNG" style="zoom: 25%;" />
 
 It might be simple, but it yields a rather rough motion.
 
 Another common interpolation technique is _piecewise polynomial interpolation:_
 
-<img src="./Figures/VisComp_Fig12-3.PNG" style="zoom:33%;" />
+<img src="./Figures/VisComp_Fig12-3.PNG" style="zoom: 25%;" />
 
 ### 8.2.2 Splines
 
@@ -1349,7 +1347,7 @@ This leaves us with four unknowns but only two equations, which is obviously not
 
 However, what if we also want to match the _derivatives_ at the endpoints?
 
-<img src="./Figures/VisComp_Fig12-4.PNG" style="zoom:33%;" />
+<img src="./Figures/VisComp_Fig12-4.PNG" style="zoom: 25%;" />
 
 Then we end up with 4 equations and 4 unknowns, which lets us uniquely identify the cubic polynomial we are looking for.
 
@@ -1357,7 +1355,7 @@ Then we end up with 4 equations and 4 unknowns, which lets us uniquely identify 
 
 **Natural splines** are piecewise splines made out f cubic polynomials $p_i$.
 
-<img src="./Figures/VisComp_Fig12-5.PNG" style="zoom: 50%;" />
+<img src="./Figures/VisComp_Fig12-5.PNG" style="zoom: 25%;" />
 
 We want three conditions to hold for natural splines:
 
@@ -1385,7 +1383,7 @@ If we look at the picture above, we see that for $n+1$ points we have $4n$ DOFs,
 
 **Hermite/Bézier splines** are based on the idea that each cubic piece is specified by the endpoints and tangents, in contrast to natural splines where we define an additional point on which we have to exactly meet:
 
-<img src="./Figures/VisComp_Fig12-6.PNG" style="zoom: 50%;" />
+<img src="./Figures/VisComp_Fig12-6.PNG" style="zoom: 25%;" />
 
 Hermite splines have the following properties:
 
@@ -1450,13 +1448,13 @@ where $t(j)$ typically comes from a bind pose and $Rot(j)$ comes from some anima
 
 The transformation from frame $j$ to world is then given by:
 
-<img src="./Figures/VisComp_Fig12-7.PNG" style="zoom: 33%;" />
+<img src="./Figures/VisComp_Fig12-7.PNG" style="zoom: 25%;" />
 
 ### 8.3.6 Skinning
 
 The basic idea behind the _skinning process_ is that we simply move the vertices of the skin along with the bones! In a first attempt, we might assign each vertex to the closest bone, compute the world coordinates according to the bone's transformation and move the skin vertices along with it:
 
-<img src="./Figures/VisComp_Fig12-8.PNG" style="zoom: 33%;" />
+<img src="./Figures/VisComp_Fig12-8.PNG" style="zoom: 25%;" />
 
 This process is also called **rigid skinning.**
 
@@ -1468,7 +1466,7 @@ $$
 v = \sum_j \alpha_j \,_wR_j \,_{\bar{w}}\bar{R}_j^{-1}v'
 $$
 
-<img src="./Figures/VisComp_Fig12-9.PNG" style="zoom:33%;" />
+<img src="./Figures/VisComp_Fig12-9.PNG" style="zoom: 25%;" />
 
 ### 8.3.7 Inverse Kinematics
 
@@ -1484,7 +1482,7 @@ The basic idea behind an IK algorithm is as follows:
 
 > The uncanny valley is a concept first introduced in the 1970s by Masahiro Mori, then a professor at the Tokyo Institute of Technology. Mori coined the term "uncanny valley" to describe his observation that as robots appear more humanlike, they become more appealing—but only up to a certain point. Upon reaching the uncanny valley, our affinity descends into a feeling of strangeness, a sense of unease, and a tendency to be scared or freaked out. So the uncanny valley can be defined as people's negative reaction to certain lifelike robots.
 
-<img src="./Figures/VisComp_Fig12-10.PNG" style="zoom: 33%;" />
+<img src="./Figures/VisComp_Fig12-10.PNG" style="zoom: 25%;" />
 
 ### 8.3.9 Motion Capture
 
@@ -1526,11 +1524,11 @@ However, there is more to be said than $F = ma$:
 
 In physics, we often need to describe a system with many moving parts, e.g. a collection of billiard balls, each with position $x_i$. We usually collect them all into a single vector of **generalized coordinates.**
 
-<img src="./Figures/VisComp_Fig13-1.PNG" style="zoom: 33%;" />
+<img src="./Figures/VisComp_Fig13-1.PNG" style="zoom: 25%;" />
 
 We can think of $q$ as a single point moving along some trajectory in $\mathbb{R}^n$. If we take the time derivative of the generalized coordinates, we get **generalized velocity:**
 
-<img src="./Figures/VisComp_Fig13-2.PNG" style="zoom:33%;" />
+<img src="./Figures/VisComp_Fig13-2.PNG" style="zoom: 25%;" />
 
 ### 8.4.4 Ordinary Differential Equations
 
