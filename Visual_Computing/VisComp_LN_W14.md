@@ -42,7 +42,7 @@ $$
 
 Consider the following example, where we are given some initial temperature distribution $T_0(x) = T(x, \, 0)$ and some wind speed $c$. We want to find the temperature distribution $T(x, \, t)$ for any $t$:
 
-![](./Figures/VisComp_Fig14-1.PNG)
+<img src="./Figures/VisComp_Fig14-1.PNG" style="zoom: 25%;" />
 
 We can solve this problem _analytically:_
 
@@ -54,11 +54,11 @@ _Note:_ Only simple PDEs can be solved analytically!
 
 We might also solve the problem _numerically:_
 
-![](./Figures/VisComp_Fig14-2.PNG)
+<img src="./Figures/VisComp_Fig14-2.PNG" style="zoom:25%;" />
 
 #### Some Notation
 
-![](./Figures/VisComp_Fig14-3.PNG)
+<img src="./Figures/VisComp_Fig14-3.PNG" style="zoom:25%;" />
 
 #### PDE Classification
 
@@ -88,7 +88,7 @@ Like ODEs, many interesting PDEs are difficult or impossible to solve analytical
 
 Two basic ways to **discretize space** are the Lagrangian and the Eulerian approach:
 
-![](./Figures/VisComp_Fig14-4.PNG)
+<img src="./Figures/VisComp_Fig14-4.PNG" style="zoom:25%;" />
 
 We observe the following trade-offs:
 
@@ -104,12 +104,12 @@ We observe the following trade-offs:
 
 #### The Laplace Operator
 
-![](./Figures/VisComp_Fig14-5.PNG)
+<img src="./Figures/VisComp_Fig14-5.PNG" style="zoom:25%;" />
 
 _Discretization:_
 
-![](./Figures/VisComp_Fig14-6.PNG)
+<img src="./Figures/VisComp_Fig14-6.PNG" style="zoom:25%;" />
 
 _Numerically solving the Laplace equation:_
 
-![](./Figures/VisComp_Fig14-7.PNG)
+<img src="./Figures/VisComp_Fig14-7.PNG" style="zoom:25%;" />

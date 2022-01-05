@@ -32,11 +32,11 @@ However, there is more to be said than $F = ma$:
 
 In physics, we often need to describe a system with many moving parts, e.g. a collection of billiard balls, each with position $x_i$. We usually collect them all into a single vector of **generalized coordinates.**
 
-![](./Figures/VisComp_Fig13-1.PNG)
+<img src="./Figures/VisComp_Fig13-1.PNG" style="zoom: 33%;" />
 
 We can think of $q$ as a single point moving along some trajectory in $\mathbb{R}^n$. If we take the time derivative of the generalized coordinates, we get **generalized velocity:**
 
-![](./Figures/VisComp_Fig13-2.PNG)
+<img src="./Figures/VisComp_Fig13-2.PNG" style="zoom:33%;" />
 
 ### 8.4.4 Ordinary Differential Equations
 
@@ -78,7 +78,7 @@ $$
 
 and then apply the following **numerical integration rules:**
 
-![](./Figures/VisComp_Fig13-3.PNG)
+<img src="./Figures/VisComp_Fig13-3.PNG" style="zoom:25%;" />
 
 ### 8.4.6 Forward Euler
 
