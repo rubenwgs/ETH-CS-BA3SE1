@@ -170,3 +170,88 @@ _Example:_ Nodes in the protocol graph might include:
 - Demultiplexing UDP packets based on the destination IP address and port
 - Processing a single, bidirectional TCP connection
 - etc.
+
+## 12.4 Network I/O
+
+We've already seen how a NIC operates at the lowest level in Chapter 7: packets that are received are copied into buffers supplied by the OS and enqueued onto a descriptor queue, and these filled buffers are then returned to the OS using the same, or possibly a different, queue. Similarly, packets to be sent are enqueued on a descriptor queue, and the NIC is notified. When a packet has been sent over the networks, its buffer is returned to the OS by the NIC. Synchronization over the queues is handled using device registers, flags in memory, and interrupts.
+The _first-level interrupt handler_ for packet receive therefore looks like this:
+
+```pseudo
+# Algorithm 12.10: First-level interrupt handler for receiving packets
+1:  inputs:
+2:      rxq: the receive descriptor queue
+    # Device interrupt handler:
+3:  Acknowledge interrupt
+4:  while not(rxq.empty()) do:
+5:      buf <- rxq.dequeue()
+6:      sk_buf <- sk_buf_allocate(b)
+7:      enqueue(sk_buf) for processing
+8:      post as DPC (software interrupt)
+9:  end while
+10: return
+```
+
+## 12.5 Data Movement Inside The Network Stack
+
+**Packet descriptors,** known as *sk_bufs* in Linux, and *m_bufs* in BSD UNIX, are data structures which describe an area of memory holding network packet data.
+
+> Remarks:
+>
+> - A packet descriptor holds metadata about a packet, but also a reference to multiple areas of memory that hold the actual packet data.
+> - A packet descriptor can also identify a subset of a buffer in memory that is of interest.
+
+To simplify somewhat, a UNIX *m_buf* contains the following fields:
+
+```c
+struct mbuf {
+    struct mbuf *m_next;        /* next mbuf in chain */
+    struct mbuf *m_nextpkt;     /* next packet in list */
+    char        *m_data;        /* location of data */
+    int32_t      m_len;         /* amount of data in this mbuf */
+    uint32_t     m_type:8,      /* type of data in this mbuf */
+                 m_flags:24;    /* flafs, see below */
+    char         m_dat[0];
+}
+```
+
+A single m_buf `b` describes `b.m_len` bytes of data, starting in memory at address `b.m_data`. This data might be stored in the m_buf itself, in the array `b.m_dat`, or alternatively somewhere else in memory. The `b.m_type` field specified which case it is. An *m_buf chain* represents a single contiguous packet, using non-contiguous areas of memory. An m_buf chain is a singly-linked list of m_bufs chained with the `m_next` field. Moreover, packets themselves can be hooked together in lists or queues using the `m_nextpkt` field.
+
+## 12.6 Protocol State Processing
+
+Protocol state processing generally also happens in the "bottom half" of the network stack, even though it is generally independent of the particular NIC device driver. To understand why, consider TCP.
+
+_Example:_ The code implementing a single TCP connection has to run in response to many external events: the user sending a segment, or the network receiving data on the connection, but also timers expiring, or acknowledgments received by the network, etc. Many of these events don't involve the user program at all. What's more, these events require TCP to send packets that the user will never see. For this reason, if TCP is to run in the "top half", it has to be scheduled to run at all kinds of events _not_ scheduled by the user program. UNIX-like operating systems avoid this problem by running most of TCP in the bottom half, as a set of DPCs.
+
+## 12.7 Top-half Handling
+
+Moving up the stack further, we come to the top half: that invoked by user programs. You're already familiar with the common sockets interface: `bind(), listen(), accept(), connect(), send(), recv()`, etc. Some protocol processing happens in the kernel directly as a result of top half invocations, but for the most part the top half is concerned with copying network payload data and metadata between queues of protocol descriptors in the kernel and user-space buffers.
+
+## 12.8 Performance Issues
+
+Instead of conventional interrupt-driven descriptor queues, a network receive queue can be serviced by a processor **polling** it continuously.
+
+> Remarks:
+>
+> - Polling eliminates the overhead of interrupts, context switches, and even kernel entry and exit if there is a way to access the queues from user space.
+> - Even polling, however, is insufficient to handle modern high-speed networks. For one thing, it is not clear how to scale this to multiple cores.
+
+## 12.9 Network Hardware Acceleration
+
+The solution is to put more functionality into hardware.
+
+Modern NICs support **multiple send and receive queues** per port. Received packets are demultiplexed in hardware based on a set of _flow tables_ which determine which descriptor queue to put each packet onto.
+
+Sending received packets to the right receive queue is only part of the solution. **Flow steering** not only picks a receive queue based on the network flow that the packet is part of, but can send and interrupt to a specific core that is waiting for that packet. **Receive-side scaling (RSS)** uses a deterministic hash function on the packet header to balance flows across receive queues and interrupts.
+
+**TCP chimney offload,** sometimes called _partial TCP offload,_ allows the entire state machine for a TCP connection -- once it has been established -- to be pushed down the hardware, which will then handle timers, acknowledgments, retries, etc. and simply deliver in-order TCP segments to the kernel.
+
+**Remote Direct Memory Access (RDMA)** is a completely different set of network protocols and hardware implementations. RDMA supports Ethernet-style descriptor rings for messages, but also supports so-called _one-sided operations_ which allow main memory on a machine to be written and read directly over the network without involving the host CPU: the NIC receives packets requesting such an operation, executes it itself, and returns the result.
+
+## 12.10 Routing And Forwarding
+
+Typically, the network stack in an OS not only sends, and receives packets, but also forwards them between its network interfaces, much as a router or switch does.
+
+- Packet **forwarding** is the process of deciding, based on a packet and the interface on which the packet was received, which interface to send the packet out on.
+- Packet **routing** is the process of calculating rules to determine how all possible packets are to be forwarded.
+
+The **forwarding information base (FIB)** in a router is the set of data structures which are traversed for each packet received to determine what actions to perform on it, such as sending it out on a port or putting it into a memory buffer.
