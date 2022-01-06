@@ -157,3 +157,134 @@ Unlike previously mentioned algorithms, there is no step where a client explicit
 > **_Theorem 15.15:_** If a command $c$ is executed by some servers, all servers eventually execute $c$.
 
 If the client with the first successful proposal does not crash, it will directly tell every server to execute $c$. However, if the client crashes before notifying any of the servers, the servers will execute the command only once the next client is successful. Note that Paxos cannot make progress if half (or more) of the servers crash, as clients cannot achieve a majority anymore.
+
+# Chapter 16: Consensus
+
+## 16.1 Two Friends
+
+Alice wants to arrange dinner with Bob. She sends a text message suggesting meeting for dinner at 6pm. However, Alice cannot be sure that the message arrives at Bob's phone, hence she will only go to the meeting point if she receives a confirmation message from Bob. But Bob cannot be sure that his confirmation message is received. Therefore, Bob demands a confirmation message from Alice, to be sure that she will be there. But as this message can also be lost...
+
+Such a protocol cannot terminate. Can Alice and Bob use Paxos?
+
+## 16.2 Consensus
+
+There are $n$ nodes, of which at most $f$ might crash, i.e. at least $n-f$ nodes are _correct._ Node $i$ starts with an input value $v_i$. The nodes must decide for one of those values, staisfying the following properties:
+
+- _Agreement:_ All correct nodes decide for the same value.
+- _Termination:_ All correct nodes terminate in finite time.
+- _Validity:_ The decision value must be the input value of a node.
+
+_Remarks:_
+
+- We assume that every node can send messages to every other node, and that we have reliable links.
+- There is no broadcast medium. If a node wants to send a message to multiple nodes, it needs to send multiple individual messages.
+- Does Paxos satisfy all three criteria? No, one will notice that Paxos does no guarantee termination.
+- In fact, the consensus problem state above cannot be solved by any algorithm.
+
+## 16.3 Impossibility Of Consensus
+
+**_Model 16.3:_** In the **asynchronous model,** algorithms are event based ("upon receiving message ..., do ..."). Nodes do not have access to a synchronized wall-clock. A message sent from one node to another will arrive in a finite but unbound time.
+
+For algorithms in the asynchronous model, the **runtime** is the number of time units from start of the execution to its completion in the worst case (every legal input, every execution scenario), assuming that each message has a delay of _at most_ one time unit.
+
+We say that a system is fully define at any point during the execution by its **configuration** $C$. The configuration includes the state of every node, and all messages that are in transit (sent but not yet received). We call a configuration $C$ **univalent,** if the decision value is determined independently of what happens afterwards. We call a configuration that is univalent for value $v$ $v$**-valent**. A configuration $C$ is called **bivalent** if the nodes might decide for $0$ or $1$.
+
+We call the initial configuration of an algorithm $C_0.$ When nodes are in $C_0$, all of them executed their initialization code and possibly, based on their input values, sent some messages. These initial messages are also included in $C_0$. In other words, in $C_0$ the nodes are now waiting for the first message to arrive.
+
+> **_Lemma 16.7:_** There is at least one selection of input values $V$ such that the according initial configuration $C_0$ is bivalent, if $f \geq 1$.
+
+A **transition** from configuration $C$ to a following configuration $C_{\tau}$ is characterized by an event $\tau = (u, \, m)$, i.e. node $u$ receiving message $m$. A transition $\tau = (u, \, m)$ is only applicable to $C$, if $m$ was still in transit in $C$. $C_{\tau}$ differs from $C$ as follows: $m$ is no longer in transit, $u$ has possibly a different state (as $u$ can update its state based on $m$), and there are potentially new messages in transit, sent by $u$.
+
+The **configuration tree** is a direct tree of configurations. Its root is the configuration $C_0$ which is fully characterized by the input values $V$. The edges of the tree are the transitions. Every configuration has all applicable transitions as outgoing edges.
+
+_Remarks:_
+
+- For any algorithm, there is exactly _one_ configuration tree for every selection of input values.
+- Leaves are configurations where the execution of the algorithm terminated.
+- Every path from the root to a leaf is one possible asynchronous execution of the algorithm.
+- Leaves must be univalent, or the algorithm terminates without agreement.
+
+> **_Lemma 16.10:_** Assume two transitions $\tau_1 = (u_1, \, m_1)$ and $\tau_2 = (u_2, \, m_2)$ for $u_1 \neq u_2$ are both applicable to $C$. Let $C_{\tau_1 \tau_2}$ be the configuration that follows $C$ by first applying transition $\tau_1$ and then $\tau_2$, and let $C_{\tau_2 \tau_2}$ be defined analogously. It holds that $C_{\tau_1 \tau_2} = C_{\tau_2 \tau_2}$.
+
+We say that a configuration $C$ is **critical,** if $C$ is bivalent, but all configurations that are direct children of $C$ in the configuration tree are univalent. Informally, $C$ is critical, if it is the least moment in the execution where the decision is not yet clear. As soon as the next message is processed by any node, the decision will be determined.
+
+> **_Lemma 16.12:_** If a system is in a bivalent configuration, it must reach a critical configuration within finite time, or it does not always solve consensus.
+
+> **_Lemma 16.13:_** If a configuration tree contains a critical configuration, crashing a single node can create a bivalent leaf, i.e. a crash prevents the algorithm from reaching agreement.
+
+> **_Theorem 16.14:_** There is no deterministic algorithm which always achieves consensus in the asynchronous model, with $f > 0$.
+
+_Remarks:_
+
+- If $f = 0$, then each node can simply send its value to all others, wait for all values, and choose the minimum.
+- But if a single node may crash, there is no deterministic solution to consensus in the asynchronous model.
+
+## 16.4 Randomized Consensus
+
+```pseudo
+# Algorithm 16.15: Randomized Consensus (assuming f < n/2)
+1:  v_i in {0, 1} <- input bit
+2:  round = 1
+3:  while true do:
+4:      Broadcast myValue(v_i, round)
+    # Propose
+5:      Wait until a majority of myValue messages of current round arrived
+6:      if all messages contain the same value v then:
+7:          Broadcast propose(v, round)
+8:      else:
+9:          Broadcastpropose(bot, round)
+10:     end if
+    # Vote
+11:     Wait until a majority of propose messages of current round arrived
+12:     if all messages propose the same value v then:
+13:         Broadcast myValue(v, round + 1)
+14:         Broadcast propose(v, round + 1)
+15:         Decide for v and terminate
+16:     else if there is at least one proposal for v then
+17:         v_i = v
+18:     else
+19:         Choose v_i randomly, with Pr[v_i = 0] = Pr[v_i = 1] = 1/2
+20:     end if
+21:     round = round + 1
+22: end while
+```
+
+The idea of Algorithm 16.15 is very simple: Either all nodes start with the same input bit, which makes consensus easy. Otherwise, nodes toss a coin until many nodes get - by chance - the same outcome.
+
+> **_Lemma 16.16:_** AS long as no node decides and terminates, Algorithm 16.15 does not get stuck, independent of which nodes crash.
+
+> **_Lemma 16.17:_** Algorithm 16.15 satisfies the validity requirement.
+> **_Lemma 16.18:_** Algorithm 16.15 satisfies the agreement requirement.
+> **_Lemma 16.19:_** Algorithm 16.15 satisfies the termination requirement, i.e. all nodes terminate in expected time $O(2^n)$.
+
+> **_Theorem 16.20:_** Algorithm 16.15 achieves binary consensus with expected runtime $O(2^n)$ if up to $f < n/2$ nodes crash.
+
+> **_Theorem 16.21:_** There is no consensus algorithm for the asynchronous model that tolerates $f \geq n/2$ many failures.
+
+Algorithm 16.15 solves the consensus problem with optimal fault-tolerance - but it is awfully slow. Nevertheless, the algorithm can be improved by tossing a so-called _shared coin._ A shared coin is a random variable that is $0$ for all nodes with constant probability, and $1$ with constant probability. To improve the expected runtime of Algorithm 16.15, we replace line 19 with a function call to the shared coin algorithm.
+
+## 16.5 Shared Coin
+
+```pseudo
+# Algorithm 16.22: Shared Coin (code for node u)
+1:  Choose local coin c_u = 0 with probability 1/n, else c_u = 1
+2:  Broadcast myCoin(c_u)
+3:  Wait for n-f coinds and store them in the local coin set C_u
+4:  Broadcast mySet(C_u)
+5:  Wait for n-f coin sets
+6:  if at least once coin is 0 among all coins in the coin sets then:
+7:      return 0
+8:  else:
+9:      return 1
+10: end if
+```
+
+Since at most $f$ nodes crash, all nodes will always receive $n-f$ coins respectively coin sets in lines 3 and 5. Therefore, all nodes make progress and termination is guaranteed.
+
+> **_Lemma 16.23:_** Let $u$ be a node, and let $W$ be the set of coins that $u$ received in at least $f + 1$ different coin sets. It holds that $|W| \geq f + 1$.
+
+> **_Lemma 16.24:_** All coins in $W$ are seen by all correct nodes.
+
+> **_Theorem 16.25:_** If $f < n/3$ nodes crash, Algorithm 16.22 implements a shared coin.
+
+> **_Theorem 16.26:_** Plugging Algorithm 16.22 into Algorithm 16.15 we get a **randomized consensus algorithm** which terminates in a constant expected number of rounds tolerating up to $f < n/3$ crash failures.
