@@ -1,8 +1,10 @@
-**Computer System -- Notes week 3**
-
-- Author: Ruben Schenk
-- Date: 13.10.2021
-- Contact: ruben.schenk@inf.ethz.ch
+---
+title: "Computer Systems - Notes Week 3"
+author: Ruben Schenk, ruben.schenk@inf.ethz.ch
+date: October 13, 2021
+geometry: margin=2cm
+output: pdf_document
+---
 
 # Chapter 5 : Inter-process communication
 

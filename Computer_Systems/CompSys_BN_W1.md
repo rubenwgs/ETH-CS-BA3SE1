@@ -1,8 +1,10 @@
-**Computer System -- Notes week 1**
-
-- Author: Ruben Schenk
-- Date: 20.09.2021
-- Contact: ruben.schenk@inf.ethz.ch
+---
+title: "Computer Systems - Notes Week 1"
+author: Ruben Schenk, ruben.schenk@inf.ethz.ch
+date: September 20, 2021
+geometry: margin=2cm
+output: pdf_document
+---
 
 # Chapter 1 : Introduction
 

@@ -1,8 +1,10 @@
-**Computer System -- Notes week 4**
-
-- Author: Ruben Schenk
-- Date: 02.01.2022
-- Contact: ruben.schenk@inf.ethz.ch
+---
+title: "Computer Systems - Notes Week 4"
+author: Ruben Schenk, ruben.schenk@inf.ethz.ch
+date: January 2, 2022
+geometry: margin=2cm
+output: pdf_document
+---
 
 # Chapter 7: Input / Output
 

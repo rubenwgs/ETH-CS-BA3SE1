@@ -1,8 +1,10 @@
-**Computer System -- Notes week 5**
-
-- Author: Ruben Schenk
-- Date: 04.01.2022
-- Contact: ruben.schenk@inf.ethz.ch
+---
+title: "Computer Systems - Notes Week 5"
+author: Ruben Schenk, ruben.schenk@inf.ethz.ch
+date: January 4, 2022
+geometry: margin=2cm
+output: pdf_document
+---
 
 # Chapter 9: Demand Paging
 
