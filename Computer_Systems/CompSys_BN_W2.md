@@ -157,7 +157,7 @@ Each process is said to be in one of a set of states at any point in time. **Run
 
 *Example*: The figure below shows a slightly simplified process state machine for Unix.
 
-![](./Figures/CompSys_Fig2-1.PNG)
+![](./Figures/CompSys_Fig2-1.PNG){width=50%}
 
 A process which exits is generally not removed completely from the system, but enters a state between being alive and being deleted from the OS. A process in this state is a **zombie**. A process which is alive, but whose parent has exited, is an **orphan**.
 

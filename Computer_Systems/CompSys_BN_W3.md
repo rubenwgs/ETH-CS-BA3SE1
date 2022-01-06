@@ -152,7 +152,7 @@ A **non-preemptive** scheduler always allows a job to run to completion once it 
 
 ### 6.1.1 Batch Scheduling Terminology
 
-![](./Figures/CompSys_Fig3-1.PNG)
+![](./Figures/CompSys_Fig3-1.PNG){width=50%}
 
 - _Arrival time:_ (or request time, or release time) The point, at which a job enters the scheduling system.
 - _Start time:_ The point in time at which a job starts executing.

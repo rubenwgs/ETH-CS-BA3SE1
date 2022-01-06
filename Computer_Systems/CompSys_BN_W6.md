@@ -79,7 +79,7 @@ For the rest of this section, it's better to describe specific examples of filin
 
 **FAT** is the file system created for MS-DOS and the original IBM PC, based on earlier designs that Microsoft had used for other microcomputers. Over time, FAT has evolved to handle larger and larger storage devices which stressed hard limits in the original design: thus, we talk about FAT, FAT12, FAT16, FAT32, exFAT, etc. All use the same basic structure we describe here.
 
-![](./Figures/CompSys_Fig6-1.PNG)
+![](./Figures/CompSys_Fig6-1.PNG){width=50%}
 
 The **File Allocation Table (FAT)** is a linear array of block numbers, with an entry for every block on the volume.
 
@@ -103,7 +103,7 @@ An index node or **inode** in a file system is a contiguous region of data on a 
 
 The structure if an inode (somewhat simplified) is shown in the figure below:
 
-![](./Figures/CompSys_Fig6-2.PNG)
+![](./Figures/CompSys_Fig6-2.PNG){width=50%}
 
 > Remarks:
 >
