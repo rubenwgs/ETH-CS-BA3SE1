@@ -126,7 +126,7 @@ _Remarks:_
 
 - In a consistent snapshot it is forbidden to see an effect without its cause.
 - One extreme is a sequential computation, where stopping one node halts the whole system. Let $q_u$ be the number of operations on node $u \in \{1,..., \, n \}$. Then the number of consistent snapshots (including the empty cut) in the sequential case is $\mu_s := 1 + q_1 + q_2 + \cdots + q_n$.
-- On the other hand, in an entirely concurrent computation the nodes are not dependent on one another and therefore stopping one node does not impact others. The number of consistent snapshots in this case is $\mu_c := (1 + q_1) \ccdot (1 + q_2) \cdots (1 + q_n)$.
+- On the other hand, in an entirely concurrent computation the nodes are not dependent on one another and therefore stopping one node does not impact others. The number of consistent snapshots in this case is $\mu_c := (1 + q_1) \cdot (1 + q_2) \cdots (1 + q_n)$.
 
 The **concurrency measure** of an execution $E = (S_1,.., \, S_n)$ is defined as the ratio
 
@@ -238,7 +238,7 @@ The **International Atomic Time (TAI)** is a time standard derived from over 400
 
 A **leap second** is an extra second added to a minute to make it irregularly 61 instead of 60 seconds long. Time standards use leap seconds to compensate for the slowing of the Earth's rotation.
 
-The **Coordinated Universal Time (UTC)** is a time standard based on TAI with leap seconds added at irregular intervals to keep it close to mean solar time at $0{\degree}$ longitude.
+The **Coordinated Universal Time (UTC)** is a time standard based on TAI with leap seconds added at irregular intervals to keep it close to mean solar time at 0 degree longitude.
 
 ## 20.4 Clock Sources
 
