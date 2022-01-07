@@ -170,3 +170,209 @@ The algorithm below shows what is needed if you want to trace requests to your s
 1: Upon requesting another service: Inject information of current trace and span (IDs or timing information) into the request header
 2: Upon receiving request from another service: Extract trace and span information from the request header and create new span as child span
 ```
+
+# Chapter 20: Time, Clocks & GPS
+
+## 20.1 Time & Clocks
+
+A **second** is the time that passes during 9'192'631'770 oscillation cycles of a caesium-133 atom. The **wall-clock time** $t^*$ is the true time, i.e. the time a perfectly accurate clock would show. The **clock error** or clock skew is the difference between two clocks, e.g. $t-t^*$ or $t-t'$. In practice the clock error is often modeled as $t = (1 + \delta)t^* + \xi(t^*)$.
+
+![](./Figures/CompSys_Fig9-1.PNG){width=50%}
+
+The **drift** $\delta$ is the predictable clock error. Drift is relatively constant over time, but may change with supply voltage, temperature, and age of an oscillator. Clock drift is indicated in **parts per million (ppm).** One ppm corresponds to a time error growth of one microsecond per second.
+
+The **jitter** $\xi$ is the unpredictable, random noise of the clock error. In other words, jitter is the irregularity of the clock. Unlike drift, jitter can vary fast.
+
+## 20.2 Clock Synchronization
+
+**Clock synchronization** is the process of matching multiple clocks (nodes) to have a common time.
+
+```pseudo
+# Algorithm 20.10: Networ Time Protocol NTP
+1:  Two nodes, client u and server v
+2:  while true do:
+3:      Node u sends request to v at time t_u
+4:      Node v receives request at time t_v
+5:      Node v processes the request and replies at time t'_v
+6:      Node u receives the response at time t'_u
+7:      Propagation delay delta
+8:      Clock scew theta
+9:      Node u adjusts clock by +theta
+10:     Sleep before next synchronization
+11:  end while
+```
+
+Where $\delta$ and $\theta$ are given by:
+
+$$
+\delta = \frac{(t'_u - t_u) - (t'_v - t_v)}{2}, \quad \theta = \frac{(t_v-t_u) + (t'_v - t'_u)}{2}
+$$
+
+The **Precision Time Protocol (PTP)** is a clock synchronization protocol similar to NTP, but which uses _medium access control (MAC)_ layer timestamps.
+
+**Global** synchronization establishes a common time between _any_ two nodes in the system.
+
+```pseudo
+# Algorithm 20.13: Local Time Synchronization
+1:  while true do:
+2:      Exchange current time with neighbors
+3:      Adapt time to neighbors, e.g. to average or median
+4:      Sleep before next synchronization
+5:  end while   
+```
+
+```pseudo
+# Algorithm 20.14: Wireless Clock Synchronization with Known Delays
+1:  Given: transmitter s, receivers u and v, with known transmission delays d_u and d_v for transmitter s, respectively.
+2:  s sends signal at time t_2
+3:  u receives signal at time t_u
+4:  v receives signal at time t_v
+5:  delta_u = t_u - (t_s + d_u)
+6:  delta_v = t_v - (t_s + dv)
+7:  Clock skew between u and v: theta = delta_v - delta_u = t_v - d_v + d_u - t_u
+```
+
+## 20.3 Time Standards
+
+The **International Atomic Time (TAI)** is a time standard derived from over 400 atomic clocks distributed worldwide. Using a weighted average of all involved clocks, TAI is an order of magnitude more stable than the best clock.
+
+A **leap second** is an extra second added to a minute to make it irregularly 61 instead of 60 seconds long. Time standards use leap seconds to compensate for the slowing of the Earth's rotation.
+
+The **Coordinated Universal Time (UTC)** is a time standard based on TAI with leap seconds added at irregular intervals to keep it close to mean solar time at $0{\degree}$ longitude.
+
+## 20.4 Clock Sources
+
+An **atomic clock** is a clock which keeps time by counting oscillations of atoms. Atomic clocks are the most accurate clocks known. They can have a drift of only about one second in 150 million years, about $2e-10$ ppm!
+
+The **system clock** in a computer is an oscillator used to synchronize all components on the motherboard. Usually, a quartz crystal oscillator with a frequency of some tens to hundreds MHz is used. The **real-time clock (RTC)** in a computer is a battery backed oscillator which is running even if the computer is shut down or unplugged.
+
+_Remarks:_
+
+- The RTC is read at system startup to initialize the system clock.
+- This keeps the computer's time close to UTC even when the time cannot be synchronized over a network.
+- RTCs are relatively inaccurate, with a common maximum drift of 5, 20 or even 100 ppm, depending on quality and temperature.
+
+A **Radio Time Signal** is a time code transmitted via radio waves by a time signal station, referring to a time in a given standard such as UTC.
+
+A **power line clock** measures the oscillations from electric AC power lines, e.g. 50 Hz.
+
+## 20.5 GPS
+
+The **Global Positioning System (GPS)** is a _Global Navigation Satellite System (GNSS),_ consisting of at least 24 satellites orbiting around the Earth, each continuously transmitting its position and time code.
+
+```pseudo
+# Algorithm 20.26 GPS Satellite
+1:  Given: Each satellite has a unique 1023 bit (+-1, see below) PRN sequence, plus some current navigation data D (also +-1)
+2:  The code below is a bit simplified, concentrating on the digital aspects, ignoring that the data is sent on a carrier frequency of 1575.42 MHz
+
+3:  while true do:
+4:      for all bits D_i in D do:
+5:          for j = 0..19 do:
+6:              for k = 0..1022 do {this loop takes exactly 1 ms}
+7:                  Send bit PRN_k * D_i
+8:              end for
+9:          end for
+10:     end for
+11: end while
+```
+
+**Pseudo-Random Noise (PRN)** sequences are pseudo-random bit strings. Each GPS satellite uses a unique PRN sequence with a length of 1023 bits for its signal transmission.
+
+**Navigation Data** is the data transmitted from satellites, which includes orbit parameters to determine satellite positions, timestamps of signal transmissions, atmospheric delays estimations and status information of the satellites and GPS as a whole, such as the accuracy and validity of the data.
+
+The **circular cross-correlation** is a similarity measure between two vectors of length $N$, _circularly_ shifted by a given displacement $d$:
+
+$$
+cxcorr(a, \, b, \, d) = \sum_{i = 0}^{N-1} a_i \cdot b_{i + d \mod N}
+$$
+
+```pseudo
+# Algorithm 20.30: Acquisition
+1:  Received 1 ms signal s with sampling rate r * 1023 kHz
+2:  Possible Doppler shifts F, e.g. {-10 kHz, -9.8 kHz,..., +10 kHz}
+3:  Tensor A = 0: Satellite * carrier frequency * time
+
+4:  for all satellites i do:
+5:      PRN'_i = PRN_i streched with ratio r
+6:      for all Doppler shifts f in F do:
+7:          Build modulated PRN''_i with PRN'_i and Doppler frequency f
+8:          for all delays d in {0, 1,..., 1023 * r - 1} do:
+9:              A_i(f, d) = |cxcorr(s, PRN''_i, d)|
+10:         end for
+11:     end for
+12:     Select d* that maximizes max_d max_f A_i(f, d)
+13:     Signal arrival time r_i = d* / (r * 1023 kHz)
+14: end for
+```
+
+**Acquisition** is the process in a GPS receiver that finds the visible satellite signals and detects the delays of the PRN sequences and the Doppler shifts of the signals.
+
+```pseudo
+# Algorithm 20.32: Classic GPS Receiver
+1:  h: Unknown receiver handset position
+2:  theta: Unknown handset time offset to GPS system time
+3:  r_i:measured signal arrival time in handset time system
+4:  c: signal propagation speed (GPS: speed of light)
+
+5:  Perform Acquisition (Algorithm 20.30)
+6:  Track signals and decode navigation data
+7:  for all satellites i do:
+8:      Using navigation data, determine signal transmit time s_i and position p_i
+9:      Measured satellite transmission delays d_i = r_i - s_i
+10: end for
+11: Solve the following system of equations for h and theta:
+12: ||p_i - h||/c = d_i - theta, for all i
+```
+
+In total, the positioning problem contains four unknown variables, three for the handset's spatial position and one for its time offset from the system time. Therefore, signals from at least four transmitters are needed to find the correct solution.
+
+An **Assisted GPS (A-GPS)** receiver fetches the satellite orbit parameters and other navigation data from the Internet, for instance via a cellular network. A **snapshot receiver** is a GPS receiver that captures one or a few milliseconds of raw GPS signal for a position fix.
+
+**Coarse Time Navigation (CTN)** is a snapshot receiver positioning technique measuring sub-millisecond satellite ranges from correlation peaks, like conventional GPS receivers.
+
+```pseudo
+# Algorithm 20.36: Collective Detection Receiver
+1:  Given: A raw 1 ms GPS sample s, a set H of location/time hypotheses
+2:  In addition, the receiver learned all navigation and atmospheric data
+
+3:  for all hypotheses h in H do:
+4:      Vector r = 0
+5:      Set V = satellites that should be visiple with hypothesis h
+6:      for all satellites in in V do
+7:          r = r + r_i, where r_i is expected signal of satellite i
+8:      end for
+9:  Probability P_h = cxcorr(s, r, 0)
+10: end for
+11: Solution: hypothesis h in H maximizing P_h
+```
+
+**Collective detection (CD)** is a maximum likelihood snapshot receiver localization method, which does not determine an arrival time for each satellite, but rather combine all the available information and take a decision only at the end of the computation.
+
+## 20.6 Lower Bounds
+
+In the _clock synchronization problem,_ we are given a network (graph) with $n$ nodes. The goal for each node is to have a logical clock such that the clock values are well synchronized, and close to real time. Each node is equipped with a hardware system clock, that ticks more or less in real time, i.e. the time between two pulses is arbitrary between $[1- \epsilon, \, 1 + \epsilon],$ for a constant $\epsilon << 1$. We assume that messages sent over the edges of the graph have a delivery time between $[0, \, 1]$. In other words, we have a bounded but variable drift on the hardware clocks and an arbitrary jitter in the delivery times. The goal is to design a message-passing algorithm that ensures that the logical clock skew of adjacent nodes is as small as possible at all times.
+
+In a network of nodes, the **local clock skew** is the skew between neighboring nodes, while the **global clock skew** is the maximum skew between any two nodes.
+
+> **_Theorem 20.39:_** The global clock is $\Omega(D)$, where $D$ is the diameter of the network graph.
+
+_Remarks:_
+
+- From Theorem 20.39, it directly follows that any reasonable clock synchronization algorithm must have a global skew of $\Omega(D)$.
+- Many natural algorithms manage to achieve a global clock skew of $O(D)$.
+
+Let us look at the following algorithm:
+
+```pseudo
+# Algorithm 20.40: Local Clock Synchronization (at node v)
+1:  repeat:
+2:      send logical time t_v to all neighbors
+3:      if Receive logical time t_u, where t_u > t_v, from any neighbor u then:
+4:          t_v = t_u
+5:      end if
+6:  until done
+```
+
+> **_Lemma 20.41:_** The clock synchronization protocol of Algorithm 20.40 has a local skew of $\Theta(n)$.
+
+_Remark:_ It was shown that the local clock skew is $\Theta(\log D)$, i.e. there is a protocol that achieves this bound, and there is a proof that no algorithm can be better than this bound!
