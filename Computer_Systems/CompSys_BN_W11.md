@@ -138,3 +138,121 @@ $$
 ![](./Figures/CompSys_Fig11-5.PNG){width=50%}
 
 > **_Theorem 21.36:_** Let $S$ be an $f$-opaque quorum system. Then $L(S) > \frac{1}{2}$ holds.
+
+## 21.5 Consistent Hashing
+
+How do you store 1 million movies, each with a size of about 1GB, on 1 million nodes, each equipped with a 1TB disk? Simply store the movies on the nodes, arbitrarily, and memorize (with a global index) which movie is stored on which node. What if the set of movies or nodes changes over time?
+
+```pseudo
+# Algorithm 9.1: Consisten Hashing
+1:  Hash the unique file name of each movie x with a known set of hash functions h_i(x) -> [0, 1), for i = 1,..., k
+2:  Hash the unique name of each node with the same hash function h(u) -> [0, 1)
+3:  Store a copy of movie x on node u if h_i(x) \simeq h(u), for any i. More formally, store moview x on node uf if |h_i(x) - h(u) | = min_v{|h_i(x) - h(v)|}, for any i
+```
+
+In expectation, each node in Algorithm 9.1 stores $km/n$ movies, where $k$ is the number of hash functions, $m$ is the number of different movie, and $n$ is the number of nodes.
+
+A version of a **Chernoff bound** states the following: Let $x_1,..., \, x_n$ be independent Bernoulli-distributed random variables with $Pr[x_i = 1] = p_i$ and $Pr[x_i = 0] = 1 - p_i = q_i$, then for $X := \sum_{i = 1}^n x_i$ and $\mu := \mathbb{E}[X] = \sum_{i = 1}^n p_i$, then the following holds:
+
+$$
+\text{for any } \delta > 0 : Pr[X \geq (1 + \delta)\mu] < \Big(\frac{e^{\delta}}{(1 + \delta)^{(1 + \delta)}} \Big)^{\mu}
+$$
+
+## 21.6 Hypercubic Networks
+
+In this section we present a few overlay topologies of general interest.
+
+Our virtual network should have the following properties:
+
+- The network should be somewhat _homogeneous:_ no node should play a dominant role, no node should be a single point failure.
+- The nodes should have _IDs,_ and the IDs should span the universe $[0, \, 1)$, such that we can store data with hashing, as in Algorithm 9.1.
+- Every node should have a small _degree,_ if possible polylogarithmic in $n$, the number of node.
+- The network should have a small _diameter,_ and routing should be easy. If a node does not have the information about a data item, then it should know which neighbor to ask.
+
+Let $m, \, d \in \mathbb{N}$. The $(m, \, d)$**-mesh** $M(m, \, d)$ is a graph with node set $V = [m]^d$ and edge set
+
+$$
+E = \Big\{\{(a_1,..., \, a_d), \, (b_1,..., \, b_d) \} \, | \, a_i, \, b_i \in [m], \, \sum_{i = 1}^d |a_i - b_i| = 1  \Big\},
+$$
+
+where $[m]$ means the set $\{0,..., \, m-1 \}$. The $(m, \, d)$**-torus** $T(m, \, d)$ is a graph that consists of an $(m, \, d)$-mesh and additionally wrap-around edges from nodes $(a_1,..., \, a_{i-1}, \, m-1, \, a_{i+1},..., \, a_d)$ to nodes $(a_1,..., \, a_{i-1}, \, 0, \, a_{i+1},..., \, a_d)$ for all $i \in \{1,..., \, d \}$ and all $a_j \in [m]$ with $j \neq i$. In other words, we take the expressions $a_i - b_i$ in the sum modulo $m$ prior to computing the absolute value. $M(m, \, 1)$ is also called a **path,** $T(m, \, 1)$ a **cycle,** and $M(2, \, d)$ a $d$**-dimensional hypercube.** Figure 9.7 presents a linear array, a torus, and a hypercube:
+
+![](./Figures/CompSys_Fig11-6.PNG){width=50%}
+
+_Remarks:_
+
+- Routing on a mesh, torus, or hypercube is trivial. On a $d$-dimensional hypercube, to get from a source bitstring $s$ to a target bitstring $t$ one only needs to fix each "wrong" bit, one at a time; in other words, if the source and the target differ by $k$ bits, there are $k!$ routes with $k$ hops.
+- As required, the $d$-bit IDs of the nodes need to be mapped to the universe $[0, \, 1)$. One way to do this is by turning each ID into a fractional binary representation. For example, the ID $101$ is mapped to $0.101_2$ which has a decimal value of $0 \cdot 2^0 + 1 \cdot 2^{-1} + 0 \cdot 2^{-2} + 1 \cdot 2^{-3} = \frac{5}{8}$.
+
+Let $d \in \mathbb{N}$. The $d$**-dimensional butterfly** $BF(d)$ is a graph with node set $V = [d + 1] \times [2]^d$ and an edge set $E = E_1 \cup E_2$ with
+
+$$
+E_1 = \{\{(i, \, \alpha), \, (i + 1, \, \alpha) \} \, | \, i \in [d], \, \alpha \in [2]^d \}
+$$
+
+and
+
+$$
+E_2 = \{\{(i, \, \alpha), \, (i + 1, \beta) \} \, | \, i \in [d], \, \alpha, \beta \in [2]^d, \, \alpha \oplus \beta = 2^i\}
+$$
+
+A node set $\{(i, \, \alpha) \, | \, \alpha \in [2]^d \}$ is said to form **level** $i$ of the butterfly. The $d$**-dimensional wrap-around butterfly** $\text{W-BF}(d)$ is defined by taking the $BF(d)$ and having $(d, \, \alpha) = (0, \, \alpha)$ for all $\alpha \in [2]^d$.
+
+_Remarks:_
+- Figure 9.9 shows the 3-dimensional butterfly $BF(3)$. The $BF(d)$ has $(d+1)2^d$ nodes, $2d \cdot 2^d$ edges and maximum degree $4$. It is not difficult to check that if for each $\alpha \in [2]^d$ we combine the nodes $\{(i, \, \alpha) \, | \, i \in [d + 1] \}$ into a single node then we get back the hypercube.
+- Butterflies have the advantage of a constant node degree over hypercubes, whereas hypercubes feature more fault-tolerant routing.
+
+![](./Figures/CompSys_Fig11-7.PNG){width=50%}
+
+Let $d \in \mathbb{N}$. The **cube-connected-cycles** network $CCC(d)$ is a graph with node set $V = \{(a, \, p) \, | \, a \in [2]^d, \, p \in [d] \}$ and edge set
+
+$$
+E = \{\{(a, \, p), \, (a, \, (p + 1) \mod d) \} \, | \, a \in [2] ^d, \, p \in [d] \} \\ \cup \{\{(a, \, p), \, (b, \, p) \} \, | \, a, \, b \in [2]^d, \, p \in [d], \, a \oplus b = 2^p \}.
+$$
+
+![](./Figures/CompSys_Fig11-8.PNG){width=50%}
+
+Let $d \in \mathbb{N}$. The $d$**-dimensional shuffle-exchange** $SE(d)$ is defined as an undirected graph with node set $V = [2]^d$ and an edge set $E = E_1 \cup E_2$ with
+
+$$
+E_1 = \{\{(a_1,..., \, a_d). \, (a_1,..., \, \bar{a}_d) \} \, | \, (a_1,..., \, a_d) \in [2]^d, \, \bar{a}_d = 1 - a_d\}
+$$
+
+and
+
+$$
+E_2 = \{\{(a_1,..., \, a_d), \, (a_d, \, a_1,..., \, a_{d-1}) \} \, | \, (a_1,..., \, a_d) \in [2]^d\}.
+$$
+
+Figure 9.13 shows the $3$- and $4$-dimensional shuffle-exchange graph.
+
+![](./Figures/CompSys_Fig11-9.PNG){width=50%}
+
+The $b$**-ary DeBruijn graph of dimension** $d$ $DB(b, \, d)$ is an undirected graph $G = (V, \, E)$ with node set $V = [b]^d$ and edge set $E = \{\{(a_1,..., \, a_d), \, (x, \, a_1,..., \, a_{d-1}) \, | \, (a_1,..., \, a_d) \in [b]^d, \, x \in [b] \}\}$.
+
+![](./Figures/CompSys_Fig11-10.PNG){width=50%}
+
+The **skip list** is an ordinary ordered linked list of objects, augmented with additional forward links. The ordinary linked list is the level 0 of the skip list. In addition, every object is promoted to level 1 with probability $\frac{1}{2}$. As for level 0, all level 1 objects are connected by a linked list. In general, every object on level $i$ is promoted to the next level with probability $\frac{1}{2}$. A special start-object points to the smallest/first object on each level.
+
+> **_Theorem 9.17:_** Every graph of maximum degree $d > 2$ and size $n$ must have a diameter of at least $\lceil (\log n) / (\log(d-1)) \rceil -2$.
+
+## 21.7 DHT & Churn
+
+A **distributed hash table (DHT)** is a distributed data structure that implements a distributed storage. A DHT should support at least (i) a search for a key and (ii) an insert (key, object) operation, possibly also (iii) a delete key operation.
+
+_Remarks:_
+
+- A DHT has many applications beyond storing movies, e.g. the Internet domain name system (DNS) is essentially a DHT.
+- A DHT can be implemented as a hypercubic overlay network with nodes having identifiers such that they span the ID space $[0, \, 1)$.
+- A hypercube can directly be used for a DHT. Just use a globally known set of hash functions $h_i$, mapping movies to bit strings with $d$ bits.
+
+```pseudo
+# Algorithm 9.19: DHT
+1:  Given: a globally known set of hash functions $h_i$, and a hypercube (or any other hypercubic network)
+2:  Each hypercube virtual node ("hypernode") consists of O(log n) nodes
+3:  Nodes have connections to all other nodes of their hypernode and to nodes of their neighboring hypernodes
+4:  Because of churn, some of the nodes have to change to another hypernode such that up to constant factors, all hypernodes own the same number of nodes at all times
+5:  If the total number of nodes n grows or shrinks above or below a certain threshold, the dimension of the hpercube is increased or decreased by one, respectively
+```
+
+We have a fully scalable, efficient distributed storage system which tolerates $O(\log n)$ worst-case joins and/or crashes per constant time interval. As in other storage systems, nodes have $O(\log n)$ overlay neighbors, and the usual operations take time $O(\log n)$.
