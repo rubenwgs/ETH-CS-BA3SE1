@@ -6,7 +6,7 @@ geometry: margin=2cm
 output: pdf_document
 ---
 
-# Chapter 21: Quorum Systems & Distributed Storage
+# Chapter 21: Quorum Systems
 
 What happens if a single server is no longer powerful enough to service all your customers? The obvious choice is to add more servers and to use the majority approach to guarantee consistency. However, even if you buy one million servers, a client still has to access more than half of them per request! While you gain faul-tolerance, your efficiency can at most be doubled. We used majorities because majority sets always overlap. But are majority sets the only sets that guarantee overlap? In this chapter we study the theory behind overlapping sets, known as _quorum systems._
 
@@ -139,7 +139,9 @@ $$
 
 > **_Theorem 21.36:_** Let $S$ be an $f$-opaque quorum system. Then $L(S) > \frac{1}{2}$ holds.
 
-## 21.5 Consistent Hashing
+# Chapter 22: Distributed Storage
+
+## 22.1 Consistent Hashing
 
 How do you store 1 million movies, each with a size of about 1GB, on 1 million nodes, each equipped with a 1TB disk? Simply store the movies on the nodes, arbitrarily, and memorize (with a global index) which movie is stored on which node. What if the set of movies or nodes changes over time?
 
@@ -158,7 +160,7 @@ $$
 \text{for any } \delta > 0 : Pr[X \geq (1 + \delta)\mu] < \Big(\frac{e^{\delta}}{(1 + \delta)^{(1 + \delta)}} \Big)^{\mu}
 $$
 
-## 21.6 Hypercubic Networks
+## 22.2 Hypercubic Networks
 
 In this section we present a few overlay topologies of general interest.
 
@@ -236,7 +238,7 @@ The **skip list** is an ordinary ordered linked list of objects, augmented with 
 
 > **_Theorem 9.17:_** Every graph of maximum degree $d > 2$ and size $n$ must have a diameter of at least $\lceil (\log n) / (\log(d-1)) \rceil -2$.
 
-## 21.7 DHT & Churn
+## 22.3 DHT & Churn
 
 A **distributed hash table (DHT)** is a distributed data structure that implements a distributed storage. A DHT should support at least (i) a search for a key and (ii) an insert (key, object) operation, possibly also (iii) a delete key operation.
 
