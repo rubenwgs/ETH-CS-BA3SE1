@@ -283,3 +283,32 @@ _Remarks:_
 **Gas** is the unit of an atomic computation, like swapping two variables. Complex operations sue more than 1 Gas, e.g. adding two numbers costs 3 Gas.
 
 In Ethereum, like in Bitcoin, a block is a collection of transactions that is considered a part of the canonical history of transactions. Among other things, a block contains: pointers to parent and up to two uncles, the hash of the root node of a tree structure populated with each transaction of the block; the hash of the root node of the state tree (after transaction have been executed).
+
+## 24.4 Payment Hubs
+
+Multiple parties can send payments to each other by means of a **payment hub.** A **smart contract hub** is a payment hub that is realized by a smart contract on a blockchain and an off-chain server. The smart contract and the server together enable off-chain payments between users that joined the hub.
+
+```pseudo
+# Algorithm 24.26: Smart Contract Hub
+1:  Users join the hub by depositing some native currency of the blockchain into the smart contract
+2:  Funds of all other participants are maintained together as a fungible pool in the smart contract
+3:  Time is divided into epochs: in each epoch users can send each other payment transactions through the server
+4:  The server does the bookkeeping of who has paid how much to thowm during the epoch
+5:  At the end of the epoch, the server aggregates all balances into a commitment, which is sent to the smart contract
+6:  Also at the end of the epoch, the server sends a proof to each user, informing about the current account balance
+7:  Each user can verify that its balance is correct; if not the user can call the smart contract with its proof to get its money back
+```
+
+## 24.5 Proof-of-Stake
+
+Almost all the energy consumption of permissionless blockchains is wasted because of proof-of-work. Proof-of-stake avoids these wasteful computations, without going all the way to permissioned systems such as Paxos or PBFT.
+
+**Proof-of-work** awards block rewards to the lucky miner that solved a cryptopuzzle. In contrast, **proof-of-stake** awards block rewards proportionally to the economic stake in the system.
+
+_Remarks:_
+
+- Literally, "the rich get richer".
+- Ethereum is expected to move to proof-of-stake eventually.
+- There are multiple flavors of proof-of-stake algorithms.
+
+A **chain based proof-of-stake** looks like this. Accounts hold lottery tickets according to their stake. The lottery is pseudo-random, in the sense that hash functions computed on the state of the blockchain will select which account is winning. The winning account can extend the longest chain by a block, and earn the block reward.
