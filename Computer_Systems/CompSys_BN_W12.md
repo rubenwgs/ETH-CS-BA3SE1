@@ -532,3 +532,89 @@ In the **prepare phase** of the agreement protocol, every backup $b$ executes Al
 3:      send prepare(v, s, r, b)_b to all nodes
 4:  end if
 ```
+
+A node $n_i$ that has pre-prepared a request executes Algorithm 26.15. It waits until it has collect $2f$ `prepare`-messages (including $n_i$'s own, if it is a backup) in line 1. Together with the `pre-prepare`-essages for $(v, \, s, \, r)$, they from a **prepared-certificate.**
+
+```pseudo
+# Algorithm 26.15: PBFT Agreement Protocol: Commit Phase
+    # Code for node n_i, that has pre-prepared r for (v, s)
+1:  wait until 2f prepare-messages matching (v, s, r) have been accepted
+2:  create prepared-certificate for (v, s, r)
+3:  send commit(v, s, n_i)_{n_i} to all nodes
+```
+
+A node $n_i$ that has created a prepared-certificate for a request executes Algorithm 26.17. It waits until it has collected $2f + 1$ `commit`-messages (including $n_i$'s own) in line 1. They form a **committed-certificate** and allow to safely execute the request once all requests with lower sequence numbers have been executed.
+
+```pseudo
+# Algorithm 26.17: PBFT Agreement Protocol: Execute Phase
+    # Code for n_i that has created a prepared-certificate for (v, s, r)
+1:  wait until 2f + 1 commit-messages matching (v, s) have been accepted
+2:  create committed-certificate for (v, s, r)
+3:  wait until all requests with lower sequence numbers have been executed
+4:  execute request r
+5:  send reply(r, n_i)_{n_i} to client
+```
+
+> **_Lemma 26.18:_** If a node was able to create a prepared-certificate for $(v, \, s, \, r)$, then no node can create a prepared-certificate for $(v, \, s, \, r')$ with $r' \neq r$.
+
+## 26.4 PBFT: View Change Protocol
+
+If the primary is faulty, the system has to perform a view change to move to the next primary, so the system can make progress. To that end, nodes use a local faulty-timer to decide whether they consider the primary to be faulty.
+
+When backup $b$ accepts request $r$ in Algorithm 26.11 line 4, $b$ starts a local **faulty-timer** (if the timer is not already running) that will only stop once $b$ executes $r$. If the faulty-timer expires, the backup considers the primary faulty and triggers a view change. When triggering a view change, a correct node will no longer participate in the protocol for the current view.
+
+In the view change protocol, a node whose faulty-timer has expired enters the **view change phase** by running Algorithm 26.22. During the **new view phase** (which all nodes continuously listen for), the primary of the next view runs Algorithm 26.24 while all other nodes run Algorithm 26.25.
+
+![](./Figures/CompSys_Fig12-7.PNG){width=50%}
+
+_Remarks:_
+
+- The idea behind the view change protocol is as follows: during the view change protocol, the new primary collects prepared-certificates from $2f + 1$ nodes, so for every request that some correct node executed, the new primary will have at least one prepared-certificate.
+- After gathering that information, the primary distributes it and tells all backups which requests need to be executed with which sequence numbers.
+- Backups can check whether the new primary makes the decision required by the protocol, and if it does not, then the new primary must be byzantine and the backups can directly move to the next view change.
+
+```pseudo
+# Algorithm 26.22: PBFT View Change Protocol: View Change Phase
+    # Code for node n_i in view v whose faulty-timer has expired
+1:  stop accepting pre-prepare/prepare/commit-messages for v
+2:  let P_i be the set of all prepared-certificates that n_i has collected since the system was started
+3:  send view-change(v+1, O_i, b_i)_{n_i} to all nodes
+```
+
+$2f+1$ `view-change`-messages for the same view $v$ form a **new-view-certificate.**
+
+```pseudo
+# Algorithm 26.24: PBFT View Change Protocol: New View Phase - Primary
+    # Code for new primary p of view v + 1
+1:  accept 2f+1 view-change-messages (including possibly p's own) in a set V (this is the new-view-certificate)
+2:  let O be a set of pre-prepare(v + 1, s , r, p)_p for all pairs (s, r) where at least one preapred-certificate for (s, r) exists in V
+3:  let s^V_max be the highest sequence number for which O contains a pre-prepare-message
+4: add to O a message pre-preapre(v + 1, s', null, p)_p for every sequence number s' < s^V_max for which O does not contain a pre-prepare-message
+5:  send new-view(v + 1, V, O, p)_p to all nodes
+6:  start processing requests for view v + 1 according to Algorithm 26.11 starting from sequence number s^V_max + 1
+```
+
+> **_Theorem 26.26:_** Together, the PBFT agreement protocol and the PBFT view change protocol guarantee that if a correct node executes a request $r$ in view $v$ with sequence number $s$, then no correct node will execute any $r' \neq r$ with sequence number $s$ in any view $v' \geq v$.
+
+```pseudo
+# Algorithm 26.25: PBFT View Change Protocol: New View Phase - Backup
+    # Code for backup b of view v + 1if b's local view is v' < v + 1
+1:  accept new-view(v+1, V, O, p)_p
+2:  stop accepting pre-prepare-/prepare-/commit-messages for v
+3:  set local view to v+1
+4:  if p is primary of v + 1 then:
+5:      if O was correctly constructed from V according to Algorithm 26.24 lines and 4 then:
+6:          respond to all pre-prepare-messages in O as in the agreement protocol, starting from Algorithm 26.13
+7:          start accepting messages for view v+1
+8:      else
+9:          trigger view change to v+2 using Algorithm 26.22
+10:     end if
+11: end if
+```
+
+_Remarks:_
+
+- We have shown that PBFT protocol guarantees safety or nothing bad ever happens, i.e. the correct nodes never disagree on requests that were committed with the same sequence numbers. But does PBFT also guarantee liveness?
+- To prove liveness, we need message delays being finite and bounded. With unbounded message delays in an asynchronous system and even one faulty process, it is impossible to solve consensus with guaranteed termination.
+- A faulty new primary could delay the system indefinitely by never sending a `new-view`-message. To prevent this, as soon as a node sends its `view-change`-message for view $v + 1$, it starts its faulty-timer and stops it once it accepts a `new-view`-message for $v + 1$. If the timer fires before receiving this message, the node triggers another view change.
+- Since message delay are unknown, timers are doubling with every view. Eventually, the timeout is larger than the maximum message delay, and all correct messages are received before any timer expires.
