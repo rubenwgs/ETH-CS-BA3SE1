@@ -320,3 +320,215 @@ _Remarks:_
 - Proof-of-stake can be attacked in various ways. Let us discuss the two most prominent attacks.
 - Most importantly, there is the "nothing at stake" attack: In blockchains, forks occur naturally. In proof-of-work, a fork is resolved because every miner has to choose which blockchain fork to extend, as it does not pay off to mine on a hopeless fork. Eventually, some chain will end up with more miners, and that chain is considered to be the real blockchain, whereas other (childless) blocks are just not being extended. In a proof-of-stake system, a user can trivially extend all prongs of a fork. As generating a block costs nothing, the miner has no incentive to not extend all the prongs of the fork. This results in a situation with more and more forks, and no canonical order of transactions. If there is a double-spend attack, there is no way to tell which blockchain is valid, as all blockchains are the same length.
 - Long range attack: As there are no physical resources being used to produced blocks in a proof-of-stake system, nothing prevents a bad player from creating an alternate blockchain starting at the genesis block, and make it longer than the canonical blockchain. New nodes may have difficulties to determine which blockchain is the real established blockchain.
+
+# Chapter 25: Game Theory
+
+> "Game theory is a sort of umbrella or 'unified field' theory for the rational side of social science, where 'social' is interpreted broadly, to include humans as well as non-human players." - Robert Aumann, 1987
+
+## 25.1 Introduction
+
+Int his chapter we look at a distributed system from a different perspective. Nodes no longer ha a common goal, but are _selfish._ The nodes are not byzantine (actively malicious), instead they try to benefit from a distributed system - possibly without contributing.
+Game theory attempts to mathematically capture behavior in strategic situations, in which an individual's success depends on the choices of others.
+
+## 25.2 Prisoner's Dilemma
+
+A team of two prisoners (player $u$ and $v$) are being questioned by the police. They are both held in solitary confinement and cannot talk to each other. The prosecutors offer a bargain to each prisoner: snitch on the other prisoner to reduce your prison sentence.
+
+![](./Figures/CompSys_Fig12-2.PNG){width=50%}
+
+- If both of them stay silent (_cooperate), both will be sentenced to one year of prison on a lesser charge.
+- If both of them testify against their fellow prisoner (_defect_), the police has a stronger case, and they will be sentenced to two years each.
+- If player $u$ defects and the player $v$ cooperates, then player $u$ will go free and player $v$ will have to go to hail for three years; and vice versa.
+
+A **game** requires two rational players, and each player can choose from at least two options (**strategies**). In every possible outcome (**strategy profile**) each player gets a certain payoff (or cost). The payoff of a player depends on the strategies of the other players.
+
+A strategy profile is called **social optimum (SO)** if and only if it minimizes the sum of all costs (or maximizes payoff). The social optimum for the prisoner's dilemma is when both players cooperate -- the corresponding cost sum is 2.
+
+A strategy is **dominant** if a player is never worse off by playing this strategy. A **dominant strategy profile** is a strategy profile in which each player plays a dominant strategy. The dominant strategy profile in the prisoner's dilemma is when both players defect -- the corresponding cost sum is 4.
+
+A **Nash Equilibrium (NE)** is a strategy profile in which no player can improve by unilaterally (the strategies of the other players do not change) changing its strategy.
+
+_Remarks:_
+
+- A game can have multiple Nash Equilibria.
+- In the prisoner's dilemma, both players defecting is the only Nash Equilibrium.
+- If every player plays a dominant strategy, then this is by definition a Nash Equilibrium.
+- The **best response** is the best strategy given a belief about the strategy of the other players. In this game, the best response to both strategies of the other player is to defect. If one strategy is the best response to any strategy of the other players, it is a dominant strategy.
+
+## 25.3 Selfish Caching
+
+Computers in a network want to access a file regularly. Each node $v \in V$, with $V$ being the set of nodes and $n = |V|$, has a demand $d_v$ for the file and wants to minimize the cost for accessing it. In order to access the file, node $v$ can either cache the file locally which costs 1 or request the file from another node $u$ which costs $c_{v \leftarrow u}$. If a node does not cache the file, the cost it incurs is the minimal cost to access the file remotely. Note that if no node caches the file, then every node incurs cost $\infty$. There is an example in the figure below.
+
+![](./Figures/CompSys_Fig12-3.PNG){width=50%}
+
+```pseudo
+# Algorithm 25.7: Nash Equilibrium for Selfish Caching
+1:  S = {}
+2:  repeat:
+3:      Let v be a node with maximum demand d_v in set V
+4:      S = S union {v}, V = V \ {v}
+5:      Remove every node u from V with c_{u <- v} <= 1
+6:  until V = {}
+```
+
+> **_Theorem 25.8:_** Algorithm 25.7 computes a Nash Equilibrium for Selfish Caching.
+
+Let $NE_-$ denote the Nash Equilibrium with the _highest cost_ (smallest payoff). The **Price of Anarchy (PoA)** is defined as
+
+$$
+PoA = \frac{cost(NE_-)}{cost(SO)}.
+$$
+
+Let $NE_+$ denote the Nash Equilibrium with the _smallest cost_ (highest payoff). The **Optimistic Price of Anarchy (OPoA)** is defined as
+
+$$
+OPoA = \frac{cost(NE_+)}{cost(SO)}.
+$$
+
+_Remarks:_
+
+- The Price of Anarchy measures how much a distributed system degrades because of selfish nodes.
+- We have $PoA \geq OPoA \geq 1$.
+
+> **_Theorem 25.11:_** The (Optimistic) Price of Anarchy of Selfish Caching can be $\Theta(n)$.
+
+## 25.4 Braess' Paradox
+
+Consider the graph in the figure below, it models a road network. Let us assume that there are 1000 drivers that want to travel from node $s$ to $t$. Traveling along the road from $s$ to $u$ (or $v$ to $t$) always takes 1 hour. The travel time from $s$ to $v$ (or $u$ to $t$) depends on the traffic and increases by $1/1000$ of an hour per car, i.e. when there are 500 cars driving, it takes 30 minutes to use this road.
+
+![](./Figures/CompSys_Fig12-4.PNG){width=50%}
+
+To reduce congestion, a superfast road (delay is 0) is built between nodes $u$ and $v$. This results in the following Nash Equilibrium: every driver now drives from $s$ to $u$ to $t$. The total cost is now $2 > 1.5$.
+
+> **_Lemma 25.14:_** Adding a superfast road (delay is 0) between $u$ and $v$ can increase the travel time from $s$ to $t$.
+
+## 25.5 Rock-Paper-Scissors
+
+There are two players, $u$ and $v$. Each player simultaneously chooses one of the tree options: rock, paper, or scissors. The rules are simple: paper beats rock, rock beats scissors, and scissors beat paper. A matrix representation of this game is shown in the following figure:
+
+![](./Figures/CompSys_Fig12-5.PNG){width=50%}
+
+_Remarks:_
+
+- None of the three strategies is a Nash Equilibrium. Whatever player $u$ chooses, player $v$ can always switch her strategy such that she wins.
+- This is highlighted in the best response concept. The best response to e.g. scissors is to play rock. The other player switches to paper. And so on.
+
+A **Mixed Nash Equilibrium (MNE)** is a strategy profile in which at least one player is playing a randomized strategy (choose strategy profiles according to probabilities), and no player can improve their expected payoff by unilaterally changing their (randomized) strategy.
+
+> **_Theorem 25.17:_** Every game has a Mixed Nash Equilibrium.
+
+_Remarks:_
+
+- The Mixed Nash Equilibrium of this game is if both players choose each strategy with probability $1/3$. The expected payoff is 0.
+- In a pure Nash Equilibrium, the strategies are chosen deterministically. Rock-Paper-Scissors does not have a pure Nash Equilibrium.
+
+## 25.6 Mechanism Design
+
+Whereas game theory analyzes existing systems, there is a related area that focuses on designing games -- mechanism design. The task is to create a game where nodes have an incentive to behave "nicely".
+
+One good is sold to a group of bidders in an **auction.** Each bidder $v_i$ has a secret value $z_i$ for the good and tells his bid $b_i$ to the auctioneer. The auctioneer sells the good to one bidder for a price $p$. For simplicity, we assume that now two bids are the same, and that $b_1 > b_2 > b_2 > ...$
+
+```pseudo
+# Algorithm 25.19: First Price Auciton
+1:  every bidder v_i submits his bid b_i
+2:  the good is allocated to the highest biffer v_1 for the price p = b_1
+```
+
+An auction is **truthful** if no player $v_i$ can gain anything by not stating the truth, i.e. $b_i = z_i$.
+
+> **_Theorem 25.21:_** A First Price Auction (Algorithm 25.19) is not truthful.
+
+```pseudo
+# Algorithm 25.22: Second Price Algorithm
+1:  every bidder v_i submits his bid b_i
+2:  the good is allocated to the highest bidder v_1 for p = b_2
+```
+
+> **_Theorem 25.23:_** Truthful bidding is a dominant strategy in a Second Price Auction.
+
+_Remarks:_
+
+- Let us use this for Selfish Caching. We need to choose a node that is the first to cache the file. But how? By holding an auction. Every node says for which price it is willing to cache the file. We pay the node with the lowest offer to ensure truthful offers.
+- Since a mechanism designer can manipulate incentives, she can implement a strategy profile by making all the strategies in this profile dominant.
+
+> **_Theorem 25.24:_** Any Nash Equilibrium of Selfish Caching can be implemented for free.
+
+# Chapter 26: Authenticated Agreement
+
+## 26.1 Agreement with Authentication
+
+Every node can digitally **sign** its message in a way that no other node can forge, thus nodes can reliably determine which node a signed message originated from. We denote a message $msg(x)$ signed by node $u$ with $msg(x)_u$.
+
+```pseudo
+# Algorithm 26.2: Byzantine Agreement with Authentication
+    # Code for primary p
+1:  if input is 1 then:
+2:      broadcast value(1)_p
+3:      decide 1 and terminate
+4:  else:
+5:      decide 0 and termiante
+6:  end if
+    # Code for all other nodes v
+7:  for all rounds i in {1,..., f+1} do:
+8:      S is the set of accepted messages value(1)_u
+9:      if |S| >= i and vaue(1)_p in S then:
+10:         broadcast S union {value(1)_v}
+11:         decide 1 and terminate
+12:     end if
+12: end for
+13: decide 0 and terminate
+```
+
+> **_Theorem 26.3:_** Algorithm 26.2 can tolerate $f < n$ byzantine failures while terminating in $f + 1$ rounds.
+
+## 26.2 Practical Byzantine Fault Tolerance
+
+Practical Byzantine Failure Tolerance (PBFT) is one of the first and perhaps the most instructive protocol for achieving state replication among node as previously defined with byzantine nodes in an asynchronous network. We present a simplified version PBFT without any optimizations.
+
+We consider a system with $n = 3f + 1$ nodes, and additionally an unbounded number of clients. There are at most $f$ byzantine nodes, and clients can be byzantine as well. The network is asynchronous, and messages have variable delay and can get lost. Clients send requests that correct nodes have to order to achieve state replication.
+
+A **view** $v$ is a non-negative integer representing the node's local perception of the system. We say that node $u$ _is in view_ $v$ as long as node $u$ considers node $p = v \mod n$ to be the primary.
+
+During a view, a node relies on the primary to assign consecutive **sequence numbers** (integers) that function as indices in the global order for the requests that clients send.
+
+A correct node that is in view $v$ will only _accept_ a message that it can authenticate, that follow the specification of the protocol, and that also belong to view $v$.
+
+> **_Lemma 26.8:_** Let $S_1$ with $|S_1| \geq 2f + 1$ and $S_2$ with $|S_2| \geq 2f + 1$ each be sets of nodes. Then there exists a correct node in $S_1 \cap S_2$.
+
+## 26.3 PBFT: Agreement Protocol
+
+First we describe how PBFT achieves agreement on a unique order of requests within a single view. The figure below shows how the nodes come to an agreement on a sequence number for a client request. Informally, the protocol has these five steps:
+
+1. The nodes receive a request and relay it to the primary.
+2. The primary sends a `pre-prepare`-message to all backups, informing them that it wants to execute that request with the sequence number specified in the message.
+3. Backups send `prepare`-messages to all nodes, informing them that they agree with the suggestion.
+4. All nodes send `commit`-messages to all nodes, informing them that they agree with that suggestion.
+5. They execute the request and inform the client.
+
+![](./Figures/CompSys_Fig12-6.PNG){width=50%}
+
+To make sure byzantine nodes cannot force the execution of a request, every node waits for a certain number of `prepare`- and `commit`-messages with the correct content before executing the request.
+
+In the **pre-prepare phase** of the agreement protocol, the nodes execute Algorithm 26.11.
+
+```pseudo
+# Algorithm 26.11: PBFT Agreement Protocol: Pre-Prepare Phase
+    # Code for primary p in view v
+1:  accept request(r, c)_c that originated from client c
+2:  pick next sequence number s
+3:  send pre-prepare(v, s, r, p)_p to all backups
+    # Code for backup b
+4:  accept request(r, c)_c from client c
+5:  relay request(r, c)_c to primary p
+```
+
+In the **prepare phase** of the agreement protocol, every backup $b$ executes Algorithm 26.13. Once it has sent the `prepare`-message, we say that $b$ has **pre-prepared** $r$ for $(v, \, s)$.
+
+```pseudo
+# Algorithm 26.13: PBFT Agreement Protocol: Prepare Phase
+    # Code for backup b in view v
+1:  accept pre-prepare(v, s, r, p)_p
+2:  if b has not yet accepted a pre-prepare-message for (v, s, r') with r' != r then:
+3:      send prepare(v, s, r, b)_b to all nodes
+4:  end if
+```
