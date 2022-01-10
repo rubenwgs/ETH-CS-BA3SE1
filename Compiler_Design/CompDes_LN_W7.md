@@ -61,7 +61,7 @@ But how do we implement such functions in an interpreter or in a compiled langua
 
 ## 10.2 Lambda Calculus
 
-The **lambda calculus** is a minimal programming language. It has variables, functions, and function application. That's it! It is, however, still touring complete.
+The **lambda calculus** is a minimal programming language. It has variables, functions, and function application. That's it! It is, however, still turing complete.
 
 The abstract syntax in OCaml is:
 
