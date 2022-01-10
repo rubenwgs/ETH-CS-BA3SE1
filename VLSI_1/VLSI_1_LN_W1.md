@@ -1,8 +1,10 @@
-**VLSI 1: HDL based design for FPGAs - Notes week 1**
-
-- Author: Ruben Schenk
-- Date: 21.09.2021
-- Contact: ruben.schenk@inf.ethz.ch
+---
+title: "VLSI 1 - Notes Week 1"
+author: Ruben Schenk, ruben.schenk@inf.ethz.ch
+date: September 21, 2021
+geometry: margin=2cm
+output: pdf_document
+---
 
 # Chapter 1 : Introduction to Microelectronics
 
