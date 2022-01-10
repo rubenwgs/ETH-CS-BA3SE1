@@ -359,7 +359,7 @@ $$\text{in}[n] \subseteq \text{out}[n] \cup \text{kill}[n]$$
 We convert the constraints to iterated update equations:
 
 - $\text{in}[n] := \bigcup_{n' \in \text{pred}[n]} \text{out}[n']$
-- $\text{out}[n] := \text{gen}[n] \cup (\text{in}[n] \setminus \text{kill}[n])
+- $\text{out}[n] := \text{gen}[n] \cup (\text{in}[n] \setminus \text{kill}[n])$
 
 The algorithm starts to initialize `in[n]` and `out[n]` to be empty. We iterate the update equations until a fixed point is reached.
 

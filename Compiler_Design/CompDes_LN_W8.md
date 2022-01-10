@@ -54,7 +54,8 @@ $$[[C \vdash e : t]] = (\text{ty, operand, stream})$$
 
 we can use a _conditional branch translation of Booleans,_ without materializing the value:
 
-$$[[C \vdash e : \text{bool}@]] \text{ Itrue Ifalse} = \text{stream} \\ [[C, \, rt \vdash \text{if } (e) \text{ then } s_1 \text{ else } s_2 \Rightarrow C']] = [[C']]$$
+$$[[C \vdash e : \text{bool}@]] \text{ Itrue Ifalse} = \text{stream}$$
+$$[[C, \, rt \vdash \text{if } (e) \text{ then } s_1 \text{ else } s_2 \Rightarrow C']] = [[C']]$$
 
 This takes two extra arguments, namely the "true" branch label and the "false" branch label, and doesn't return a value.
 
