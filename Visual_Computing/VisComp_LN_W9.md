@@ -1,8 +1,10 @@
-**Visual Computing - Lecture notes week 9**
-
-- Author: Ruben Schenk
-- Date: 10.12.2021
-- Contact: ruben.schenk@inf.ethz.ch
+---
+title: "Visual Computing - Notes Week 9"
+author: Ruben Schenk, ruben.schenk@inf.ethz.ch
+date: December 10, 2021
+geometry: margin=2cm
+output: pdf_document
+---
 
 # 3. Transforms
 
@@ -31,13 +33,13 @@ If a map can be expressed as $f(u) = \sum_{i = 1}^m u_i a_i$, with fixed vectors
 
 _Example:_
 
-<img src="./Figures/VisComp_Fig9-1.PNG" style="zoom:33%;" />
+![](./Figures/VisComp_Fig9-1.PNG){width=50%}
 
 $u$ is a linear combination of $e_1$ and $e_2$. $f(u)$ is the _same_ linear combination, but of $a_1$ and $a_2$, and we have that $a_1 = f(e_1)$ and $a_2 = f(e_2)$.
 
 ## 3.2 Scale
 
-<img src="./Figures/VisComp_Fig9-2.PNG" style="zoom:33%;" />
+![](./Figures/VisComp_Fig9-2.PNG){width=50%}
 
 **Scaling** is simply defined by either scalar multiplication of the whole vector (_uniform scale_) or scalar multiplication of specific basis vectors (_non-uniform scale_).
 
@@ -47,7 +49,7 @@ $$
 
 ## 3.3 Rotation
 
-<img src="./Figures/VisComp_Fig9-3.PNG" style="zoom:33%;" />
+![](./Figures/VisComp_Fig9-3.PNG){width=50%}
 
 Mathematically, **rotations** can be defined by the following two formulae:
 
@@ -77,7 +79,7 @@ Those special cases are actually simple _non-uniform scales._
 
 A **shear operation** (in the $x$ direction) is done by moving the upper edge along the $x$-axis by some defined amount.
 
-<img src="./Figures/VisComp_Fig9-4.PNG" style="zoom:33%;" />
+![](./Figures/VisComp_Fig9-4.PNG){width=50%}
 
 Mathematically, this operation is defined through:
 
@@ -89,7 +91,7 @@ $$
 
 **Translation** describes mappings of the following form:
 
-<img src="./Figures/VisComp_Fig9-5.PNG" style="zoom:33%;" />
+![](./Figures/VisComp_Fig9-5.PNG){width=50%}
 
 We can denote this transformation by:
 
@@ -139,7 +141,7 @@ In computer graphics we often have to distinguish between _points_ and _vectors.
 
 We define a vector to have $x_3 = 0$ in 2D-H and a point to have $x_3 \neq 0$ in 2D-H. To get from a point in 2D-H back to 2D, we simply divide all components by $x_3$.
 
-<img src="./Figures/VisComp_Fig9-6.PNG" style="zoom:33%;" />
+![](./Figures/VisComp_Fig9-6.PNG){width=50%}
 
 ## 3.8 Composition Of Linear Transformations
 
@@ -147,7 +149,7 @@ We can **compose linear transforms** via matrix multiplication. This enables for
 
 _Example:_ We take a look at the following transform: $R_{\pi / 4} S_{[1.5, \, 1.5]}x$
 
-<img src="./Figures/VisComp_Fig9-7.PNG" style="zoom:33%;" />
+![](./Figures/VisComp_Fig9-7.PNG){width=50%}
 
 ## 3.9 Moving To 3D (And 3D-H)
 
@@ -210,13 +212,13 @@ The procedure for a basic perspective projection, follows 4 steps:
 3. Point projected to 2D-H by dropping the $z$ coordinate: $p_{2D-H} = (x_x, \, x_y, \, x_z)$
 4. Point in 2D by homogeneous divide: $p_{2D} = (\frac{x_x}{x_z}, \, \frac{x_y}{x_z})$
 
-<img src="./Figures/VisComp_Fig9-8.PNG" style="zoom: 50%;" />
+![](./Figures/VisComp_Fig9-8.PNG){width=50%}
 
 ### 4.1.2 The View Frustum
 
 The **view frustum** denotes the region in space that will appear on the screen.
 
-<img src="./Figures/VisComp_Fig9-9.PNG" style="zoom:50%;" />
+![](./Figures/VisComp_Fig9-9.PNG){width=50%}
 
 We want a transformation that maps view frustum to a unit cube, such that computing screen coordinates in that space becomes trivial.
 
@@ -232,7 +234,7 @@ $$
 P = \begin{bmatrix} \frac{f}{r} & 0 & 0 & 0 \\ 0 & f & 0 & 0 \\ 0 & 0 & \frac{zfar + znear}{znear - zfar} & \frac{2 \cdot zfar \cdot znear}{znear - zfar} \\ 0 & 0 & -1 & 0  \end{bmatrix}
 $$
 
-<img src="./Figures/VisComp_Fig9-10.PNG" style="zoom: 50%;" />
+![](./Figures/VisComp_Fig9-10.PNG){width=50%}
 
 ## 4.2 Geometry
 
@@ -243,7 +245,7 @@ Implicit surfaces make some tasks easy, such as deciding whether some point is i
 
 ### 4.2.2 Explicit Representations of Geometry
 
-In an **explicit representation,** all points are given directly. For example, the points on a sphere are $(\cos u \sin v, \, \sin u \sin v, \, \cos v)$ for $0 \le u \lt 2 \pi$ and $0 \le v \lt \pi$.
+In an **explicit representation,** all points are given directly. For example, the points on a sphere are $(\cos u \sin v, \, \sin u \sin v, \, \cos v)$ for $0 \leq u < 2 \pi$ and $0 \leq v < \pi$.
 There are many explicit representations in graphics, such as:
 
 - Triangle meshes

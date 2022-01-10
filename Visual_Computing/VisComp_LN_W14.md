@@ -1,8 +1,10 @@
-**Visual Computing - Lecture notes week 14**
-
-- Author: Ruben Schenk
-- Date: 27.12.2021
-- Contact: ruben.schenk@inf.ethz.ch
+---
+title: "Visual Computing - Notes Week 14"
+author: Ruben Schenk, ruben.schenk@inf.ethz.ch
+date: December 27, 2021
+geometry: margin=2cm
+output: pdf_document
+---
 
 ### 8.4.8 Partial Differential Equations
 
@@ -42,7 +44,7 @@ $$
 
 Consider the following example, where we are given some initial temperature distribution $T_0(x) = T(x, \, 0)$ and some wind speed $c$. We want to find the temperature distribution $T(x, \, t)$ for any $t$:
 
-<img src="./Figures/VisComp_Fig14-1.PNG" style="zoom: 25%;" />
+![](./Figures/VisComp_Fig14-1.PNG){width=50%}
 
 We can solve this problem _analytically:_
 
@@ -54,11 +56,11 @@ _Note:_ Only simple PDEs can be solved analytically!
 
 We might also solve the problem _numerically:_
 
-<img src="./Figures/VisComp_Fig14-2.PNG" style="zoom:25%;" />
+![](./Figures/VisComp_Fig14-2.PNG){width=50%}
 
 #### Some Notation
 
-<img src="./Figures/VisComp_Fig14-3.PNG" style="zoom:25%;" />
+![](./Figures/VisComp_Fig14-3.PNG){width=50%}
 
 #### PDE Classification
 
@@ -88,7 +90,7 @@ Like ODEs, many interesting PDEs are difficult or impossible to solve analytical
 
 Two basic ways to **discretize space** are the Lagrangian and the Eulerian approach:
 
-<img src="./Figures/VisComp_Fig14-4.PNG" style="zoom:25%;" />
+![](./Figures/VisComp_Fig14-4.PNG){width=50%}
 
 We observe the following trade-offs:
 
@@ -104,12 +106,12 @@ We observe the following trade-offs:
 
 #### The Laplace Operator
 
-<img src="./Figures/VisComp_Fig14-5.PNG" style="zoom:25%;" />
+![](./Figures/VisComp_Fig14-5.PNG){width=50%}
 
 _Discretization:_
 
-<img src="./Figures/VisComp_Fig14-6.PNG" style="zoom:25%;" />
+![](./Figures/VisComp_Fig14-6.PNG){width=50%}
 
 _Numerically solving the Laplace equation:_
 
-<img src="./Figures/VisComp_Fig14-7.PNG" style="zoom:25%;" />
+![](./Figures/VisComp_Fig14-7.PNG){width=50%}

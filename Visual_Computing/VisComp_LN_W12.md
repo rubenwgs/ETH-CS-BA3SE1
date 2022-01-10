@@ -1,8 +1,10 @@
-**Visual Computing - Lecture notes week 12**
-
-- Author: Ruben Schenk
-- Date: 14.12.2021
-- Contact: ruben.schenk@inf.ethz.ch
+---
+title: "Visual Computing - Notes Week 12"
+author: Ruben Schenk, ruben.schenk@inf.ethz.ch
+date: December 14, 2021
+geometry: margin=2cm
+output: pdf_document
+---
 
 # 8. Computer Animation
 
@@ -20,7 +22,7 @@ How we describe motion on a computer is probably the most important question to 
 
 **Keyframing** is an important yet quite "simple" idea of describing motion. The basic idea is to specify important events in our motion only, and let the computer fill in the rest via interpolation or approximation.
 
-<img src="./Figures/VisComp_Fig12-1.PNG" style="zoom: 33%;" />
+![](./Figures/VisComp_Fig12-1.PNG){width=50%}
 
 ## 8.2 Spline Interpolation
 
@@ -28,13 +30,13 @@ How we describe motion on a computer is probably the most important question to 
 
 The basic idea behind **interpolation** data is to connect the dots, i.e. the given sample points. One such technique is _piecewise linear interpolation:_
 
-<img src="./Figures/VisComp_Fig12-2.PNG" style="zoom:33%;" />
+![](./Figures/VisComp_Fig12-2.PNG){width=50%}
 
 It might be simple, but it yields a rather rough motion.
 
 Another common interpolation technique is _piecewise polynomial interpolation:_
 
-<img src="./Figures/VisComp_Fig12-3.PNG" style="zoom:33%;" />
+![](./Figures/VisComp_Fig12-3.PNG){width=50%}
 
 ### 8.2.2 Splines
 
@@ -74,7 +76,7 @@ This leaves us with four unknowns but only two equations, which is obviously not
 
 However, what if we also want to match the _derivatives_ at the endpoints?
 
-<img src="./Figures/VisComp_Fig12-4.PNG" style="zoom:33%;" />
+![](./Figures/VisComp_Fig12-4.PNG){width=50%}
 
 Then we end up with 4 equations and 4 unknowns, which lets us uniquely identify the cubic polynomial we are looking for.
 
@@ -82,7 +84,7 @@ Then we end up with 4 equations and 4 unknowns, which lets us uniquely identify 
 
 **Natural splines** are piecewise splines made out f cubic polynomials $p_i$.
 
-<img src="./Figures/VisComp_Fig12-5.PNG" style="zoom: 50%;" />
+![](./Figures/VisComp_Fig12-5.PNG){width=50%}
 
 We want three conditions to hold for natural splines:
 
@@ -110,7 +112,7 @@ If we look at the picture above, we see that for $n+1$ points we have $4n$ DOFs,
 
 **Hermite/Bézier splines** are based on the idea that each cubic piece is specified by the endpoints and tangents, in contrast to natural splines where we define an additional point on which we have to exactly meet:
 
-<img src="./Figures/VisComp_Fig12-6.PNG" style="zoom: 50%;" />
+![](./Figures/VisComp_Fig12-6.PNG){width=50%}
 
 Hermite splines have the following properties:
 
@@ -175,13 +177,13 @@ where $t(j)$ typically comes from a bind pose and $Rot(j)$ comes from some anima
 
 The transformation from frame $j$ to world is then given by:
 
-<img src="./Figures/VisComp_Fig12-7.PNG" style="zoom: 33%;" />
+![](./Figures/VisComp_Fig12-7.PNG){width=50%}
 
 ### 8.3.6 Skinning
 
 The basic idea behind the _skinning process_ is that we simply move the vertices of the skin along with the bones! In a first attempt, we might assign each vertex to the closest bone, compute the world coordinates according to the bone's transformation and move the skin vertices along with it:
 
-<img src="./Figures/VisComp_Fig12-8.PNG" style="zoom: 33%;" />
+![](./Figures/VisComp_Fig12-8.PNG){width=50%}
 
 This process is also called **rigid skinning.**
 
@@ -193,7 +195,7 @@ $$
 v = \sum_j \alpha_j \,_wR_j \,_{\bar{w}}\bar{R}_j^{-1}v'
 $$
 
-<img src="./Figures/VisComp_Fig12-9.PNG" style="zoom:33%;" />
+![](./Figures/VisComp_Fig12-9.PNG){width=50%}
 
 ### 8.3.7 Inverse Kinematics
 
@@ -209,7 +211,7 @@ The basic idea behind an IK algorithm is as follows:
 
 > The uncanny valley is a concept first introduced in the 1970s by Masahiro Mori, then a professor at the Tokyo Institute of Technology. Mori coined the term "uncanny valley" to describe his observation that as robots appear more humanlike, they become more appealing—but only up to a certain point. Upon reaching the uncanny valley, our affinity descends into a feeling of strangeness, a sense of unease, and a tendency to be scared or freaked out. So the uncanny valley can be defined as people's negative reaction to certain lifelike robots.
 
-<img src="./Figures/VisComp_Fig12-10.PNG" style="zoom: 33%;" />
+![](./Figures/VisComp_Fig12-10.PNG){width=50%}
 
 ### 8.3.9 Motion Capture
 

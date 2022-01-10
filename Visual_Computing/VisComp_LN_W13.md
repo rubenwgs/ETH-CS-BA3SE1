@@ -1,8 +1,10 @@
-**Visual Computing - Lecture notes week 13**
-
-- Author: Ruben Schenk
-- Date: 20.12.2021
-- Contact: ruben.schenk@inf.ethz.ch
+---
+title: "Visual Computing - Notes Week 13"
+author: Ruben Schenk, ruben.schenk@inf.ethz.ch
+date: December 20, 2021
+geometry: margin=2cm
+output: pdf_document
+---
 
 ## 8.4 Physics-Based Animation
 
@@ -32,11 +34,11 @@ However, there is more to be said than $F = ma$:
 
 In physics, we often need to describe a system with many moving parts, e.g. a collection of billiard balls, each with position $x_i$. We usually collect them all into a single vector of **generalized coordinates.**
 
-<img src="./Figures/VisComp_Fig13-1.PNG" style="zoom: 33%;" />
+![](./Figures/VisComp_Fig13-1.PNG){width=50%}
 
 We can think of $q$ as a single point moving along some trajectory in $\mathbb{R}^n$. If we take the time derivative of the generalized coordinates, we get **generalized velocity:**
 
-<img src="./Figures/VisComp_Fig13-2.PNG" style="zoom:33%;" />
+![](./Figures/VisComp_Fig13-2.PNG){width=50%}
 
 ### 8.4.4 Ordinary Differential Equations
 
@@ -78,7 +80,7 @@ $$
 
 and then apply the following **numerical integration rules:**
 
-<img src="./Figures/VisComp_Fig13-3.PNG" style="zoom:25%;" />
+![](./Figures/VisComp_Fig13-3.PNG){width=50%}
 
 ### 8.4.6 Forward Euler
 

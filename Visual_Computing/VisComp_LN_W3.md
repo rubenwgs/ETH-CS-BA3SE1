@@ -1,8 +1,10 @@
-**Visual Computing - Lecture notes week 3**
-
-- Author: Ruben Schenk
-- Date: 19.10.2021
-- Contact: ruben.schenk@inf.ethz.ch
+---
+title: "Visual Computing - Notes Week 3"
+author: Ruben Schenk, ruben.schenk@inf.ethz.ch
+date: October 19, 2021
+geometry: margin=2cm
+output: pdf_document
+---
 
 # 3. Convolution and Filtering
 
@@ -41,7 +43,7 @@ In this approach, we take a **correlation mask** and apply it to an image.
 
 This would look as follows:
 
-<img src="./Figures/VisComp_Fig3-1.PNG" style="zoom: 67%;" />
+![](./Figures/VisComp_Fig3-1.PNG){width=50%}
 
 The linear operation of correlation looks as follows:
 
@@ -55,7 +57,7 @@ This represents the linear weights as an image.
 
 > Compared to correlation, where we looked at the neighborhood of a pixel and applied what we learned from the neighborhood to the single pixel, in convolution we look at a single pixel and apply what we can learn from it to its neighborhood.
 
-<img src="./Figures/VisComp_Fig3-2.PNG" style="zoom:67%;" />
+![](./Figures/VisComp_Fig3-2.PNG){width=50%}
 
 The linear operation of convolution is given by:
 
@@ -67,7 +69,7 @@ This too represents the linear weights as an image, it is actually the same as c
 
 ### 3.3.1 Correlation vs Convolution
 
-<img src="./Figures/VisComp_Fig3-3.PNG" style="zoom:67%;" />
+![](./Figures/VisComp_Fig3-3.PNG){width=50%}
 
 ## 3.4 Separable Kernels
 
@@ -81,7 +83,7 @@ $$
 
 The idea of the **Gaussian kernel** is that we weight the contributions of neighboring pixels by their nearness:
 
-<img src="./Figures/VisComp_Fig3-4.PNG" style="zoom:67%;" />
+![](./Figures/VisComp_Fig3-4.PNG){width=50%}
 
 ### 3.5.1 Gaussian Smoothing Kernels
 
@@ -167,12 +169,12 @@ The area correlation is equivalent to the convolution of image $s(x, \, y)$ with
 One idea, in a continuous-space, is to detect the local gradient:
 
 $$
-|\text{grad}(f(x, \, y))| = \sqrt{\lparen \frac{\partial f}{\partial x} \rparen^2 + \lparen \frac{\partial f}{\partial y} \rparen^2}
+|\text{grad}(f(x, \, y))| = \sqrt{(\frac{\partial f}{\partial x})^2 + (\frac{\partial f}{\partial y})^2}
 $$
 
 We mostly use the following **edge detection filters**:
 
-<img src="./Figures/VisComp_Fig3-5.PNG" style="zoom:67%;" />
+![](./Figures/VisComp_Fig3-5.PNG){width=50%}
 
 ### 4.2.1 Laplacian Operator
 
@@ -182,7 +184,7 @@ $$
 \nabla^2 f(x, \, y) = \frac{\partial^2 fx, \, y()}{\partial x^2} + \frac{\partial^2 f(x, \, y)}{\partial y^2}
 $$
 
-<img src="./Figures/VisComp_Fig3-6.PNG" style="zoom: 67%;" />
+![](./Figures/VisComp_Fig3-6.PNG){width=50%}
 
 We can do a _discrete-space approximation_ by convolution with a $3 \times 3$ impulse response:
 
@@ -205,7 +207,7 @@ However, the Laplacian operator is sensitive to very fine detail and noise, so w
 Blurring the image with Gaussian and Laplacian operator can be combined into convolution with **Laplacian of Gaussian operator** (LoG):
 
 $$
-\text{LoG}(x, \, y) = - \frac{1}{\pi \sigma^4} \lbrack 1 - \frac{x^2 + y^2}{2 \sigma^2} \rbrack exp \lparen - \frac{x^2 + y^2}{2 \sigma^2} \rparen
+\text{LoG}(x, \, y) = - \frac{1}{\pi \sigma^4} \lbrack 1 - \frac{x^2 + y^2}{2 \sigma^2} \rbrack exp ( - \frac{x^2 + y^2}{2 \sigma^2} )
 $$
 
 ### 4.2.2 Canny Edge Detector
@@ -216,7 +218,7 @@ The **Canny edge detector** works with the following steps:
 2. Compute the gradient magnitude and angle (Sobel, Prewitt, etc.):
 
 $$
-M(x, \, y) = \sqrt{\lparen \frac{\partial f}{\partial x} \rparen^2 + \lparen \frac{\partial f}{\partial y} \rparen^2} \quad \text{and} \quad \alpha(x, \, y) = \tan^{-1} \lparen \frac{\partial f}{\partial y} \big / \frac{\partial f}{\partial x} \rparen
+M(x, \, y) = \sqrt{( \frac{\partial f}{\partial x} )^2 + ( \frac{\partial f}{\partial y} )^2} \quad \text{and} \quad \alpha(x, \, y) = \tan^{-1} ( \frac{\partial f}{\partial y} \big / \frac{\partial f}{\partial x} )
 $$
 
 3. Apply nonmaxima suppression to gradient magnitude image
@@ -247,17 +249,17 @@ It works the following way:
 
 1. For an edge pixel in the $(x, \, y)$ plane we can draw the different lines that cross the edge pixel (all lines have the form $y = mx + c$). We can draw the $m$ and $c$ values in a $(m, \, c)$ plane and see that all those lines are linearly dependent:
 
-<img src="./Figures/VisComp_Fig3-7.PNG" style="zoom:67%;" />
+![](./Figures/VisComp_Fig3-7.PNG){width=50%}
 
 2. If we have multiple edge pixels, we can do the same procedure for each of those, giving us a line in the $(m, \, c)$ plane for each edge pixel.
 3. We then subdivide the $(m, \, c)$ plane into discrete "bins" and initialize the bin count of each bin to $0$. Each time a bin is crossed by one of the lines of the different edge pixels, we increase its count by one.
 4. We then simply have to detect the peaks in the $(m, \, c)$ plane to get our fitted straight line:
 
-<img src="./Figures/VisComp_Fig3-8.PNG" style="zoom:67%;" />
+![](./Figures/VisComp_Fig3-8.PNG){width=50%}
 
 We might encounter an infinite-slope problem, which can be avoided with an alternative parameterization:
 
-<img src="./Figures/VisComp_Fig3-9.PNG" style="zoom: 33%;" />
+![](./Figures/VisComp_Fig3-9.PNG){width=50%}
 
 ## 4.3 Detecting Corner Points
 
@@ -271,13 +273,13 @@ The desirable properties of a corner detector are:
 
 *something something what patterns can be localized most accurately?*
 
-<img src="./Figures/VisComp_Fig3-10.PNG" style="zoom: 67%;" />
+![](./Figures/VisComp_Fig3-10.PNG){width=50%}
 
 ### 4.3.1 Feature Point Extraction
 
 We have that $SSD \simeq \delta^T M \delta$. Now if we shift our patterns over the picture, we assume it to change the following way:
 
-<img src="./Figures/VisComp_Fig3-11.PNG" style="zoom:67%;" />
+![](./Figures/VisComp_Fig3-11.PNG){width=50%}
 
 Now we want to find points for which the following is large:
 
@@ -291,4 +293,4 @@ i.e. we want to maximize the eigenvalues of $M$.
 
 *something something*
 
-<img src="./Figures/VisComp_Fig3-12.PNG" style="zoom: 67%;" />
+![](./Figures/VisComp_Fig3-12.PNG){width=50%}

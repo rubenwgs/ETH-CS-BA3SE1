@@ -1,8 +1,10 @@
-**Visual Computing - Lecture notes week 5**
-
-- Author: Ruben Schenk
-- Date: 02.11.2021
-- Contact: ruben.schenk@inf.ethz.ch
+---
+title: "Visual Computing - Notes Week 5"
+author: Ruben Schenk, ruben.schenk@inf.ethz.ch
+date: November 2, 2021
+geometry: margin=2cm
+output: pdf_document
+---
 
 # 6. Unitary Transform
 
@@ -119,7 +121,7 @@ The **Karhunen-Loeve transform** (_KL-transform_) describes the unitary transfor
 
 _Example:_
 
-<img src="./Figures/VisComp_Fig5-1.PNG" style="zoom:33%;" />
+![](./Figures/VisComp_Fig5-1.PNG){width=50%}
 
 ### 6.3.6 Basis Images and Eigenimages
 
@@ -156,23 +158,23 @@ The key ideas of **Fisherfaces** are as follows:
 - Find directions where the ratio between/within individual variances are maximized
 - Linearly project to the basis where the dimensions with good signal/noise ratios are maximized
 
-<img src="./Figures/VisComp_Fig5-2.PNG" style="zoom:33%;" />
+![](./Figures/VisComp_Fig5-2.PNG){width=50%}
 
 The eigenimage method maximizes _scatter_ within the linear subspace over the entire image set, regardless of the classification tasks:
 
 $$
-W_{opt} = \text{arg max}_W \lparen \text{det} \lparen WRW^H \rparen \rparen
+W_{opt} = \text{arg max}_W ( \text{det} ( WRW^H ) )
 $$
 
 The idea of the **Fisher linear discriminant analysis** is to maximize between-class scatter, while minimizing within-class scatter:
 
-<img src="./Figures/VisComp_Fig5-3.PNG" style="zoom:33%;" />
+![](./Figures/VisComp_Fig5-3.PNG){width=50%}
 
 #### Fisher Images and Varying Illumination
 
 All images of the same Lambertian surface with different illumination (without shadows) lie in a 3D linear subspace. There is a single point source at infinity such that:
 
-<img src="./Figures/VisComp_Fig5-4.PNG" style="zoom:33%;" />
+![](./Figures/VisComp_Fig5-4.PNG){width=50%}
 
 # 7. Image Compression
 
@@ -182,7 +184,7 @@ All images of the same Lambertian surface with different illumination (without s
 
 We essentially do discrete **Cosine Transform** on our image we wish to compress:
 
-![](./Figures/VisComp_Fig5-5.PNG)
+![](./Figures/VisComp_Fig5-5.PNG){width=50%}
 
 **DCT** is a variant of discrete Fourier transform with real numbers and a very fast implementation. We can choose the block size, its size will have an influence on the transform:
 
@@ -195,7 +197,7 @@ DCT enables _image compression_ by concentrating most image information in the l
 
 ## 7.2 Image Pyramid
 
-<img src="./Figures/VisComp_Fig5-6.PNG" style="zoom: 50%;" />
+![](./Figures/VisComp_Fig5-6.PNG){width=50%}
 
 The application of **scaled representations,** such as _image pyramids_, is to look at coarse scaled and then refine with finer scaled. For example, a "good" edge at a finer scale has parents at some coarser scale.
 
@@ -203,7 +205,7 @@ The application of **scaled representations,** such as _image pyramids_, is to l
 
 The different levels of the **Gaussian Pyramid** are smooth with Gaussians, since a Gaussian times a Gaussian is another Gaussian.
 
-![](./Figures/VisComp_Fig5-7.PNG)
+![](./Figures/VisComp_Fig5-7.PNG){width=50%}
 
 ### 7.2.2 Laplacian Pyramid
 
@@ -212,7 +214,7 @@ For the synthesis of a **Laplacian Pyramid** we have that:
 - It preserves the difference between unsampled Gaussian pyramid levels and Gaussian pyramid levels
 - It's a band pass filter: Each level represents spatial frequencies unrepresented at other levels
 
-![](./Figures/VisComp_Fig5-8.PNG)
+![](./Figures/VisComp_Fig5-8.PNG){width=50%}
 
 ## 7.3 Discrete Wavelet Transform
 
@@ -225,14 +227,14 @@ The **Haar Transform** with the _Haar Basis_ has the following properties:
 
 _Comparison of DCT and Haar basis:_
 
-<img src="./Figures/VisComp_Fig5-9.PNG" style="zoom:50%;" />
+![](./Figures/VisComp_Fig5-9.PNG){width=50%}
 
 ### 7.3.2 Lifting
 
 _Analysis filters:_
 
-<img src="./Figures/VisComp_Fig5-10.PNG" style="zoom:50%;" />
+![](./Figures/VisComp_Fig5-10.PNG){width=50%}
 
 _Synthesis filters:_
 
-<img src="./Figures/VisComp_Fig5-11.PNG" style="zoom:50%;" />
+![](./Figures/VisComp_Fig5-11.PNG){width=50%}

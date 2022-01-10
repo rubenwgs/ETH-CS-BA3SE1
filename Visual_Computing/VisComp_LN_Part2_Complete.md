@@ -1,16 +1,10 @@
 ---
-title: "Visual Computing Summary - Part 2"
-author: Ruben Schenk
-date: January 6, 2022
+title: "Visual Computing - Complete Summary: Part 2"
+author: Ruben Schenk, ruben.schenk@inf.ethz.ch
+date: January 10, 2022
 geometry: margin=2cm
 output: pdf_document
 ---
-
-**Visual Computing - Lecture notes week 8**
-
-- Author: Ruben Schenk
-- Date: 08.12.2021
-- Contact: ruben.schenk@inf.ethz.ch
 
 # Part 2: Computer Graphics
 
@@ -318,12 +312,6 @@ A modern approach is to traverse the triangle in blocks. We test all samples in 
 
 ![](./Figures/VisComp_Fig8-21.PNG){width=50%}
 
-**Visual Computing - Lecture notes week 9**
-
-- Author: Ruben Schenk
-- Date: 10.12.2021
-- Contact: ruben.schenk@inf.ethz.ch
-
 # 3. Transforms
 
 ## 3.1 Introduction
@@ -572,12 +560,6 @@ There are many explicit representations in graphics, such as:
 - etc.
 
 Explicit surfaces make some tasks easy, such as sampling. However, they also make some tasks hard, such as deciding whether a given point is inside or outside our surface.
-
-**Visual Computing - Lecture notes week 10**
-
-- Author: Ruben Schenk
-- Date: 13.12.2021
-- Contact: ruben.schenk@inf.ethz.ch
 
 ### 4.2.3 L-Systems (Implicit)
 
@@ -917,25 +899,25 @@ Additionally:
 
 Transform the triangle vertices into the camera space:
 
-![](./Figures/VisComp_Fig10-21.PNG){width=50%}
+![](./Figures/VisComp_Fig10-21.PNG){width=100%}
 
 #### Step 2
 
 Apply the perspective projection transform to transform the triangle vertices into a normalized coordinate space:
 
-![](./Figures/VisComp_Fig10-22.PNG){width=50%}
+![](./Figures/VisComp_Fig10-22.PNG){width=100%}
 
 #### Step 3
 
 Discard triangles that lie completely outside the unit cube (since they are off-screen) and clip triangles that extend beyond the unit cube to the unit cube:
 
-![](./Figures/VisComp_Fig10-23.PNG){width=50%}
+![](./Figures/VisComp_Fig10-23.PNG){width=100%}
 
 #### Step 4
 
 Transform the vertex $xy$ positions from the normalized coordinates into the screen coordinates (based on the screen size `(w, h)`):
 
-![](./Figures/VisComp_Fig10-24.PNG){width=50%}
+![](./Figures/VisComp_Fig10-24.PNG){width=100%}
 
 #### Step 5
 
@@ -945,25 +927,25 @@ Preprocess the triangles, i.e. compute the triangle edge equations and the trian
 
 Do the sample coverage and evaluate attributes `Z, u, v` at all covered samples:
 
-![](./Figures/VisComp_Fig10-25.PNG){width=50%}
+![](./Figures/VisComp_Fig10-25.PNG){width=100%}
 
 #### Step 7
 
 Compute the triangle color at the sample point through color interpolation, sample texture map, or more advanced shading algorithms:
 
-![](./Figures/VisComp_Fig10-26.PNG){width=50%}
+![](./Figures/VisComp_Fig10-26.PNG){width=100%}
 
 #### Step 8
 
 Perform the depth test and update the depth value at the covered samples:
 
-![](./Figures/VisComp_Fig10-27.PNG){width=50%}
+![](./Figures/VisComp_Fig10-27.PNG){width=100%}
 
 #### Step 9
 
 Update the color buffer if the depth test passed:
 
-![](./Figures/VisComp_Fig10-28.PNG){width=50%}
+![](./Figures/VisComp_Fig10-28.PNG){width=100%}
 
 ### 5.3.3 Shadow Mapping
 
@@ -990,12 +972,6 @@ GPU's are specialized processor for executing graphics pipeline computations. Th
 - Complex vertex and fragment shader computations
 - High resolution screen outputs (2-4 Mpixel + supersampling)
 - 30-60 fps
-
-**Visual Computing - Lecture notes week 11**
-
-- Author: Ruben Schenk
-- Date: 14.12.2021
-- Contact: ruben.schenk@inf.ethz.ch
 
 # 6. Light, Color And The Rendering Equation
 
@@ -1279,12 +1255,6 @@ for each primitive p in scene:
 
 This has complexity $O(n)$.
 
-**Visual Computing - Lecture notes week 12**
-
-- Author: Ruben Schenk
-- Date: 14.12.2021
-- Contact: ruben.schenk@inf.ethz.ch
-
 # 8. Computer Animation
 
 ## 8.1 Describing Motion
@@ -1498,12 +1468,6 @@ The basic idea behind an IK algorithm is as follows:
 
 This is a problem which is often-times posed as an optimization problem, for example in inverse kinematics.
 
-**Visual Computing - Lecture notes week 13**
-
-- Author: Ruben Schenk
-- Date: 20.12.2021
-- Contact: ruben.schenk@inf.ethz.ch
-
 ## 8.4 Physics-Based Animation
 
 ### 8.4.1 Introduction
@@ -1613,12 +1577,6 @@ u_n = \Big (\frac{1}{1 + ha} \Big)^nu_0,
 $$
 
 which decays if $|1 + ha| > 1$, which is always true! Backward Euler is _unconditionally stable_ for linear ODEs.
-
-**Visual Computing - Lecture notes week 14**
-
-- Author: Ruben Schenk
-- Date: 27.12.2021
-- Contact: ruben.schenk@inf.ethz.ch
 
 ### 8.4.8 Partial Differential Equations
 

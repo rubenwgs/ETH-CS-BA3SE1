@@ -1,8 +1,10 @@
-**Visual Computing - Lecture notes week 1**
-
-- Author: Ruben Schenk
-- Date: 03.10.2021
-- Contact: ruben.schenk@inf.ethz.ch
+---
+title: "Visual Computing - Notes Week 1"
+author: Ruben Schenk, ruben.schenk@inf.ethz.ch
+date: October 3, 2021
+geometry: margin=2cm
+output: pdf_document
+---
 
 # 1. The Digital Image
 
@@ -64,7 +66,7 @@ There are several things where pictures can come from:
 
 Simplified, the **digital camera** consists of the following parts and is said to be a _Charge Coupled Device (CCD)_:
 
-<img src="./Figures/VisComp_Fig1-1.PNG" style="zoom:50%;" />
+![](./Figures/VisComp_Fig1-1.PNG){width=50%}
 
 The **sensor array** can be < 1 cm^2 and is an array of _photosites_. Each photosite is a bucket of electrical charge, and this charge is proportional to the incident light intensity during the exposure.
 
@@ -72,7 +74,7 @@ The **analog to digital conversion (ADC)** measure the charge and digitizes the 
 
 Example:
 
-<img src="./Figures/VisComp_Fig1-2.PNG" style="zoom:50%;" />
+![](./Figures/VisComp_Fig1-2.PNG){width=50%}
 
 Because each bucket has a finite capacity, if a photosite bucket is full, it can overflow to other buckets, which leads to **blooming**.
 
@@ -113,7 +115,7 @@ By resetting each line in the sensor line by line (the "shutter"), each line wil
 
 Example:
 
-<img src="./Figures/VisComp_Fig1-3.PNG" style="zoom:50%;" />
+![](./Figures/VisComp_Fig1-3.PNG){width=50%}
 
 Sampling solves one problem with working with continuous functions. How do we store and compute with them? A common scheme for representing continuous functions is with **samples**: we simply write down the function's values as discrete values at many sample points.
 
@@ -133,15 +135,15 @@ Example: If we undersample the following `sin` wave, it gets indistinguishable f
 
 _Sample:_
 
-<img src="./Figures/VisComp_Fig1-4.PNG" style="zoom:50%;" />
+![](./Figures/VisComp_Fig1-4.PNG){width=50%}
 
 _Reconstruction 1:_
 
-<img src="./Figures/VisComp_Fig1-5.PNG" style="zoom:50%;" />
+![](./Figures/VisComp_Fig1-5.PNG){width=50%}
 
 _Reconstruction 2:_
 
-<img src="./Figures/VisComp_Fig1-6.PNG" style="zoom:50%;" />
+![](./Figures/VisComp_Fig1-6.PNG){width=50%}
 
 This effect is what we call **aliasing**, i.e. _"Signals travelling in disguise as other frequencies"_.
 
@@ -153,11 +155,11 @@ Example:
 
 _Function:_
 
-<img src="./Figures/VisComp_Fig1-7.PNG" style="zoom: 67%;" />
+![](./Figures/VisComp_Fig1-7.PNG){width=50%}
 
 _Sample:_
 
-<img src="./Figures/VisComp_Fig1-8.PNG" style="zoom: 67%;" />
+![](./Figures/VisComp_Fig1-8.PNG){width=50%}
 
 ### Reconstruction
 
@@ -165,7 +167,7 @@ In 2D, a simple way to reconstruct a function from a sample is to use **bilinear
 
 Example:
 
-<img src="./Figures/VisComp_Fig1-9.PNG" style="zoom: 67%;" />
+![](./Figures/VisComp_Fig1-9.PNG){width=50%}
 
 ## 1.6 Nyquist Frequency
 
@@ -207,14 +209,14 @@ Tells us how much information each pixel can store.
 
 A common model is the **additive Gaussian noise**, which means that we measure some signal with our processor but have some deviation/noise in our measurement:
 
-<img src="./Figures/VisComp_Fig1-10.PNG" style="zoom: 67%;" />
+![](./Figures/VisComp_Fig1-10.PNG){width=50%}
 
 One might also use the much more meaningful assumption of **Poisson noise**:
 
-<img src="./Figures/VisComp_Fig1-11.PNG" style="zoom:67%;" />
+![](./Figures/VisComp_Fig1-11.PNG){width=50%}
 
 ### SNR
 
 The **signal-to-noise ration (SNR)** `s` is an index of image quality:
 
-<img src="./Figures/VisComp_Fig1-12.PNG" style="zoom:67%;" />
+![](./Figures/VisComp_Fig1-12.PNG){width=50%}

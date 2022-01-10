@@ -1,8 +1,10 @@
-**Visual Computing - Lecture notes week 8**
-
-- Author: Ruben Schenk
-- Date: 08.12.2021
-- Contact: ruben.schenk@inf.ethz.ch
+---
+title: "Visual Computing - Notes Week 8"
+author: Ruben Schenk, ruben.schenk@inf.ethz.ch
+date: December 8, 2021
+geometry: margin=2cm
+output: pdf_document
+---
 
 # Part 2: Computer Graphics
 
@@ -64,18 +66,18 @@ But how do we draw our 3D vertices as a 2D flat image? The basic strategy is:
 
 The **perspective projection** describes what a simple _pinhole_ model of a camera does:
 
-<img src="./Figures/VisComp_Fig8-1.PNG" style="zoom:50%;" />
+![](./Figures/VisComp_Fig8-1.PNG){width=50%}
 
 With this simple projection we can answer the following question: Where does a point `p = (x, y, z)` from our real world end up in the image `q = (u, v)`?
 
 $$
-\begin{align*}
+\begin{aligned}
 &v = \frac{y}{z}, \quad \text{(v is simply the slope y/z)} \\
 &u = \frac{x}{z}
-\end{align*}
+\end{aligned}
 $$
 
-<img src="./Figures/VisComp_Fig8-2.PNG" style="zoom:50%;" />
+![](./Figures/VisComp_Fig8-2.PNG){width=50%}
 
 Applying the above learned information, we can draw our cube, assuming that the camera is at `c = (2, 3, 5)`, as follows:
 
@@ -90,7 +92,7 @@ D: (3/4, 1)         H: (1/2, 2/3)
 
 2. We can draw the points on a 2D grid and connect the points which belong to our previously defined edges:
 
-<img src="./Figures/VisComp_Fig8-3.PNG" style="zoom:50%;" />
+![](./Figures/VisComp_Fig8-3.PNG){width=50%}
 
 ## 1.5 Drawing On A Raster Display
 
@@ -103,11 +105,11 @@ A common abstraction is that an image is represented as a _2D grid of pixels._ E
 
 1. One simple approach is to light up all pixels intersected by the line:
 
-<img src="./Figures/VisComp_Fig8-4.PNG" style="zoom:50%;" />
+![](./Figures/VisComp_Fig8-4.PNG){width=50%}
 
 2. In modern graphics hardware, we use an approached called the _diamond rule:_
 
-<img src="./Figures/VisComp_Fig8-5.PNG" style="zoom: 50%;" />
+![](./Figures/VisComp_Fig8-5.PNG){width=50%}
 
 The last question we might want to answer is how do we find the pixels satisfying a chosen rasterization rule? We could check every single pixel in the image to see if it meets the condition.
 However, considering the `O(n)` pixels in an image with respect to the at most `O(n)` "lit up" pixels, we have to do way too much computation.
@@ -152,7 +154,7 @@ This question somewhat corresponds to out two definitions from before:
 - What scene geometry projects into a screen pixel? (_coverage_)
 - Which geometry is visible from the camera at that pixel? (_occlusion_)
 
-<img src="./Figures/VisComp_Fig8-6.PNG" style="zoom: 50%;" />
+![](./Figures/VisComp_Fig8-6.PNG){width=50%}
 
 Said differently, in terms of _rays,_ the visibility problem becomes:
 
@@ -165,11 +167,11 @@ Similar to the line problem from the previous chapter, the main question we have
 
 _Example:_
 
-<img src="./Figures/VisComp_Fig8-7.PNG" style="zoom: 33%;" />
+![](./Figures/VisComp_Fig8-7.PNG){width=50%}
 
 But what do we do with pixels that are only _partially covered_ by the triangle? One option is to compute the fraction of pixel area which is covered by the triangle, and then color the pixel according to this fraction:
 
-<img src="./Figures/VisComp_Fig8-8.PNG" style="zoom: 33%;" />
+![](./Figures/VisComp_Fig8-8.PNG){width=50%}
 
 However, computing the area covered by a triangle can get tricky very fast, for example when dealing with the interactions between multiple triangles.
 We may estimate the amount of overlap between a triangle and a pixel through _sampling._
@@ -178,7 +180,7 @@ We may estimate the amount of overlap between a triangle and a pixel through _sa
 
 Consider a continuous function and 5 discrete measurement, our _samples:_
 
-<img src="./Figures/VisComp_Fig8-9.PNG" style="zoom:33%;" />
+![](./Figures/VisComp_Fig8-9.PNG){width=50%}
 
 We can _reconstruct_ (or approximate) our original continuous functions with our discrete values through **sampling.**
 
@@ -186,29 +188,29 @@ We can _reconstruct_ (or approximate) our original continuous functions with our
 
 We define the reconstructed function $f_{recon}(x)$ to be the value of the sample closest to $x$, i.e. the nearest neighbor:
 
-<img src="./Figures/VisComp_Fig8-10.PNG" style="zoom:33%;" />
+![](./Figures/VisComp_Fig8-10.PNG){width=50%}
 
 ### 2.4.2 Piecewise Linear Approximation
 
 We define the reconstructed function $f_{recon}(x)$ to be the linear interpolation between two samples closest to $x$.
 
-<img src="./Figures/VisComp_Fig8-11.PNG" style="zoom:33%;" />
+![](./Figures/VisComp_Fig8-11.PNG){width=50%}
 
 ### 2.4.3 More Accuracy
 
 The simplest and most obvious way to reconstruct our original 1D signal more accurately is to sample the signal more densely, i.e. to _increase the sampling rate._
 
-<img src="./Figures/VisComp_Fig8-12.PNG" style="zoom:33%;" />
+![](./Figures/VisComp_Fig8-12.PNG){width=50%}
 
 ### 2.4.4 Mathematical Representation Of Sampling
 
 Consider the _Dirac delta:_
 
 $$
-\begin{align*}
+\begin{aligned}
 &\delta(x) = \begin{cases} 0, &\text{for } x \neq 0 \\ \text{undefined}, &\text{at } x = 0  \end{cases}, \quad \text{such that} \\
 &\int_{- \infty}^{\infty} \delta(x) \, dx = 1
-\end{align*}
+\end{aligned}
 $$
 
 An _impulse_ has a **sifting property** which we define as follows:
@@ -221,9 +223,9 @@ with an impulse occurring at $x = a$. Sampling the function is equivalent to mul
 
 #### Reconstruction As Convolution
 
-<img src="./Figures/VisComp_Fig8-13.PNG" style="zoom:33%;" />
+![](./Figures/VisComp_Fig8-13.PNG){width=50%}
 
-<img src="./Figures/VisComp_Fig8-14.PNG" style="zoom:33%;" />
+![](./Figures/VisComp_Fig8-14.PNG){width=50%}
 
 ## 2.5 Coverage As A 2D Signal
 
@@ -237,7 +239,7 @@ We choose a point in the pixel which is said to be the _coverage sample point._
 
 _Example:_
 
-<img src="./Figures/VisComp_Fig8-15.PNG" style="zoom:33%;" />
+![](./Figures/VisComp_Fig8-15.PNG){width=50%}
 
 One (literal) edge case we have to consider is what happens if the edge of a triangle exactly falls onto our sample point. The OpenGL/Direct3D **edge rules** are:
 
@@ -246,7 +248,7 @@ When an edge falls directly on a screen sample point, the sample is classified a
 - Top edge: horizontal edge that is above all other edges
 - Left edge: edge that is not exactly horizontal and is on the left side of the triangle
 
-<img src="./Figures/VisComp_Fig8-16.PNG" style="zoom: 50%;" />
+![](./Figures/VisComp_Fig8-16.PNG){width=50%}
 
 ## 2.6 Aliasing
 
@@ -254,23 +256,23 @@ When an edge falls directly on a screen sample point, the sample is classified a
 
 **Aliasing** describes the observation that high frequencies in an original signal masquerade as low frequencies after reconstruction due to undersampling:
 
-<img src="./Figures/VisComp_Fig8-17.PNG" style="zoom:33%;" />
+![](./Figures/VisComp_Fig8-17.PNG){width=50%}
 
 This leads to one obvious question when sampling: How densely should we be sampling?
 
 ### 2.6.2 Nyquist-Shannon Theorem
 
-The _Nyquist-Shannon theorem_ says that a signal can be perfectly reconstructed if it is sampled with period $T \lt \frac{1}{2 \omega_0}$.
+The _Nyquist-Shannon theorem_ says that a signal can be perfectly reconstructed if it is sampled with period $T < \frac{1}{2 \omega_0}$.
 
 ### 2.6.3 Supersampling
 
 We can increase the density of the sampling coverage signal. The following example shows _stratified sampling_ using four samples per pixel:
 
-<img src="./Figures/VisComp_Fig8-18.PNG" style="zoom:33%;" />
+![](./Figures/VisComp_Fig8-18.PNG){width=50%}
 
 However, we now have more samples than pixels! This means we have to **resample**, i.e. converting from one discrete sampled representation to another:
 
-<img src="./Figures/VisComp_Fig8-19.PNG" style="zoom:33%;" />
+![](./Figures/VisComp_Fig8-19.PNG){width=50%}
 
 ## 2.7 Sampling Triangle Coverage
 
@@ -281,31 +283,31 @@ To decide whether a sample point is inside the triangle we have to test whether 
 For a point with the tree vertices $P_0, \, P_1, \, P_2$, we define:
 
 $$
-\begin{align*}
+\begin{aligned}
 &P_i = (X_i, \, Y_i) \\
 &dX_i = X_{i+1} - X_i \\
 &dY_i = Y_{i+1} - Y_i \\
 &E_i(x, \, y) = (x - X_i) dY_i - (y-Y_i)dX_i = A_ix + B_iy + C_i \\
 &E_i(x, \, y) = \begin{cases} 0, &\text{if point is on the edge} \\ >0, &\text{if point is outside of the edge} \\ <0, &\text{if point is inside the edge}  \end{cases}
-\end{align*}
+\end{aligned}
 $$
 
 This leaves us with the following mathematical definition of whether a sample point $S = (sx, \, sy)$ is inside or outside a triangle:
 
 $$
-\begin{align*}
+\begin{aligned}
 \text{inside}(sx, \, sy) = &E_0(sx, \, sy) < 0 \, \&\& \\ &E_1(sx, \, sy) < 0 \, \&\& \\ &E_2(sx, \, sy) < 0
-\end{align*}
+\end{aligned}
 $$
 
 ### 2.7.2 Incremental Triangle Traversal
 
 Another approach is based on the idea that rather than testing all possible points on a screen, we traverse them incrementally:
 
-<img src="./Figures/VisComp_Fig8-20.PNG" style="zoom:33%;" />
+![](./Figures/VisComp_Fig8-20.PNG){width=50%}
 
 ### 2.7.3 Tiled Triangle Traversal
 
 A modern approach is to traverse the triangle in blocks. We test all samples in the block against the triangle in parallel:
 
-<img src="./Figures/VisComp_Fig8-21.PNG" style="zoom:33%;" />
+![](./Figures/VisComp_Fig8-21.PNG){width=50%}

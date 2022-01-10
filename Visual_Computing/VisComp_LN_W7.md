@@ -1,8 +1,10 @@
-**Visual Computing - Lecture notes week 7**
-
-- Author: Ruben Schenk
-- Date: 15.11.2021
-- Contact: ruben.schenk@inf.ethz.ch
+---
+title: "Visual Computing - Notes Week 7"
+author: Ruben Schenk, ruben.schenk@inf.ethz.ch
+date: November 15, 2021
+geometry: margin=2cm
+output: pdf_document
+---
 
 ## 8.7 Bayesian Flow
 
@@ -23,7 +25,7 @@ For large displacements, we do _template matching_ as we used in stereo disparit
 3. Use a mean measure such as correlation, normalized correlation, or sum-of-squares difference
 4. Choose the maximum (or minimum) as the match
 
-<img src="./Figures/VisComp_Fig7-1.PNG" style="zoom:33%;" />
+![](./Figures/VisComp_Fig7-1.PNG){width=50%}
 
 # 9. Video Compression
 
@@ -45,7 +47,7 @@ A **video** is essentially a sequence of 2D images, so for storing a video, we n
 
 The **interlaced video format** consists of two temporally shifted half images, which increases the frequency from 25 to 50 Hz (for example).
 
-<img src="./Figures/VisComp_Fig7-2.PNG" style="zoom:33%;" />
+![](./Figures/VisComp_Fig7-2.PNG){width=50%}
 
 This results in a reduction of spatial resolution.
 
@@ -76,13 +78,13 @@ The goal is to exploit temporal redundancy by **predicting the current frame** b
 - _P-frame:_ Predicatively coded frame, coded based on previously coded frame
 - _B-frame:_ Bi-directionally predicted frame, coded based on both previous and future coded frames
 
-<img src="./Figures/VisComp_Fig7-3.PNG" style="zoom:50%;" />
+![](./Figures/VisComp_Fig7-3.PNG){width=50%}
 
 Temporal redundancy reduction may be _ineffective_ when there are many scene changes or when there is high motion.
 
 ### 9.4.2 Video Compressor Diagram
 
-<img src="./Figures/VisComp_Fig7-4.PNG" style="zoom:33%;" />
+![](./Figures/VisComp_Fig7-4.PNG){width=50%}
 
 ### 9.4.3 Motion-compensated Prediction
 
@@ -93,15 +95,15 @@ Simple frame differencing fails when there is motion. We can account for motion 
 - No object identification required
 - Good, robust performance
 
-<img src="./Figures/VisComp_Fig7-5.PNG" style="zoom: 33%;" />
+![](./Figures/VisComp_Fig7-5.PNG){width=50%}
 
 _Example of fast motion estimation search: 3-step log search_
 
-<img src="./Figures/VisComp_Fig7-6.PNG" style="zoom:33%;" />
+![](./Figures/VisComp_Fig7-6.PNG){width=50%}
 
 ### 9.4.4 Bidirectional MC Prediction
 
-<img src="./Figures/VisComp_Fig7-7.PNG" style="zoom:33%;" />
+![](./Figures/VisComp_Fig7-7.PNG){width=50%}
 
 **Bidirectional MC-Prediction** is used to estimate a block in the current frame from a block in:
 
@@ -114,11 +116,11 @@ _Example of fast motion estimation search: 3-step log search_
 
 ### 9.5.1 Example Video Encoder
 
-<img src="./Figures/VisComp_Fig7-8.PNG" style="zoom:33%;" />
+![](./Figures/VisComp_Fig7-8.PNG){width=50%}
 
 ### 9.5.2 Example Video Decoder
 
-<img src="./Figures/VisComp_Fig7-9.PNG" style="zoom:33%;" />
+![](./Figures/VisComp_Fig7-9.PNG){width=50%}
 
 ## 9.6 Objective Quality Measure: PSNR
 
@@ -155,19 +157,19 @@ The idea behind _CT data collection_ is to quantify the tendency of objects to a
 
 A _CT image setup_ could look as follows:
 
-<img src="./Figures/VisComp_Fig7-10.PNG" style="zoom:33%;" />
+![](./Figures/VisComp_Fig7-10.PNG){width=50%}
 
 ### 10.1.2 Image Reconstruction
 
 The mathematical problem posed by **CT reconstruction** is to calculate the image data from the projection values. For the simple image of four pixels shown, algebra can be used to solve for the pixel values. For the larger images of clinical CT, algebraic solutions become unfeasible.
 
-<img src="./Figures/VisComp_Fig7-11.PNG" style="zoom:33%;" />
+![](./Figures/VisComp_Fig7-11.PNG){width=50%}
 
 ### 10.1.3 Image Acquisition
 
 The basic principle setup for **CT image acquisition** looks as follows:
 
-<img src="./Figures/VisComp_Fig7-12.PNG" style="zoom: 50%;" />
+![](./Figures/VisComp_Fig7-12.PNG){width=50%}
 
 The intensity of the X-ray where it hits the detector depends on the width of the object and the length of the path travelled through the object and the air.
 
@@ -190,7 +192,7 @@ This is also called the **Radon transform** of function $f(x, \, y)$.
 
 ### 10.2.1 Introduction
 
-<img src="./Figures/VisComp_Fig7-13.PNG" style="zoom:50%;" />
+![](./Figures/VisComp_Fig7-13.PNG){width=50%}
 
 This X-ray will pass through a series of points $(x, \, y)$ at which the optical density is $u(x, \, y)$. Using the equation for a straight line these points are given by:
 
@@ -248,7 +250,7 @@ $$
 
 The figure below illustrates a point source and the corresponding Radon transform:
 
-<img src="./Figures/VisComp_Fig7-14.PNG" style="zoom:50%;" />
+![](./Figures/VisComp_Fig7-14.PNG){width=50%}
 
 ### 10.2.4 Image Reconstruction: Algebraic Formulation
 
@@ -288,16 +290,16 @@ In words:
 
 > The Fourier transform of a parallel projection of an image $f(x, \, y)$ taken at an angle $\theta$ gives a slice of the two-dimensional transform, $F(u, \, v)$, subtending an angle $\theta$ with the $u$-axis. In other words, the Fourier transform of $P_{\theta}(t)$ gives the values of $F(u, \, v)$ along line $BB$ in the following figure:
 
-<img src="./Figures/VisComp_Fig7-15.PNG" style="zoom:50%;" />
+![](./Figures/VisComp_Fig7-15.PNG){width=50%}
 
 ## 10.4 Filtered Backprojection
 
 ### 10.4.1 Algorithm
 
-<img src="./Figures/VisComp_Fig7-16.PNG" style="zoom:33%;" />
+![](./Figures/VisComp_Fig7-16.PNG){width=50%}
 
 ### 10.4.2 Improvements
 
 We can apply a high-pass filter after the 1D FT projection. This will help with improving blurriness when using the naive backprojection algorithm:
 
-<img src="./Figures/VisComp_Fig7-17.PNG" style="zoom: 67%;" />
+![](./Figures/VisComp_Fig7-17.PNG){width=50%}

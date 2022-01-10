@@ -1,8 +1,10 @@
-**Visual Computing - Lecture notes week 4**
-
-- Author: Ruben Schenk
-- Date: 26.10.2021
-- Contact: ruben.schenk@inf.ethz.ch
+---
+title: "Visual Computing - Notes Week 4"
+author: Ruben Schenk, ruben.schenk@inf.ethz.ch
+date: October 26, 2021
+geometry: margin=2cm
+output: pdf_document
+---
 
 # 5. Fourier Transform
 
@@ -30,7 +32,7 @@ where:
 
 ## 5.2 Fourier Basis Functions
 
-<img src="./Figures/VisComp_Fig4-1.PNG" style="zoom: 33%;" />
+![](./Figures/VisComp_Fig4-1.PNG){width=50%}
 
 ## 5.3 Phase and Magnitude
 
@@ -60,7 +62,7 @@ $$
 
 The _Fourier transform of a sampled signal_ is given by the following equalities:
 
-<img src="./Figures/VisComp_Fig4-2.PNG" style="zoom:33%;" />
+![](./Figures/VisComp_Fig4-2.PNG){width=50%}
 
 ### 5.5.2 Nyquist Sampling Theorem
 
@@ -99,7 +101,7 @@ The **kernel for motion blur** is given by: $h(x) = \frac{1}{2l}(\theta(x_1 + l)
 
 The Fourier transformation of this is given by:
 
-<img src="./Figures/VisComp_Fig4-3.PNG" style="zoom:33%;" />
+![](./Figures/VisComp_Fig4-3.PNG){width=50%}
 
 Which leads to:
 

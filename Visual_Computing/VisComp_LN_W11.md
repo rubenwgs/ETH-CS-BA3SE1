@@ -1,8 +1,10 @@
-**Visual Computing - Lecture notes week 11**
-
-- Author: Ruben Schenk
-- Date: 14.12.2021
-- Contact: ruben.schenk@inf.ethz.ch
+---
+title: "Visual Computing - Notes Week 11"
+author: Ruben Schenk, ruben.schenk@inf.ethz.ch
+date: December 14, 2021
+geometry: margin=2cm
+output: pdf_document
+---
 
 # 6. Light, Color And The Rendering Equation
 
@@ -14,7 +16,7 @@
 
 Most light is _not visible_ to the human eye. The frequencies that are visible to the human eyes are called the **visible spectrum.** These frequencies are what we think of as color.
 
-<img src="./Figures/VisComp_Fig11-1.PNG" style="zoom:50%;" />
+![](./Figures/VisComp_Fig11-1.PNG){width=50%}
 
 ### 6.1.2 Description Of Light
 
@@ -36,7 +38,7 @@ There are three types of cones: S, M, and L cones. These correspond to a peak re
 
 The human eye does not directly measure the spectrum of incoming light, but three response values `(S, M, L)` by integrating the incoming spectrum against response functions of S-, M-, and L-cones. The brain then interprets these functions as colors.
 
-<img src="./Figures/VisComp_Fig11-2.PNG" style="zoom:50%;" />
+![](./Figures/VisComp_Fig11-2.PNG){width=50%}
 
 ## 6.3 Additive And Subtractive Color Models
 
@@ -71,7 +73,7 @@ The **radiant flux** describes the number of hits per second. Rather than record
 
 To make images, we also need to know where the hits occurred. So, we compute the hits per second in some unit area, which is called the **irradiance.**
 
-<img src="./Figures/VisComp_Fig11-3.PNG" style="zoom: 33%;" />
+![](./Figures/VisComp_Fig11-3.PNG){width=50%}
 
 ### 6.4.2 Measuring Illumination
 
@@ -127,7 +129,7 @@ where $E_{\omega}$ means that the differential surface area is oriented to face 
 
 We somehow need to distinguish between incident radiance and exitant radiance functions at a point on a surface:
 
-<img src="./Figures/VisComp_Fig11-4.PNG" style="zoom:50%;" />
+![](./Figures/VisComp_Fig11-4.PNG){width=50%}
 
 In general, $L_i(p, \, \omega) \neq L_o(p, \, \omega)$
 
@@ -135,7 +137,7 @@ In general, $L_i(p, \, \omega) \neq L_o(p, \, \omega)$
 
 The core functionality of photorealistic renderer is to estimate the radiance at a given point, in a given direction. This is summed up by the **rendering equation:**
 
-<img src="./Figures/VisComp_Fig11-5.PNG" style="zoom:33%;" />
+![](./Figures/VisComp_Fig11-5.PNG){width=50%}
 
 ### 6.5.1 Scattering Function
 
@@ -160,7 +162,7 @@ The following properties hold:
 
 ### 7.1.1 Rasterization
 
-<img src="./Figures/VisComp_Fig11-6.PNG" style="zoom:50%;" />
+![](./Figures/VisComp_Fig11-6.PNG){width=50%}
 
 The basic rasterization algorithm consists of obtaining 2D samples and then computing the coverage, i.e. whether a projected triangle covers a 2D sample point, and the occlusion, i.e. calculating the depth buffer.
 
@@ -170,7 +172,7 @@ Finding samples in this case is easy since they are distributed uniformly on scr
 
 An alternative to rasterization is **ray-casting.**
 
-<img src="./Figures/VisComp_Fig11-7.PNG" style="zoom:50%;" />
+![](./Figures/VisComp_Fig11-7.PNG){width=50%}
 
 The basic ray casting algorithm looks as follows:
 
@@ -202,7 +204,7 @@ Shadow can be computed by _recursive ray tracing:_
 -  Shoot shadow rays towards the light source from points where camera rays intersect the scene
     - If they are unclouded, the point is directly lit by the light source
 
-<img src="./Figures/VisComp_Fig11-8.PNG" style="zoom:50%;" />
+![](./Figures/VisComp_Fig11-8.PNG){width=50%}
 
 Shadows computed via ray tracing are correct hard shadows. If done via rasterization, shadow map texture can lead to aliasing.
 
@@ -210,7 +212,7 @@ Shadows computed via ray tracing are correct hard shadows. If done via rasteriza
 
 Similar to shadow, reflections can be computed with recursive ray tracing by "simply" adding more secondary arrays:
 
-<img src="./Figures/VisComp_Fig11-9.PNG" style="zoom:50%;" />
+![](./Figures/VisComp_Fig11-9.PNG){width=50%}
 
 ## 7.4 Ray-Scene Intersections
 

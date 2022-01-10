@@ -1,8 +1,10 @@
-**Visual Computing - Lecture notes week 6**
-
-- Author: Ruben Schenk
-- Date: 11.11.2021
-- Contact: ruben.schenk@inf.ethz.ch
+---
+title: "Visual Computing - Notes Week 6"
+author: Ruben Schenk, ruben.schenk@inf.ethz.ch
+date: November 11, 2021
+geometry: margin=2cm
+output: pdf_document
+---
 
 # 8. Optical Flow
 
@@ -40,7 +42,7 @@ $$
 
 However, this is one equation in two unknowns, which is known as the **Aperture Problem.**
 
-<img src="./Figures/VisComp_Fig6-1.PNG" style="zoom: 33%;" />
+![](./Figures/VisComp_Fig6-1.PNG){width=50%}
 
 Optical flow is not always well-defined! We can compare the different kinds of flows:
 
@@ -48,7 +50,7 @@ Optical flow is not always well-defined! We can compare the different kinds of f
 - _Normal Flow:_ Observed tangent motion
 - _Optical Flow:_ Apparent motion of the brightness pattern, hopefully equal to motion field
 
-<img src="./Figures/VisComp_Fig6-2.PNG" style="zoom:33%;" />
+![](./Figures/VisComp_Fig6-2.PNG){width=50%}
 
 ## 8.3 Regularization
 
@@ -70,7 +72,7 @@ The goal is to _minimize_ $e_s + \lambda e_c$ !s
 
 ## 8.4 Lucas-Kanade
 
-<img src="./Figures/VisComp_Fig6-3.PNG" style="zoom:33%;" />
+![](./Figures/VisComp_Fig6-3.PNG){width=50%}
 
 With respect to singularities and the aperture problem, we proceed as follows. Let:
 
@@ -89,7 +91,7 @@ The local gradient method has some limitation:
 
 We can combat this with a Pyramid or "_Coarse-to-fine_" estimation:
 
-<img src="./Figures/VisComp_Fig6-4.PNG" style="zoom:33%;" />
+![](./Figures/VisComp_Fig6-4.PNG){width=50%}
 
 ## 8.6 Parametric Motion Models
 
