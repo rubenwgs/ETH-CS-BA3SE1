@@ -214,7 +214,7 @@ We might represent a derivation as a tree where:
 
 _Example:_ Derivation tree of `(1 + 2 + (3 + 4)) + 5`:
 
-![](./Figures/CompDes_Fig5-6.PNG){width=50%}
+![](./Figures/CompDes_Fig5-6.PNG){height=20%}
 
 #### From Parse Trees to Abstract Syntax Trees
 

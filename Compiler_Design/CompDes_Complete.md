@@ -471,7 +471,7 @@ Here, `SRC` and `DEST` are _operands_. `DEST` is treated as a location, either a
 
 Example of a `mov` instruction:
 
-![](./Figures/CompDes_Fig2-3.PNG){width=50%}
+![](./Figures/CompDes_Fig2-3.PNG){height=20%}
 
 #### A Note About Instruction Syntax
 
@@ -741,7 +741,7 @@ _Remark: By convention, compilers often use a `.` in front of a label that is in
 
 We want to quickly revisit the three different parts of the C memory model, shown in the picture below.
 
-![](./Figures/CompDes_Fig2-4.PNG){width=50%}
+![](./Figures/CompDes_Fig2-4.PNG){height=20%}
 
 - The **code & data** (or `.text`) segment: contains compile code, constant strings, etc.
 - The **heap**: stores dynamically allocated objects, is allocated via `malloc` and deallocated via `free`
@@ -1746,7 +1746,7 @@ We might represent a derivation as a tree where:
 
 _Example:_ Derivation tree of `(1 + 2 + (3 + 4)) + 5`:
 
-![](./Figures/CompDes_Fig5-6.PNG){width=50%}
+![](./Figures/CompDes_Fig5-6.PNG){height=20%}
 
 #### From Parse Trees to Abstract Syntax Trees
 
