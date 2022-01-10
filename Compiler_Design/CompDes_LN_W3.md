@@ -1,8 +1,10 @@
-**Compiler Design — Lecture note week 3**
-
-- Author: Ruben Schenk
-- Date: 12.10.2021
-- Contact: ruben.schenk@inf.ethz.ch
+---
+title: "Compiler Design - Notes Week 3"
+author: Ruben Schenk, ruben.schenk@inf.ethz.ch
+date: October 12, 2021
+geometry: margin=2cm
+output: pdf_document
+---
 
 ### 3.7.5 Directly Generating x86
 
@@ -64,7 +66,7 @@ But, obviously `(X1 - X1)` is 0 and the program therefore could be much more sim
 
 The goal of this is to get the program closer to machine code without losing the information needed to do analysis and optimization. We might also have multiple IR's.
 
-<img src="./Figures/CompDes_Fig3-1.PNG" style="zoom:50%;" />
+![](./Figures/CompDes_Fig3-1.PNG){width=50%}
 
 ### 4.1.1 What makes a good IR?
 

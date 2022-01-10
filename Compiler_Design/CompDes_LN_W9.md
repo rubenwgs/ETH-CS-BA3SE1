@@ -1,14 +1,16 @@
-**Compiler Design — Lecture notes week 9**
-
-- Author: Ruben Schenk
-- Date: 29.11.2021
-- Contact: ruben.schenk@inf.ethz.ch
+---
+title: "Compiler Design - Notes Week 9"
+author: Ruben Schenk, ruben.schenk@inf.ethz.ch
+date: November 29, 2021
+geometry: margin=2cm
+output: pdf_document
+---
 
 ## 13.3 Multiple Inheritance
 
 ### 13.3.1 Overview
 
-A class may declare more than one sueprclass. This leads to a semantic problem: _ambiguity_
+A class may declare more than one superclass. This leads to a semantic problem: _ambiguity_
 
 _Example:_
 
@@ -57,7 +59,7 @@ The problem we encounter in the above shown example is that we cannot directly i
 
 - Option 1: Allow multiple D.V. tables (C++)
     - Choose which D.V. to use based on the static type
-    - Castin from/to a class may require runtime operations
+    - Casting from/to a class may require runtime operations
 - Option 2: Use a level of indirection
     - Map method identifiers to code pointers
     - Use a hash table
@@ -70,7 +72,7 @@ The problem we encounter in the above shown example is that we cannot directly i
 
 The idea is to duplicate the D.V. pointers in the object representation. The static type of the object determines which D.V. is used:
 
-![](./Figures/CompDes_Fig9-1.PNG)
+![](./Figures/CompDes_Fig9-1.PNG){width=50%}
 
 Another example:
 
@@ -101,19 +103,19 @@ A *pa = pc;
 // Three pointers to the same object, but different static types.
 ```
 
-![](./Figures/CompDes_Fig9-2.PNG)
+![](./Figures/CompDes_Fig9-2.PNG){width=50%}
 
 ### 13.4.3 Option 2: Search and Inline Cache
 
-The idea is that for each class/interface, we keep a talbe of the form `method names -> method code`. We then recursively walk up the hierarchy looking for the method name.
+The idea is that for each class/interface, we keep a table of the form `method names -> method code`. We then recursively walk up the hierarchy looking for the method name.
 
-![](./Figures/CompDes_Fig9-3.PNG)
+![](./Figures/CompDes_Fig9-3.PNG){width=50%}
 
-One optimization would be to store the class and code pointer at a call site in a cache. On a method call, we check whether ot not the class matches the cached value.
+One optimization would be to store the class and code pointer at a call site in a cache. On a method call, we check whether the class matches the cached value.
 
 Consider for example the following compilation: `Shape s = new Blob(); s.get();`
 
-![](./Figures/CompDes_Fig9-4.PNG)
+![](./Figures/CompDes_Fig9-4.PNG){width=50%}
 
 A **cached interface dispatch** could look as follows:
 
@@ -127,14 +129,14 @@ __miss434:
 
 ### 13.4.4 Option 3: Sparse D.V. Tables
 
-We have acces to the whole class hierarchy and must ensure that no two methods in the same class are allocated at the same D.V. offset:
+We have access to the whole class hierarchy and must ensure that no two methods in the same class are allocated at the same D.V. offset:
 
 - We allow holes in the D.V. just like in the hashtable variant for the search cache
 - Unlike the hashtable however, there is never a conflict
 
 The obvious advantage is that we have an identical dispatch and performance compared to a single-inheritance case. The disadvantage is that we must know the entire class hierarchy.
 
-![](./Figures/CompDes_Fig9-5.PNG)
+![](./Figures/CompDes_Fig9-5.PNG){width=50%}
 
 ## 13.5 Classes & Objects In LLVM
 
@@ -155,9 +157,9 @@ We then compile the class hierarchy to produce:
 
 ### 13.5.2 Method Arguments
 
-Method bodies are compile just like top-level procedures, except that they have an implicit extra argument: `this` or `self`:
+Method bodies are compiled just like top-level procedures, except that they have an implicit extra argument: `this` or `self`:
 
-![](./Figures/CompDes_Fig9-6.PNG)
+![](./Figures/CompDes_Fig9-6.PNG){width=50%}
 
 ### 13.5.3 LLVM Method Invocation Compilation
 
@@ -166,7 +168,7 @@ Consider the method invocation $$[[H;G;L \vdash e.m(e_1,...,e_n):t]]$ :
 1. Compile $[[H;G;L \vdash e : C]]$ to get a pointer to an object value of class type $C$. Call this value `obj_ptr`
 2. Use `getelementptr` to extract the vtable pointer from `obj_ptr`
 3. Load the vtable pointer
-4. Use `getelementptr` to extarct the function pointer's address from the vtable
+4. Use `getelementptr` to extract the function pointer's address from the vtable
 5. Load the function pointer
 6. Call through the function pointer, passing `obj_ptr` for `this`: `call (cmp_typ t) m(obj_ptr, [[e1]],...,[[e_n]])`
 
@@ -174,7 +176,7 @@ Consider the method invocation $$[[H;G;L \vdash e.m(e_1,...,e_n):t]]$ :
 
 ### 13.6.1 Compiling Static Methods
 
-Java supports _static_ methods, these are methods belongig to a class, not the instances of the class. They have no `this` parameter.
+Java supports _static_ methods, these are methods belonging to a class, not the instances of the class. They have no `this` parameter.
 
 They are compiled exactly like normal top-level procedures:
 
@@ -234,11 +236,11 @@ _foo:
 
 ### 14.1.2 When to Apply Optimization
 
-![](./Figures/CompDes_Fig9-7.PNG)
+![](./Figures/CompDes_Fig9-7.PNG){width=50%}
 
 ### 14.1.3 Where to Optimize?
 
-The usual goal is to improve the time performance. The problem ehre is that many optimizations trade space for time.
+The usual goal is to improve the time performance. The problem here is that many optimizations trade space for time.
 
 _Example:_ Consider **loop unrolling:**
 
@@ -264,7 +266,7 @@ This has the following tradeoffs:
 
 Whether an optimization is _safe_ depends on the language semantics. Languages with weaker guarantees permit more optimizations, but have more ambiguity in their behavior.
 
-_Example: Loop-invariant code motion (LICM)_ describes the idea of hositing invariant code out of a loop:
+_Example: Loop-invariant code motion (LICM)_ describes the idea of hoisting invariant code out of a loop:
 
 ```c
 while(b) {
@@ -307,14 +309,14 @@ if(2 > 3) S         -> ;
 
 ### 14.2.3 Algebraic Simplification
 
-A more general from of _cosntant folding_ is done by taking advantage of mathematically sound simplification rules.
+A more general from of _constant folding_ is done by taking advantage of mathematically sound simplification rules.
 
 _Identities:_
 
 ```bnf
 a * 1       -> 1
 a + 0       -> a
-b | false   -> b
+b | false   -> b
 a * 0       -> 0
 a - 0       -> a
 b & true    -> b
@@ -339,7 +341,7 @@ _Note:_ One must be careful with floating-point and integer arithmetic, e.g. rou
 
 ### 14.2.4 Constant Propagation
 
-**Constant propagation** describes the process of replacing all uses of a variable with a constant, if the variable's values is defined to be a constant. The value of the variable is propagated froward from the point of assignment.
+**Constant propagation** describes the process of replacing all uses of a variable with a constant, if the variable's values is defined to be a constant. The value of the variable is propagated forward from the point of assignment.
 
 _Example:_
 
@@ -373,7 +375,7 @@ This makes the first assignment to `x` so-called _dead code_ and can thus be eli
 
 ### 14.3.1 Dead Code Elimination (DCE)
 
-If side-effect free code can never be observed, it is safe to eliminate it. This process is called **dead code elimination** (DCE).
+If side effect free code can never be observed, it is safe to eliminate it. This process is called **dead code elimination** (DCE).
 
 _Example:_
 
@@ -393,8 +395,8 @@ A variable is therefore said to be **dead** if it's never used after it's define
 
 Basic blocks unreachable from the entry block can be deleted. This is usually done at the IR or assembly level.
 
-**Dead code** is similar to unreachable blocks. A value might be computed but never subsequently used, this means that the code used for computing the value can be droppped.
-However that's only possible if it's _pure,_ i.e. if it has no externally visible side effects.
+**Dead code** is similar to unreachable blocks. A value might be computed but never subsequently used, this means that the code used for computing the value can be dropped.
+However, that's only possible if it's _pure,_ i.e. if it has no externally visible side effects.
 
 _Note:_ Pure functional languages (e.g. Haskell) make reasoning about the safety of optimizations generally easier.
 
@@ -451,7 +453,7 @@ This optimization is _safe_ if the shared expression always have the same value 
 
 ### 14.4.1 Loop Invariant Code Motion - Revisited
 
-LICM is another form of redundancy elimination. If the result of a statement or expression doesn not change during the loop and it's pure, then it can be hoisted outside the loop body.
+LICM is another form of redundancy elimination. If the result of a statement or expression does not change during the loop, and it's pure, then it can be hoisted outside the loop body.
 
 _Example:_
 
@@ -469,7 +471,7 @@ for(i = 0; i < t; i++) {
 
 ### 14.4.2 Strength Reduction - Revisited
 
-Strength reduction can work for loops to by repalcing expensive operations, such as `*, /`, by cheaper ones, such as `+, -`.
+Strength reduction can work for loops to by replacing expensive operations, such as `*, /`, by cheaper ones, such as `+, -`.
 
 _Example:_
 
@@ -488,7 +490,7 @@ for(int i = 0; i < n; i++) {
 
 ### 14.4.3 Loop Unrolling - Revisited
 
-Branches can be very expensive, therefore it's a good practice to aboid them.
+Branches can be very expensive, therefore it's a good practice to avoid them.
 
 _Example:_
 

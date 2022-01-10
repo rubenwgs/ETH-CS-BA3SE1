@@ -1,14 +1,16 @@
-**Compiler Design — Lecture notes week 11**
-
-- Author: Ruben Schenk
-- Date: 07.12.2021
-- Contact: ruben.schenk@inf.ethz.ch
+---
+title: "Compiler Design - Notes Week 11"
+author: Ruben Schenk, ruben.schenk@inf.ethz.ch
+date: December 7, 2021
+geometry: margin=2cm
+output: pdf_document
+---
 
 ## 14.12 Quality of Dataflow Analysis Solutions
 
 ### 14.12.1 Best Possible Solution
 
-Suppose we have som GFC. If there exists a path $p_1$ starting from the root node traversing the nodes $n_0, \, n_1, \, ..., \, n_k$, then the best possible information along $p_1$ is given by:
+Suppose we have some GFC. If there exists a path $p_1$ starting from the root node traversing the nodes $n_0, \, n_1, \, ..., \, n_k$, then the best possible information along $p_1$ is given by:
 
 $$l_{p1} = F_{nk}(...F_{n2}(F_{n1}(F_{n0}(T)))...)$$
 
@@ -56,7 +58,7 @@ A **loop** is a set of nodes in the CFG which have one distinguished entry: the 
 - No edges enter a loop except the header
 - _Exit nodes_ are nodes with outgoing (in the sense of "out of the loop") edges
 
-![](./Figures/CompDes_Fig11-1.PNG)
+![](./Figures/CompDes_Fig11-1.PNG){width=50%}
 
 Loops may contain other loops, so-called _nested loops._
 
@@ -70,7 +72,7 @@ Control-flow analysis is based on the idea of _dominators:_
 
 An edge in the CFG is called a _back edge_ if its target dominates the source. A _loop_ contains >=1 back edge!
 
-![](./Figures/CompDes_Fig11-2.PNG)
+![](./Figures/CompDes_Fig11-2.PNG){width=50%}
 
 ## 15.2 Dominators
 
@@ -81,7 +83,7 @@ An edge in the CFG is called a _back edge_ if its target dominates the source. A
 
 Every flow graph has a **dominator tree** which is equal to the Hasse diagram of the dominates relation:
 
-![](./Figures/CompDes_Fig11-3.PNG)
+![](./Figures/CompDes_Fig11-3.PNG){width=50%}
 
 ### 15.2.2 Dominator Dataflow Analysis
 
@@ -104,7 +106,7 @@ Instead of storing all those nodes along the path in a dominator tree from root 
 
 To compute `Dom[b]`, we simply have to walk through `doms[b]`.
 
-### 15.2.4 Completing COntrol-flow Analysis
+### 15.2.4 Completing Control-flow Analysis
 
 Dominator analysis identifies _back edges:_
 
@@ -121,7 +123,7 @@ $$\{n' \, | \, h \text{ dom } n' \, \land \, n \text{ is reachable from } n' \te
 
 ### 15.3 Example: Natural Loops
 
-![](./Figures/CompDes_Fig11-4.PNG)
+![](./Figures/CompDes_Fig11-4.PNG){width=50%}
 
 # 16. Revisiting SSA
 
@@ -137,17 +139,17 @@ A naive backup implementation would be to map `%uids` to stack slots, however it
 
 The current compilation strategy looks as follows:
 
-![](./Figures/CompDes_Fig11-5.PNG)
+![](./Figures/CompDes_Fig11-5.PNG){width=50%}
 
 But what happens if we directly map source variables into `%uids`?
 
-![](./Figures/CompDes_Fig11-6.PNG)
+![](./Figures/CompDes_Fig11-6.PNG){width=50%}
 
 Does this always work? So, see the following if-then-else example.
 
 ### 16.1.3 What About If-Then-Else?
 
-![](./Figures/CompDes_Fig11-7.PNG)
+![](./Figures/CompDes_Fig11-7.PNG){width=50%}
 
 What do we put for `???` ?
 
@@ -164,13 +166,13 @@ The solution to our problem in the previous chapter are so-called $\phi$ **funct
 %uid = phi <ty> v1, <label1>,..., vn, <labeln>
 ```
 
-![](./Figures/CompDes_Fig11-8.PNG)
+![](./Figures/CompDes_Fig11-8.PNG){width=50%}
 
 ### 16.2.2 Phi Nodes and Loops
 
 Importantly, `%uids` on the RHS of phi nodes can be defined "later" in the CFG, meaning that `%uids` can hold values "around a loop". The scope of `%uids` is defined by the dominance.
 
-![](./Figures/CompDes_Fig11-9.PNG)
+![](./Figures/CompDes_Fig11-9.PNG){width=50%}
 
 ## 16.3 Alloc "Promotion"
 
@@ -217,7 +219,7 @@ To know where we need to place the $\phi$ functions we need to calculate the **d
 
 The _dominance frontier_ of a node `B` is the set of all CFG nodes `y` such that `B` dominates a predecessor of `y`, but does not strictly dominate `y`. We write `DF[n]` to denote the dominance frontier of node `n`.
 
-![](./Figures/CompDes_Fig11-10.PNG)
+![](./Figures/CompDes_Fig11-10.PNG){width=50%}
 
 ### 16.3.4 Algorithm For Computing `DF[n]`
 
@@ -256,7 +258,7 @@ We insert $\phi$ **functions** for the variable `x` at each node in `J[N]`.
 
 _Example:_
 
-![](./Figures/CompDes_Fig11-11.PNG)
+![](./Figures/CompDes_Fig11-11.PNG){width=50%}
 
 ### 16.3.6 Phi Placement Alternative
 
@@ -267,9 +269,9 @@ If all values flowing into the phi node are the same, we eliminate it.
 
 ### 16.3.7 SSA Optimization Example
 
-![](./Figures/CompDes_Fig11-12.PNG)
+![](./Figures/CompDes_Fig11-12.PNG){width=50%}
 
-![](./Figures/CompDes_Fig11-13.PNG)
+![](./Figures/CompDes_Fig11-13.PNG){width=50%}
 
 # 17. Automatic Memory Management (GC)
 
@@ -329,7 +331,7 @@ Unreachable objects can never be reference by the program. These objects are cal
 
 ### 17.2.2 Simple Example
 
-![](./Figures/CompDes_Fig11-14.PNG)
+![](./Figures/CompDes_Fig11-14.PNG){width=50%}
 
 1. We start tracing from `acc` and `stack`, they are called the _roots_
 2. Note that `B` and `D` are not reachable from `acc` or `stack`
@@ -361,7 +363,7 @@ Every object has an extra bit, the _mark bit:_
 
 #### Example
 
-![](./Figures/CompDes_Fig11-15.PNG)
+![](./Figures/CompDes_Fig11-15.PNG){width=50%}
 
 #### The Mark Phase
 
@@ -424,7 +426,7 @@ The garbage collection starts when the old space is full:
 
 #### Example
 
-![](./Figures/CompDes_Fig11-16.PNG)
+![](./Figures/CompDes_Fig11-16.PNG){width=50%}
 
 #### Implementation
 
@@ -438,7 +440,7 @@ As we copy an object:
 
 By partitioning the new space into three contiguous regions, we can solve the problem of implementing the traversal without using extra space:
 
-![](./Figures/CompDes_Fig11-17.PNG)
+![](./Figures/CompDes_Fig11-17.PNG){width=50%}
 
 #### Algorithm
 

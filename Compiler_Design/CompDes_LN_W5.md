@@ -1,14 +1,16 @@
-**Compiler Design — Lecture notes week 5**
-
-- Author: Ruben Schenk
-- Date: 24.10.2021
-- Contact: ruben.schenk@inf.ethz.ch
+---
+title: "Compiler Design - Notes Week 5"
+author: Ruben Schenk, ruben.schenk@inf.ethz.ch
+date: October 24, 2021
+geometry: margin=2cm
+output: pdf_document
+---
 
 # 6. Lexing
 
 ## 6.1 Compilation in a Nutshell
 
-<img src="./Figures/CompDes_Fig5-1.PNG" style="zoom:50%;" />
+![](./Figures/CompDes_Fig5-1.PNG){width=50%}
 
 ## 6.2 Lexical Analysis
 
@@ -69,7 +71,7 @@ let character = uppercase | lowercase
 
 ### 6.3.2 Chomsky Hierarchy
 
-<img src="./Figures/CompDes_Fig5-2.PNG" style="zoom: 50%;" />
+![](./Figures/CompDes_Fig5-2.PNG){width=50%}
 
 ### 6.3.3 How to Match?
 
@@ -103,7 +105,7 @@ rule token = parse
 
 A **deterministic finite automaton** (DFA) can be represented as:
 
-<img src="./Figures/CompDes_Fig5-3.PNG" style="zoom:67%;" />
+![](./Figures/CompDes_Fig5-3.PNG){width=50%}
 
 > We can build a finite automaton for every regular expression!
 
@@ -113,7 +115,7 @@ A **nondeterministic finite automaton** (NFA) is built the same way as a DFA (i.
 
 Sums and Kleene stars can easily be represented with NFA's:
 
-<img src="./Figures/CompDes_Fig5-4.PNG" style="zoom:67%;" />
+![](./Figures/CompDes_Fig5-4.PNG){width=50%}
 
 ### 6.5.3 DFA vs. NFA
 
@@ -132,7 +134,7 @@ The idea to convert a NFA to a DFA is to run all possible executions of the NFA 
 
 _Example:_ Consider `-?[0-9]+`:
 
-![](./Figures/CompDes_Fig5-5.PNG)
+![](./Figures/CompDes_Fig5-5.PNG){width=50%}
 
 ## 6.6 Summary of Lexer Generator Behavior
 
@@ -212,11 +214,11 @@ We might represent a derivation as a tree where:
 
 _Example:_ Derivation tree of `(1 + 2 + (3 + 4)) + 5`:
 
-<img src="./Figures/CompDes_Fig5-6.PNG" style="zoom:50%;" />
+![](./Figures/CompDes_Fig5-6.PNG){width=50%}
 
 #### From Parse Trees to Abstract Syntax Trees
 
-<img src="./Figures/CompDes_Fig5-7.PNG" style="zoom:67%;" />
+![](./Figures/CompDes_Fig5-7.PNG){width=50%}
 
 #### Derivation Orders
 
@@ -235,7 +237,7 @@ $$
 \text{S} \to \text{E} \\ \text{E} \to \text{S}
 $$
 
-- This grammas has nonterminal definitions that are _non-productive_, i.e. they don't mention any terminal symbols
+- This grammar has nonterminal definitions that are _non-productive_, i.e. they don't mention any terminal symbols
 - There is no finite derivation starting from $\text{S}$, so the language is empty
 
 $$
@@ -274,7 +276,7 @@ This accepts the same set of strings as the previously mentioned grammar. We can
 
 > **Non-ambiguous** means that for every input string, there is only one way to parse it!
 
-However, not all operations are associative. Moreover, if there are multiple operations, amiguity in the grammar leads to ambiguity in their _precedence_.
+However, not all operations are associative. Moreover, if there are multiple operations, ambiguity in the grammar leads to ambiguity in their _precedence_.
 
 Consider the grammar:
 

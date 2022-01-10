@@ -1,8 +1,10 @@
-**Compiler Design — Lecture notes week 7**
-
-- Author: Ruben Schenk
-- Date: 09.11.2021
-- Contact: ruben.schenk@inf.ethz.ch
+---
+title: "Compiler Design - Notes Week 7"
+author: Ruben Schenk, ruben.schenk@inf.ethz.ch
+date: November 9, 2021
+geometry: margin=2cm
+output: pdf_document
+---
 
 # 9. Menhir In Practice
 
@@ -104,7 +106,7 @@ Function application is interpreted by substitution:
 
 ## 10.4 Lambda Calculus Operational Semantics
 
-<img src="./Figures/CompDes_Fig7-1.PNG" style="zoom:33%;" />
+![](./Figures/CompDes_Fig7-1.PNG){width=50%}
 
 ## 10.5 Free Variables and Scoping
 
@@ -170,7 +172,7 @@ _Example:_
 
 ## 10.10 Operational Semantics
 
-<img src="./Figures/CompDes_Fig7-2.PNG" style="zoom:33%;" />
+![](./Figures/CompDes_Fig7-2.PNG){width=50%}
 
 ## 10.11 Adding Integers to Lambda Calculus
 
@@ -248,7 +250,7 @@ We can state the following _invariant:_ If $[[C \vdash e : t]] = \text{ ty, oper
 
 _Example:_ What is $[[C \vdash 341 + 5 : int]]$ ?
 
-<img src="./Figures/CompDes_Fig7-3.PNG" style="zoom: 50%;" />
+![](./Figures/CompDes_Fig7-3.PNG){width=50%}
 
 ### 11.2.4 Contexts
 
@@ -256,30 +258,30 @@ What is $[[C]]$ ? Source level $C$ has bindings like $x:\text{ int}, \, y:\text{
 
 The interpretation of a variable $[[x]]$ can is:
 
-<img src="./Figures/CompDes_Fig7-4.PNG" style="zoom:50%;" />
+![](./Figures/CompDes_Fig7-4.PNG){width=50%}
 
 ### 11.2.5 Other Judgements
 
 _Establish invariant for expressions:_
 
-<img src="./Figures/CompDes_Fig7-5.PNG" style="zoom:50%;" />
+![](./Figures/CompDes_Fig7-5.PNG){width=50%}
 
 _Statements:_
 
-<img src="./Figures/CompDes_Fig7-6.PNG" style="zoom: 50%;" />
+![](./Figures/CompDes_Fig7-6.PNG){width=50%}
 
-<img src="./Figures/CompDes_Fig7-7.PNG" style="zoom: 50%;" />
+![](./Figures/CompDes_Fig7-7.PNG){width=50%}
 
 _Declaration:_
 
-<img src="./Figures/CompDes_Fig7-8.PNG" style="zoom:50%;" />
+![](./Figures/CompDes_Fig7-8.PNG){width=50%}
 
 ## 11.3 Compiling Control
 
 ### 11.3.1 Translating while
 
-<img src="./Figures/CompDes_Fig7-9.PNG" style="zoom:50%;" />
+![](./Figures/CompDes_Fig7-9.PNG){width=50%}
 
 ### 11.3.2 Translating If-Then-Else
 
-<img src="./Figures/CompDes_Fig7-10.PNG" style="zoom:50%;" />
+![](./Figures/CompDes_Fig7-10.PNG){width=50%}

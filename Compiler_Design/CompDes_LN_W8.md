@@ -1,17 +1,19 @@
-**Compiler Design — Lecture notes week 8**
-
-- Author: Ruben Schenk
-- Date: 23.11.2021
-- Contact: ruben.schenk@inf.ethz.ch
+---
+title: "Compiler Design - Notes Week 8"
+author: Ruben Schenk, ruben.schenk@inf.ethz.ch
+date: November 23, 2021
+geometry: margin=2cm
+output: pdf_document
+---
 
 ## 11.4 Optimizing Control
 
-### 11.4.1 Standard Evaluation
+### 11.4.1 Standard Evaluation
 
 Consider compiling the following program fragment:
 
 ```c
-if(x & !y | !w) {
+if(x & !y | !w) {
     z = 3;
 } else {
     z = 4;
@@ -46,7 +48,7 @@ But, when the compiled expression appears in a test, the program jumps to one la
 
 ### 11.4.2 Short Circuit Boolean Compilation
 
-Instead of the usualy expression translation of the form:
+Instead of the usual expression translation of the form:
 
 $$[[C \vdash e : t]] = (\text{ty, operand, stream})$$
 
@@ -58,11 +60,11 @@ This takes two extra arguments, namely the "true" branch label and the "false" b
 
 #### Expressions
 
-![](./Figures/CompDes_Fig8-1.PNG)
+![](./Figures/CompDes_Fig8-1.PNG){width=50%}
 
 #### Evaluation
 
-![](./Figures/CompDes_Fig8-2.PNG)
+![](./Figures/CompDes_Fig8-2.PNG){width=50%}
 
 If we reconsider our previous code example, we might translate it, using short circuit evaluation, into the following code fragment:
 
@@ -93,10 +95,10 @@ merge:
 
 ## 11.5 Closure Conversion
 
-As we have already seen, in functional languages such as ML, Haskell, Scheme, Python, etc, functiosn can be:
+As we have already seen, in functional languages such as ML, Haskell, Scheme, Python, etc, functions can be:
 
 - passed as arguments (such as `map` or `fold`)
-- returned as values (sucha s `compose`)
+- returned as values (such as `compose`)
 - nested, i.e. an inner function can refer to variables bound to an outer function
 
 We can show a simple example with the following code fragment:
@@ -110,19 +112,19 @@ let compose = fun f -> fun g -> fun x -> f (g x)
 let id = compose inc dec
 ```
 
-But how do we implement such functons in an interpreter or in a compiled language?
+But how do we implement such functions in an interpreter or in a compiled language?
 
 ### 11.5.1 Compiling First-class Functions
 
 To implement first-class functions on a processor, there are 2 main problems:
 
-- We must implemen substitution of free varaibles
+- We must implement substitution of free variables
 - We must separate "code" from "data"
 
 We can do those things by:
 
 - _Reify the substitution:_ Move the substitution from the meta language to the object language by making the data structure and lookup operation explicit
-- _Closure conversion:_ Eliminates free varaibles by packaging up the needed environment in the data structure
+- _Closure conversion:_ Eliminates free variables by packaging up the needed environment in the data structure
 - _Hoisting:_ Separates code from data, pulling closed code to the top level
 
 #### Closure Creation
@@ -131,7 +133,7 @@ Recall the `add` function `let add = fun x -> fun y -> x + y` and consider the i
 
 When we run the function application `add 4`, the program builds a closure and returns it (the **closure** is a pair of the _environment_ and a _code pointer_):
 
-![](./Figures/CompDes_Fig8-3.PNG)
+![](./Figures/CompDes_Fig8-3.PNG){width=50%}
 
 The code pointer takes a pair of parameters: `env` and `y`. The function code is essentially:
 
@@ -147,15 +149,15 @@ The simple closure conversion doesn't generate very efficient code:
 - It copies the environment values each time a nested closure is created
 - It uses a linked-list data structure for tuples
 
-There are many options to solve those short comings, such as:
+There are many options to solve those shortcomings, such as:
 
 - Store only the values for free variables in the body of the closure
 - Share subcomponents of the environment to avoid copying
-- Use vectors or arrays rather then linked structures
+- Use vectors or arrays rather than linked structures
 
 **Array-based closure with N-ary functions:**
 
-![](./Figures/CompDes_Fig8-4.PNG)
+![](./Figures/CompDes_Fig8-4.PNG){width=50%}
 
 # 12. Statically Ruling Out Partiality: Type Checking
 
@@ -171,7 +173,7 @@ We need to keep track of contextual information, such as:
 
 How do we describe this information?
 
-- In the compiler, there's a mapping from varaibles to information we know about them, i.e. the _context_
+- In the compiler, there's a mapping from variables to information we know about them, i.e. the _context_
 - The compiler has a collection of (mutually recursive) functions that follow the structure of the syntax
 
 ### 12.1.2 Type Judgements
@@ -191,7 +193,7 @@ What do we need to know to decide whether $\text{if } (b) \, 3 \text{ else } x$ 
 
 ### 12.1.3 Simply-typed Lambda Calculus
 
-![](./Figures/CompDes_Fig8-5.PNG)
+![](./Figures/CompDes_Fig8-5.PNG){width=50%}
 
 ### 12.1.4 Type Checking Derivations
 
@@ -207,7 +209,7 @@ _Example:_ Find a tree for the following code using the previously given inferen
 
 $$\vdash (\text{fun}(x : int) \to x + 3)5 : int$$
 
-![](./Figures/CompDes_Fig8-6.PNG)
+![](./Figures/CompDes_Fig8-6.PNG){width=50%}
 
 Notes:
 
@@ -242,15 +244,15 @@ _Note:_
 
 ### 12.2.1 Arrays
 
-![](./Figures/CompDes_Fig8-7.PNG)
+![](./Figures/CompDes_Fig8-7.PNG){width=50%}
 
 ### 12.2.2 Tuples
 
-![](./Figures/CompDes_Fig8-8.PNG)
+![](./Figures/CompDes_Fig8-8.PNG){width=50%}
 
 ### 12.2.3 References
 
-![](./Figures/CompDes_Fig8-9.PNG)
+![](./Figures/CompDes_Fig8-9.PNG){width=50%}
 
 ## 12.3 Types, More Generally
 
@@ -277,7 +279,7 @@ When introducing those new types, we also need to redefine the typing rules.
 
 Two cases are very easy:
 
-![](./Figures/CompDes_Fig8-10.PNG)
+![](./Figures/CompDes_Fig8-10.PNG){width=50%}
 
 But what if we don't know statically which branch will be taken? Consider the following type checking problem:
 
@@ -291,17 +293,17 @@ If we view types as sets of values, there is a natural _inclusion relation:_ $Po
 
 Such inclusions give rise to a **subtyping hierarchy:**
 
-![](./Figures/CompDes_Fig8-11.PNG)
+![](./Figures/CompDes_Fig8-11.PNG){width=50%}
 
-The subytping relation is a _partial order:_
+The subtyping relation is a _partial order:_
 
 - Reflexive: $T <: T$ for any type $T$
 - Transitive: $T:1 <: T_2$ and $T_2 <: T_3$ then $T_1 <: T_3$
 - Antisymmetric: $T_1 <: T_2$ and $T_2 <: T_1$ then $T_1 = T_2$
 
-A subtyping relation $T_1 <: T_2$ is **sound** if it approximates the underlying semantic subset relation. Formally, we write $[[T]]$ for the susbet of clsoed values of type $T$, i.e. $[[T]] = \{v \, | \, \vdash v : T \}$. If $T_1 <: T_2$ implies $[[T_1]] \subseteq [[T_2]]$, then $T_1 <: T_2$ is _sound._
+A subtyping relation $T_1 <: T_2$ is **sound** if it approximates the underlying semantic subset relation. Formally, we write $[[T]]$ for the subset of closed values of type $T$, i.e. $[[T]] = \{v \, | \, \vdash v : T \}$. If $T_1 <: T_2$ implies $[[T_1]] \subseteq [[T_2]]$, then $T_1 <: T_2$ is _sound._
 
-For types $T_1, \, T_2,$ we define teir **least upper bound** (LUB) w.r.t. the hierarchy. Examples: $\text{LUB}(\text{True, False}) = Bool, \, \text{LUB}(Int, \, Bool) = Any.$
+For types $T_1, \, T_2,$ we define their **least upper bound** (LUB) w.r.t. the hierarchy. Examples: $\text{LUB}(\text{True, False}) = Bool, \, \text{LUB}(Int, \, Bool) = Any.$
 
 _Note:_ The LUB of $T_1$ and $T_2$ is sometimes written as $T_1 \lor T_2$.
 
@@ -309,13 +311,13 @@ _Note:_ The LUB of $T_1$ and $T_2$ is sometimes written as $T_1 \lor T_2$.
 
 For statically unknown conditionals, we want the return value to be the LUB of the types of the branches:
 
-![](./Figures/CompDes_Fig8-12.PNG)
+![](./Figures/CompDes_Fig8-12.PNG){width=50%}
 
 ### 12.3.5 Subsumption Rule
 
-When we add subtyping judgments of the form $T <: S$, we can uniformly integrate it into the type system generically:
+When we add subtyping judgements of the form $T <: S$, we can uniformly integrate it into the type system generically:
 
-![](./Figures/CompDes_Fig8-13.PNG)
+![](./Figures/CompDes_Fig8-13.PNG){width=50%}
 
 **Subsumption** allows values of type $T$ to be treated as $S$ whenever $T <: S$.
 
@@ -328,7 +330,7 @@ What happens if we have an $Int$, but need something of type $Pos$?
 
 We can add a **checked downcast:**
 
-![](./Figures/CompDes_Fig8-14.PNG)
+![](./Figures/CompDes_Fig8-14.PNG){width=50%}
 
 At runtime, the $ifPos$ checks whether $e_1 > 0$.
 
@@ -336,29 +338,29 @@ At runtime, the $ifPos$ checks whether $e_1 > 0$.
 
 ### 12.4.1 Subtyping for Tuples
 
-Inuition: whenever a program expects something of type $S_1 * S_2$, it is sound to give it type $T_1 * T_2$, if $T_1 <: S_1$ and $T_2 <: S_2$:
+Intuition: whenever a program expects something of type $S_1 * S_2$, it is sound to give it type $T_1 * T_2$, if $T_1 <: S_1$ and $T_2 <: S_2$:
 
-![](./Figures/CompDes_Fig8-15.PNG)
+![](./Figures/CompDes_Fig8-15.PNG){width=50%}
 
-### 12.4.2 Subtying for Function Types
+### 12.4.2 Subtyping for Function Types
 
-On way to see it is exaplined by the following graph:
+On way to see it is explained by the following graph:
 
-![](./Figures/CompDes_Fig8-16.PNG)
+![](./Figures/CompDes_Fig8-16.PNG){width=50%}
 
 We need to convert an $S_1$ to a $T_1$ and $T_2$ to $S_2$, so the argument type is **contravariant** and the output type is **covariant:**
 
-![](./Figures/CompDes_Fig8-17.PNG)
+![](./Figures/CompDes_Fig8-17.PNG){width=50%}
 
 ### 12.4.3 Immutable Records
 
 The records type is given by: $\{lab_1:T_1: \, lab_2:T_2; \, ...; \, lab_n:T_n \}$. Each $lab_i$ is a label drawn from a set of identifiers.
 
-![](./Figures/CompDes_Fig8-18.PNG)
+![](./Figures/CompDes_Fig8-18.PNG){width=50%}
 
 We can do two different forms of _subtyping for immutable records:_
 
-![](./Figures/CompDes_Fig8-19.PNG)
+![](./Figures/CompDes_Fig8-19.PNG){width=50%}
 
 ## 12.5 Mutability & Subtyping
 
@@ -380,7 +382,7 @@ This requires a defined behavior when dereferencing `null` (e.g. Java's NullPoin
 
 What is the proper subtyping relationship for **references** and **arrays?**
 
-Covariant reference types are unsound, i.e. `(NonZero ref) <: (Int ref)` is unsoun! The contravariant reference types are also unsound, that is, if `T_1 <: T_2`, then `ref T_2 <: ref T_1` is unsound too.
+Covariant reference types are unsound, i.e. `(NonZero ref) <: (Int ref)` is unsound! The contravariant reference types are also unsound, that is, if `T_1 <: T_2`, then `ref T_2 <: ref T_1` is unsound too.
 
 In conclusion, mutable structures are **invariant** in the sens that: `T_1 ref <: T_2 ref` implies `T_1 = T_2`. The same holds for arrays, OCaml-style mutable records, object fields, etc.
 
@@ -395,7 +397,7 @@ type age   = int
 let foo (x:cents) (y:age) = x + y
 ```
 
-Type abbrevations as seen in this OCaml example are treated _structurally._ In contrast, `newtypes` (as seen in Haskell) are treated by _name._
+Type abbreviations as seen in this OCaml example are treated _structurally._ In contrast, `newtypes` (as seen in Haskell) are treated by _name._
 
 ## 12.7 OAT's Type System
 
@@ -403,7 +405,7 @@ Type abbrevations as seen in this OCaml example are treated _structurally._ In c
 
 - Primitive (i.e. non-reference) types: `int` and `bool`
 - Definitely non-null reference types: (named) mutable structs with width subtyping, strings, arrays (including length information)
-- Possibly-null reference types: `R?`, subtyping `R <: R?`, checked downcast syntaxt `if?`
+- Possibly-null reference types: `R?`, subtyping `R <: R?`, checked downcast syntax `if?`
 
 _Example:_
 
@@ -450,8 +452,8 @@ int sum(int[]? arr) {
 
 Objects contain a pointer to a **dispatch vector** (also called _virtual table_ or _vtable_) with pointers to method code.
 
-![](./Figures/CompDes_Fig8-20.PNG)
+![](./Figures/CompDes_Fig8-20.PNG){width=50%}
 
 Code receiving `set:IntSet` only knows that `set` has an initial dispatch vector pointer and the layout of that vector.
 
-![](./Figures/CompDes_Fig8-21.PNG)
+![](./Figures/CompDes_Fig8-21.PNG){width=50%}

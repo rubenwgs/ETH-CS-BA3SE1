@@ -1,8 +1,10 @@
-**Compiler Design — Lecture note week 1**
-
-- Author: Ruben Schenk
-- Date: 23.09.2021
-- Contact: ruben.schenk@inf.ethz.ch
+---
+title: "Compiler Design - Notes Week 1"
+author: Ruben Schenk, ruben.schenk@inf.ethz.ch
+date: September 23, 2021
+geometry: margin=2cm
+output: pdf_document
+---
 
 # 1. Introduction
 
@@ -76,7 +78,7 @@ When compiling code we might encounter different bugs. We can distinguish them i
 
 The following figure shows a simplified view of the **compiler structure**:
 
-![Simplified Compiler Structure](./Figures/CompDes_Fig1-1.PNG)
+![Simplified Compiler Structure](./Figures/CompDes_Fig1-1.PNG){width=50%}
 
 The typical **compiler stages** are as follows:
 
@@ -94,7 +96,7 @@ The typical **compiler stages** are as follows:
 
 Another simplified view on the compilation and execution is given by the following figure:
 
-![Overview of Compilation and Execution](./Figures/CompDes_Fig1-2.PNG)
+![Overview of Compilation and Execution](./Figures/CompDes_Fig1-2.PNG){width=50%}
 
 # 2. OCaml
 

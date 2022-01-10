@@ -1,8 +1,10 @@
-**Compiler Design — Lecture note week 2**
-
-- Author: Ruben Schenk
-- Date: 11.10.2021
-- Contact: ruben.schenk@inf.ethz.ch
+---
+title: "Compiler Design - Notes Week 2"
+author: Ruben Schenk, ruben.schenk@inf.ethz.ch
+date: October 11, 2021
+geometry: margin=2cm
+output: pdf_document
+---
 
 # 3. X86 LITE
 
@@ -10,7 +12,7 @@
 
 A simplified compiler structure looks as follows:
 
-<img src="./Figures/CompDes_Fig2-1.PNG" style="zoom: 33%;" />
+![](./Figures/CompDes_Fig2-1.PNG){width=50%}
 
 ## 3.2 X86 vs. X86Lite
 
@@ -30,7 +32,7 @@ A simplified compiler structure looks as follows:
 
 The X86 schematic looks as follows:
 
-<img src="./Figures/CompDes_Fig2-2.PNG" style="zoom:33%;" />
+![](./Figures/CompDes_Fig2-2.PNG){width=50%}
 
 ### 3.3.1 Registers
 
@@ -62,7 +64,7 @@ Here, `SRC` and `DEST` are _operands_. `DEST` is treated as a location, either a
 
 Example of a `mov` instruction:
 
-<img src="./Figures/CompDes_Fig2-3.PNG" style="zoom: 33%;" />
+![](./Figures/CompDes_Fig2-3.PNG){width=50%}
 
 #### A Note About Instruction Syntax
 
@@ -332,7 +334,7 @@ _Remark: By convention, compilers often use a `.` in front of a label that is in
 
 We want to quickly revisit the three different parts of the C memory model, shown in the picture below.
 
-<img src="./Figures/CompDes_Fig2-4.PNG" style="zoom: 67%;" />
+![](./Figures/CompDes_Fig2-4.PNG){width=50%}
 
 - The **code & data** (or `.text`) segment: contains compile code, constant strings, etc.
 - The **heap**: stores dynamically allocated objects, is allocated via `malloc` and deallocated via `free`
@@ -367,7 +369,7 @@ movq    (%rsp), %rax
 
 The following picture shows how we use the stack in a program with different calls. This corresponds to the "boilerplate" code in the previous example with the `factorial`. We adjust the pointers to the bottom and the top of the stack before and after calling a "function", such that the function has its own **stack frame**.
 
-<img src="./Figures/CompDes_Fig2-5.PNG" style="zoom: 67%;" />
+![](./Figures/CompDes_Fig2-5.PNG){width=50%}
 
 ### 3.7.4 Calling Conventions
 

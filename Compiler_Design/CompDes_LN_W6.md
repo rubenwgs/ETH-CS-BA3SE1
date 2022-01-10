@@ -1,8 +1,10 @@
-**Compiler Design — Lecture notes week 6**
-
-- Author: Ruben Schenk
-- Date: 26.10.2021
-- Contact: ruben.schenk@inf.ethz.ch
+---
+title: "Compiler Design - Notes Week 6"
+author: Ruben Schenk, ruben.schenk@inf.ethz.ch
+date: October 26, 2021
+geometry: margin=2cm
+output: pdf_document
+---
 
 # 8. LL & LR Parsing
 
@@ -95,7 +97,7 @@ _Note:_ If there are two different productions for a given entry, then the gramm
 
 _Example:_
 
-<img src="./Figures/CompDes_Fig6-1.PNG" style="zoom: 33%;" />
+![](./Figures/CompDes_Fig6-1.PNG){width=50%}
 
 ### 8.1.4 Converting The Parsing Table to Code
 
@@ -136,9 +138,9 @@ Then, each function `parse_A`:
 LR grammars are _more expressive_ than LL grammars:
 
 - They can handle left-recursive (and right-recursive) grammars (i.e. virtually all programming languages)
-- They make it easier to express programming language syntaxt (e.g. no left factoring)
+- They make it easier to express programming language syntax (e.g. no left factoring)
 
-The most common technqiue are **Shift-Reduce parsers:**
+The most common technique are **Shift-Reduce parsers:**
 
 - Work bottom up instead of top down
 - Construct the right-most derivation of a program in the grammar
@@ -150,12 +152,12 @@ In shift/reduce parsing, the parser has a **parser state** described as follows:
 
 - Stack of terminals and non-terminals
 - Unconsumed input is a string of terminals
-- The current derivation stepis `stack + input`
+- The current derivation step is `stack + input`
 
 **Parsing** is a sequence of `shif` and `reduce` operations:
 
 - Shift: Move lookahead token to the stack
-- Reduce: Repalce symbols $\gamma$ at the top of the stack with a non-terminal $X$ s.t. $X \to \gamma$ is aproduction, i.e. `pop gamma, push X`
+- Reduce: Replace symbols $\gamma$ at the top of the stack with a non-terminal $X$ s.t. $X \to \gamma$ is a production, i.e. `pop gamma, push X`
 
 _Example:_ We consider our previous example
 
@@ -163,7 +165,7 @@ $$
 S \to S + E \, | \, E \\ E \to \text{number} \, | \, (S)
 $$
 
-<img src="./Figures/CompDes_Fig6-2.PNG" style="zoom:33%;" />
+![](./Figures/CompDes_Fig6-2.PNG){width=50%}
 
 ## 8.3 LR(0) Grammars
 
@@ -174,7 +176,7 @@ Our goal it is to know _what set of reductions are legal_ at any given point. Th
 - The parser state is computed by a DFA that reads the stack $\sigma$
 - Accept states of the DFA correspond to unique reductions that apply
 
-### 8.3.2 Example LR(0) Grammar: Tuples
+### 8.3.2 Example LR(0) Grammar: Tuples
 
 The following grammar is an example grammar for non-empty tuples and identifiers:
 
@@ -184,7 +186,7 @@ $$
 
 Now, if we apply parsing as a sequence of shift and reduce operations, we end up with the following parse operation:
 
-<img src="./Figures/CompDes_Fig6-3.PNG" style="zoom:33%;" />
+![](./Figures/CompDes_Fig6-3.PNG){width=50%}
 
 ### 8.3.3 Action Selection Problem
 
@@ -197,14 +199,14 @@ The main idea to solve this problem is to decide based on a prefix $\alpha$ of t
 
 ### 8.3.4 LR(0) States
 
-A **LR(0) state** consists of items to track progress on possible upcoming reductions. A **LR(0) item** is a production with an extra separator `.` in the RHS. Example items could be: $S \to .(L)$ or $S \to (.L)$ or $L \to S.$
+An **LR(0) state** consists of items to track progress on possible upcoming reductions. An **LR(0) item** is a production with an extra separator `.` in the RHS. Example items could be: $S \to .(L)$ or $S \to (.L)$ or $L \to S.$
 
 The intuition for the meaning of the dot is:
 
 - Stuff before the `.` is already on the stack
 - Stuff after the `.` is what might be seen next
 
-### 8.3.5 Constructing The DFA
+### 8.3.5 Constructing The DFA
 
 We will consider the following grammar:
 
@@ -227,14 +229,14 @@ $$
 Next we need to add the _transitions:_
 
 1. First, we see what terminals and non-terminals can appear after the `.` in the source state.
-2. The target state initially includes all items from the source state that have the edge-label symbol after the `.`, but we advance the `.` to simulate shifiting the item onto the stack.
+2. The target state initially includes all items from the source state that have the edge-label symbol after the `.`, but we advance the `.` to simulate shifting the item onto the stack.
 3. Finally, for each new state, we again take the closure of it.
 
-<img src="./Figures/CompDes_Fig6-4.PNG" style="zoom:25%;" />
+![](./Figures/CompDes_Fig6-4.PNG){width=50%}
 
 By continuing the above approach, we will reach the following **full DFA** for our example:
 
-<img src="./Figures/CompDes_Fig6-5.PNG" style="zoom: 33%;" />
+![](./Figures/CompDes_Fig6-5.PNG){width=50%}
 
 ### 8.3.6 Using The DFA
 
@@ -260,7 +262,7 @@ Entries for the **action table** specify two kinds of actions:
 
 _Example:_
 
-<img src="./Figures/CompDes_Fig6-6.PNG" style="zoom:33%;" />
+![](./Figures/CompDes_Fig6-6.PNG){width=50%}
 
 ### 8.3.8 LR(0) Limitations
 
@@ -268,7 +270,7 @@ An LR(0) machine only works if states with reduce actions have a _single_ reduce
 
 With more complex grammars, the DFA construction will yield states with _sift/reduce_ and _reduce/reduce_ problems:
 
-<img src="./Figures/CompDes_Fig6-7.PNG" style="zoom:33%;" />
+![](./Figures/CompDes_Fig6-7.PNG){width=50%}
 
 ## 8.4 LR(1) Parsing
 
@@ -286,11 +288,11 @@ However, the **LR(1) closure** is a little more complex:
 
 ### 8.4.1 Example Closure in LR(1)
 
-<img src="./Figures/CompDes_Fig6-8.PNG" style="zoom:33%;" />
+![](./Figures/CompDes_Fig6-8.PNG){width=50%}
 
 ### 8.4.2 Using The DFA
 
-<img src="./Figures/CompDes_Fig6-9.PNG" style="zoom:33%;" />
+![](./Figures/CompDes_Fig6-9.PNG){width=50%}
 
 The behavior is determined if:
 
@@ -311,4 +313,4 @@ $$
 \{[X \to \alpha., \, a/b], \, [Y \to \beta., \, c/d] \}
 $$
 
-These are so-called **LALR(1)** states. Typically there are 10 times fewer LALR(1) states than LR(1). However, LALR(1) may introduce new reduce/reduce conflicts (but not new shift/reduce conflicts).
+These are so-called **LALR(1)** states. Typically, there are 10 times fewer LALR(1) states than LR(1). However, LALR(1) may introduce new reduce/reduce conflicts (but not new shift/reduce conflicts).

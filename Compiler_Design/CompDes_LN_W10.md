@@ -1,8 +1,10 @@
-**Compiler Design — Lecture notes week 10**
-
-- Author: Ruben Schenk
-- Date: 30.11.2021
-- Contact: ruben.schenk@inf.ethz.ch
+---
+title: "Compiler Design - Notes Week 10"
+author: Ruben Schenk, ruben.schenk@inf.ethz.ch
+date: November 30, 2021
+geometry: margin=2cm
+output: pdf_document
+---
 
 ## 14.5 Code Analysis
 
@@ -56,11 +58,11 @@ Liveness is therefore defined in terms of where variables are defined and used. 
 
 ### 14.5.4 Control-Flow Graphs - Revisited
 
-For **dataflow analysis,** we us the _control-flow graph_ (CFG) intermediate form. Recall that a _basic block_ is a sequence of isntructions such that:
+For **dataflow analysis,** we use the _control-flow graph_ (CFG) intermediate form. Recall that a _basic block_ is a sequence of instructions such that:
 
 - There is a distinguished, labeled entry point (no jumps into the middle of a basic block)
 - There is a (possibly empty) sequence of non-control-flow instructions
-- A block ends with a single control-flow isntruction, such as a jump, branch, return, etc.
+- A block ends with a single control-flow instruction, such as a jump, branch, return, etc.
 
 A _control-flow graph_ consists of:
 
@@ -74,7 +76,7 @@ With an _exploded CFG,_ i.e. a CFG where we display each instruction as a block,
 
 _Example:_
 
-![](./Figures/CompDes_Fig10-1.PNG)
+![](./Figures/CompDes_Fig10-1.PNG){width=50%}
 
 ### 14.5.5 Uses and Definitions
 
@@ -92,24 +94,24 @@ a = b + c  ->  use[s] = {b, c}  &  def[d] = {a}
 a = a + 1  ->  use[s] = {a}  &  def[s] = {a}
 ```
 
-### 14.5.6 Livenes - Formally
+### 14.5.6 Liveness - Formally
 
 A variable `v` is said to be **live** if there is:
 
 - A node `n` in the CFG such that `use[n]` contains `v`, and
 - A directed path from `e` to `n` such that for every statement `s'` in the path, `def[s']` does not contain `v`
 
-The first clause says that `v` will be used on some path starting from edge `e`, and the second clause says that `v` won^t be redefined on that path before its use.
+The first clause says that `v` will be used on some path starting from edge `e`, and the second clause says that `v` wont be redefined on that path before its use.
 
 ### 14.5.7 Simple Liveness Algorithm
 
 We can use a simple _backtracking algorithm_ to compute the above two conditions for a variable to be live:
 
 1. For each variable `v`
-2. Try all paths from each use of `v`, tracking abckwards through the control-flow graph until either `v` is defined or a previously visited node is reached
-3. Marh the variable `v` live across each edge traversed
+2. Try all paths from each use of `v`, tracking backwards through the control-flow graph until either `v` is defined or a previously visited node is reached
+3. Mark the variable `v` live across each edge traversed
 
-This is very _inefficient_ since it explores the same paths many time for different uses and different variables!
+This is very _inefficient_ since it explores the same paths many times for different uses and different variables!
 
 ## 14.6 Dataflow Analysis
 
@@ -222,7 +224,7 @@ Once we have build such a graph, register allocation becomes a _graph coloring p
 
 _Example:_
 
-![](./Figures/CompDes_Fig10-2.PNG)
+![](./Figures/CompDes_Fig10-2.PNG){width=50%}
 
 #### Coloring a Graph: Kempe's Algorithm
 
@@ -234,9 +236,9 @@ Kempe provides a algorithm for K-coloring a graph. It's a recursive algorithm th
 
 _Example:_ 3-color the following graph:
 
-![](./Figures/CompDes_Fig10-3.PNG)
+![](./Figures/CompDes_Fig10-3.PNG){width=50%}
 
-![](./Figures/CompDes_Fig10-4.PNG)
+![](./Figures/CompDes_Fig10-4.PNG){width=50%}
 
 #### Failure of the Algorithm
 
@@ -254,7 +256,7 @@ In practice, some weighted combination of the above criteria is used. When color
 
 _Example:_
 
-![](./Figures/CompDes_Fig10-5.PNG)
+![](./Figures/CompDes_Fig10-5.PNG){width=50%}
 
 #### Optimistic Coloring
 
@@ -262,7 +264,7 @@ If we get lucky with the choices of colors made earlier, it is sometimes possibl
 
 _Example:_
 
-![](./Figures/CompDes_Fig10-6.PNG)
+![](./Figures/CompDes_Fig10-6.PNG){width=50%}
 
 #### Accessing Spilled Registers
 
@@ -290,7 +292,7 @@ A simple color choosing strategy is to add a new kind of "move related" edge bet
 
 A more agressive strategy is to _coalesce_ nodes of the interference graph if they are connected by move-related edges. Coalescing those nodes forces them to be assigned to the same register.
 
-![](./Figures/CompDes_Fig10-7.PNG)
+![](./Figures/CompDes_Fig10-7.PNG){width=50%}
 
 The idea is to interleave simplification and coalescing to maximize the number of moves that can be eliminated. However, one problem introduced by coalescing is that it may increase the degree of a node.
 
@@ -305,13 +307,13 @@ In practice we use George's strategy if one of `x` and `y` is precolored and we 
 
 ### 14.7.6 Complete Register Allocation Algorithm
 
-![](./Figures/CompDes_Fig10-8.PNG)
+![](./Figures/CompDes_Fig10-8.PNG){width=50%}
 
 ## 14.8 Other Dataflow Analyses
 
 ### 14.8.1 `def` And `use` For SSA
 
-![](./Figures/CompDes_Fig10-9.PNG)
+![](./Figures/CompDes_Fig10-9.PNG){width=50%}
 
 ## 14.9 Reaching Definitions
 
@@ -326,7 +328,7 @@ The input to this analysis is a CFG and the output `in[n]` and `out[n]` are the 
 
 _Example:_
 
-![](./Figures/CompDes_Fig10-10.PNG)
+![](./Figures/CompDes_Fig10-10.PNG){width=50%}
 
 ### 14.9.2 Reaching Definitions Analyis - Algorithm
 
@@ -334,7 +336,7 @@ _Example:_
 
 Define the set of interest for the analysis. Let `defs[a]` be the set of nodes that define the variable `a`. Define `gen[n]` and `kill[n]` as follows:
 
-![](./Figures/CompDes_Fig10-11.PNG)
+![](./Figures/CompDes_Fig10-11.PNG){width=50%}
 
 #### Step 2
 
@@ -380,7 +382,7 @@ b = a;
 
 We have the following dataflow values:
 
-- `in[n]` is the set of nodes whose values are avilable on entry to `n`
+- `in[n]` is the set of nodes whose values are available on entry to `n`
 - `out[n]` is the set of nodes whose values are available on exit of `n`
 
 ### 14.10.2 Available Expressions Analysis - Algorithm
@@ -389,11 +391,11 @@ We have the following dataflow values:
 
 Define the set of values and the sets `gen[n]` and `kill[n]` as follows:
 
-![](./Figures/CompDes_Fig10-12.PNG) 
+![](./Figures/CompDes_Fig10-12.PNG){width=50%}
 
 #### Step 2
 
-Define the constraints that an avilavle expressions solution must satisfy:
+Define the constraints that an available expressions solution must satisfy:
 
 $$\text{gen}[n] \subseteq \text{out}[n]$$
 
@@ -420,7 +422,7 @@ The algorithm is to initialize `in[n]` and `out[n]` to the set of all nodes and 
 
 ### 14.11.1 Overview
 
-![](./Figures/CompDes_Fig10-13.PNG)
+![](./Figures/CompDes_Fig10-13.PNG){width=50%}
 
 ### 14.11.2 Very Busy Expressions
 
@@ -450,7 +452,7 @@ Each analysis has a way of aggregating information:
 
 ### 14.11.4 Data Flow Analysis Framework
 
-![](./Figures/CompDes_Fig10-14.PNG)
+![](./Figures/CompDes_Fig10-14.PNG){width=50%}
 
 ### 14.11.5 Generig Iterative Analysis
 
