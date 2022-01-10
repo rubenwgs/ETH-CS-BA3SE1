@@ -1,8 +1,10 @@
-**Compiler Design — Lecture note week 1**
-
-- Author: Ruben Schenk
-- Date: 23.09.2021
-- Contact: ruben.schenk@inf.ethz.ch
+---
+title: "Compiler Design - Complete Summary"
+author: Ruben Schenk, ruben.schenk@inf.ethz.ch
+date: January 10, 2022
+geometry: margin=2cm
+output: pdf_document
+---
 
 # 1. Introduction
 
@@ -76,7 +78,7 @@ When compiling code we might encounter different bugs. We can distinguish them i
 
 The following figure shows a simplified view of the **compiler structure**:
 
-![Simplified Compiler Structure](./Figures/CompDes_Fig_W1_1.PNG)
+![Simplified Compiler Structure](./Figures/CompDes_Fig1-1.PNG){width=50%}
 
 The typical **compiler stages** are as follows:
 
@@ -94,7 +96,7 @@ The typical **compiler stages** are as follows:
 
 Another simplified view on the compilation and execution is given by the following figure:
 
-![Overview of Compilation and Execution](./Figures/CompDes_Fig_W1_2.PNG)
+![Overview of Compilation and Execution](./Figures/CompDes_Fig1-2.PNG){width=50%}
 
 # 2. OCaml
 
@@ -411,19 +413,13 @@ let _ =
 	Printf.printf ("%s \n") (trans_prog factorial)
 ```
 
-**Compiler Design — Lecture note week 2**
-
-- Author: Ruben Schenk
-- Date: 11.10.2021
-- Contact: ruben.schenk@inf.ethz.ch
-
 # 3. X86 LITE
 
 ## 3.1 Simplified Compiler Structure
 
 A simplified compiler structure looks as follows:
 
-![](./Figures/CompDes_Fig2-1.PNG)
+![](./Figures/CompDes_Fig2-1.PNG){width=50%}
 
 ## 3.2 X86 vs. X86Lite
 
@@ -443,7 +439,7 @@ A simplified compiler structure looks as follows:
 
 The X86 schematic looks as follows:
 
-![](./Figures/CompDes_Fig2-2.PNG)
+![](./Figures/CompDes_Fig2-2.PNG){width=50%}
 
 ### 3.3.1 Registers
 
@@ -475,7 +471,7 @@ Here, `SRC` and `DEST` are _operands_. `DEST` is treated as a location, either a
 
 Example of a `mov` instruction:
 
-![](./Figures/CompDes_Fig2-3.PNG)
+![](./Figures/CompDes_Fig2-3.PNG){width=50%}
 
 #### A Note About Instruction Syntax
 
@@ -745,7 +741,7 @@ _Remark: By convention, compilers often use a `.` in front of a label that is in
 
 We want to quickly revisit the three different parts of the C memory model, shown in the picture below.
 
-![](./Figures/CompDes_Fig2-4.PNG)
+![](./Figures/CompDes_Fig2-4.PNG){width=50%}
 
 - The **code & data** (or `.text`) segment: contains compile code, constant strings, etc.
 - The **heap**: stores dynamically allocated objects, is allocated via `malloc` and deallocated via `free`
@@ -780,7 +776,7 @@ movq    (%rsp), %rax
 
 The following picture shows how we use the stack in a program with different calls. This corresponds to the "boilerplate" code in the previous example with the `factorial`. We adjust the pointers to the bottom and the top of the stack before and after calling a "function", such that the function has its own **stack frame**.
 
-![](./Figures/CompDes_Fig2-5.PNG)
+![](./Figures/CompDes_Fig2-5.PNG){width=50%}
 
 ### 3.7.4 Calling Conventions
 
@@ -805,12 +801,6 @@ The widely used calling conventions for x86-64 systems are as follows:
   - Parameter 7+: on the stack (in right-to-left order), thus, for `n > 6`, the nth argument is at `((n - 7) + 2) * 8 + rbp`
 - Return value is in `rax`
 - 128-byte "red zone" -- scratchpad for the callee's data
-
-**Compiler Design — Lecture note week 3**
-
-- Author: Ruben Schenk
-- Date: 12.10.2021
-- Contact: ruben.schenk@inf.ethz.ch
 
 ### 3.7.5 Directly Generating x86
 
@@ -872,7 +862,7 @@ But, obviously `(X1 - X1)` is 0 and the program therefore could be much more sim
 
 The goal of this is to get the program closer to machine code without losing the information needed to do analysis and optimization. We might also have multiple IR's.
 
-![](./Figures/CompDes_Fig3-1.PNG)
+![](./Figures/CompDes_Fig3-1.PNG){width=50%}
 
 ### 4.1.1 What makes a good IR?
 
@@ -942,19 +932,13 @@ Basic blocks can be arranged into a **control-flow graph (CFG)**:
 - The nodes of the graph are basic blocks
 - There is a directed edge from node A to node B if the control flow instruction at the end of block A might jump to the label of block B
 
-**Compiler Design — Lecture note week 4**
-
-- Author: Ruben Schenk
-- Date: 12.10.2021
-- Contact: ruben.schenk@inf.ethz.ch
-
 # 5. LLVM
 
 Originally, **LLVM** stood for _Low-Level Virtual Machine_, however, this name doesn't much sense anymore. LLVM is an open-source compiler infrastructure.
 
 ## 5.1 LLVM Compiler Infrastructure
 
-![](./Figures/CompDes_Fig4-1.PNG)
+![](./Figures/CompDes_Fig4-1.PNG){width=50%}
 
 ## 5.2 LLVM overview
 
@@ -1106,7 +1090,7 @@ Intended to be an _abstract version of stack slots_.
 
 Example:
 
-![](./Figures/CompDes_Fig4-2.PNG)
+![](./Figures/CompDes_Fig4-2.PNG){width=50%}
 
 ### 5.3.3 LLVMLite Control Flow Instructions
 
@@ -1207,11 +1191,11 @@ type cfg = block * (lbl * block) list
 
 _Example_: Control-flow graph of the factorial function:
 
-![](./Figures/CompDes_Fig4-3.PNG)
+![](./Figures/CompDes_Fig4-3.PNG){width=50%}
 
 _Example_: `foo` function:
 
-![](./Figures/CompDes_Fig4-4.PNG)
+![](./Figures/CompDes_Fig4-4.PNG){width=50%}
 
 ### 5.4.4 Generating Code for Loops
 
@@ -1233,7 +1217,7 @@ We therefore have the following five elements:
 
 The general CFG for a loop looks as follows:
 
-![](./Figures/CompDes_Fig4-5.PNG)
+![](./Figures/CompDes_Fig4-5.PNG){width=50%}
 
 ### 5.4.5 LLVM Cheat Sheet
 
@@ -1372,7 +1356,7 @@ LLVM provides the `getelementptr` (**GEP**)instruction to compute pointer values
 
 _GEP example:_
 
-![](./Figures/CompDes_Fig4-6.PNG)
+![](./Figures/CompDes_Fig4-6.PNG){width=50%}
 
 _Remarks:_
 
@@ -1531,7 +1515,7 @@ _Remarks:_
 
 #### `getelementptr` -> `x86`
 
-![](./Figures/CompDes_Fig4-7.PNG)
+![](./Figures/CompDes_Fig4-7.PNG){width=50%}
 
 _Remarks:_
 
@@ -1542,7 +1526,7 @@ _Remarks:_
 
 #### Array Indexing
 
-![](./Figures/CompDes_Fig4-8.PNG)
+![](./Figures/CompDes_Fig4-8.PNG){width=50%}
 
 #### If-statements and Loops
 
@@ -1552,19 +1536,13 @@ _Remarks:_
 
 _Example:_
 
-![](./Figures/CompDes_Fig4-9.PNG)
-
-**Compiler Design — Lecture notes week 5**
-
-- Author: Ruben Schenk
-- Date: 24.10.2021
-- Contact: ruben.schenk@inf.ethz.ch
+![](./Figures/CompDes_Fig4-9.PNG){width=50%}
 
 # 6. Lexing
 
 ## 6.1 Compilation in a Nutshell
 
-![](./Figures/CompDes_Fig5-1.PNG)
+![](./Figures/CompDes_Fig5-1.PNG){width=50%}
 
 ## 6.2 Lexical Analysis
 
@@ -1625,7 +1603,7 @@ let character = uppercase | lowercase
 
 ### 6.3.2 Chomsky Hierarchy
 
-![](./Figures/CompDes_Fig5-2.PNG)
+![](./Figures/CompDes_Fig5-2.PNG){width=50%}
 
 ### 6.3.3 How to Match?
 
@@ -1659,7 +1637,7 @@ rule token = parse
 
 A **deterministic finite automaton** (DFA) can be represented as:
 
-![](./Figures/CompDes_Fig5-3.PNG)
+![](./Figures/CompDes_Fig5-3.PNG){width=50%}
 
 > We can build a finite automaton for every regular expression!
 
@@ -1669,7 +1647,7 @@ A **nondeterministic finite automaton** (NFA) is built the same way as a DFA (i.
 
 Sums and Kleene stars can easily be represented with NFA's:
 
-![](./Figures/CompDes_Fig5-4.PNG)
+![](./Figures/CompDes_Fig5-4.PNG){width=50%}
 
 ### 6.5.3 DFA vs. NFA
 
@@ -1688,7 +1666,7 @@ The idea to convert a NFA to a DFA is to run all possible executions of the NFA 
 
 _Example:_ Consider `-?[0-9]+`:
 
-![](./Figures/CompDes_Fig5-5.PNG)
+![](./Figures/CompDes_Fig5-5.PNG){width=50%}
 
 ## 6.6 Summary of Lexer Generator Behavior
 
@@ -1726,11 +1704,15 @@ The idea of **context free grammars** (CFG) is to derive a string in the languag
 
 _Example:_ Consider the specification of the language of balances `parens`:
 
-$$\text{S} \to (\text{S})\text{S} \\ \text{S} \to \epsilon$$
+$$
+\text{S} \to (\text{S})\text{S} \\ \text{S} \to \epsilon
+$$
 
 A derivation could look like:
 
-$$\text{S} \to (\text{S})\text{S} \to ((\text{S})\text{S})\text{S} \to ((\epsilon)\text{S})\text{S} \to ((\epsilon)\text{S})\epsilon \to ((\epsilon)\epsilon)\epsilon = (())$$
+$$
+\text{S} \to (\text{S})\text{S} \to ((\text{S})\text{S})\text{S} \to ((\epsilon)\text{S})\text{S} \to ((\epsilon)\text{S})\epsilon \to ((\epsilon)\epsilon)\epsilon = (())
+$$
 
 ### 7.2.2 CFG's Mathematically
 
@@ -1745,13 +1727,17 @@ A **context free grammar** (CFG) consists of:
 
 _Example:_ A grammar that accepts parenthesized sums of numbers:
 
-$$\text{S} \to \text{E} + \text{S} \, | \, \text{E} \\ \text{E} \to \text{number} \, | \, (\text{S})$$
+$$
+\text{S} \to \text{E} + \text{S} \, | \, \text{E} \\ \text{E} \to \text{number} \, | \, (\text{S})
+$$
 
 ### 7.2.3 Derivations
 
 For arbitrary strings $\alpha, \, \beta, \, \gamma$ and production rule $A \to \beta$, a **single step of derivation** is:
 
-$$\alpha A \gamma \to \alpha \beta \gamma$$
+$$
+\alpha A \gamma \to \alpha \beta \gamma
+$$
 
 We might represent a derivation as a tree where:
 
@@ -1760,11 +1746,11 @@ We might represent a derivation as a tree where:
 
 _Example:_ Derivation tree of `(1 + 2 + (3 + 4)) + 5`:
 
-![](./Figures/CompDes_Fig5-6.PNG)
+![](./Figures/CompDes_Fig5-6.PNG){width=50%}
 
 #### From Parse Trees to Abstract Syntax Trees
 
-![](./Figures/CompDes_Fig5-7.PNG)
+![](./Figures/CompDes_Fig5-7.PNG){width=50%}
 
 #### Derivation Orders
 
@@ -1779,12 +1765,16 @@ _Remark_: Both strategies and any other order yield the same parse tree!
 
 Some care is needed when defining CFG's:
 
-$$\text{S} \to \text{E} \\ \text{E} \to \text{S}$$
+$$
+\text{S} \to \text{E} \\ \text{E} \to \text{S}
+$$
 
-- This grammas has nonterminal definitions that are _non-productive_, i.e. they don't mention any terminal symbols
+- This grammar has nonterminal definitions that are _non-productive_, i.e. they don't mention any terminal symbols
 - There is no finite derivation starting from $\text{S}$, so the language is empty
 
-$$\text{S} \to (\text{S})$$
+$$
+\text{S} \to (\text{S})
+$$
 
 - This grammar is productive, but again there is no finite derivation string from $\text{S}$, so the language is _empty_
 
@@ -1794,29 +1784,37 @@ $$\text{S} \to (\text{S})$$
 
 Consider the following grammar:
 
-$$\text{S} \to \text{E} + \text{S} \, | \, \text{E} \\ \text{E} \to \text{number} \, | \, (\text{S})$$
+$$
+\text{S} \to \text{E} + \text{S} \, | \, \text{E} \\ \text{E} \to \text{number} \, | \, (\text{S})
+$$
 
 This grammar makes the `+` _right associative_, i.e. the AST is the same for both `1 + 2 + 3` and `1 + (2 + 4)`. Note also that the grammar is _right recursive_ due to the production $\text{S} \to \text{E} + \text{S}$.
 
 How would we make the `+` _left associative_? Simple:
 
-$$\text{S} \to \text{S} + \text{E} \, | \, \text{E} \\ \text{E} \to \text{number} \, | \, (\text{S})$$
+$$
+\text{S} \to \text{S} + \text{E} \, | \, \text{E} \\ \text{E} \to \text{number} \, | \, (\text{S})
+$$
 
 ### 7.3.2 Ambiguity
 
 Consider the following grammar:
 
-$$\text{S} \to \text{S} + \text{S} \, | \, (\text{S}) \, | \, \text{number}$$
+$$
+\text{S} \to \text{S} + \text{S} \, | \, (\text{S}) \, | \, \text{number}
+$$
 
 This accepts the same set of strings as the previously mentioned grammar. We can get both right and left associativity for the `+` operator.
 
 > **Non-ambiguous** means that for every input string, there is only one way to parse it!
 
-However, not all operations are associative. Moreover, if there are multiple operations, amiguity in the grammar leads to ambiguity in their _precedence_.
+However, not all operations are associative. Moreover, if there are multiple operations, ambiguity in the grammar leads to ambiguity in their _precedence_.
 
 Consider the grammar:
 
-$$\text{S} \to \text{S} + \text{S} \, | \, \text{S} * \text{S} \, | \, (\text{S}) \, | \, \text{number}$$
+$$
+\text{S} \to \text{S} + \text{S} \, | \, \text{S} * \text{S} \, | \, (\text{S}) \, | \, \text{number}
+$$
 
 The input `1 + 2 * 3` might be parsed either:
 
@@ -1835,13 +1833,9 @@ To disambiguate the previously introduced grammar:
 
 _Note_: `S_2` corresponds to "atomic" expressions:
 
-$$S_0 \to S_0 + S_1 \, | \, S_1 \\ S_1 \to S_2 * S_1 \, | \, S_2 \\ S_2 \to \text{number} \, | \, (S_0)$$
-
-**Compiler Design — Lecture notes week 6**
-
-- Author: Ruben Schenk
-- Date: 26.10.2021
-- Contact: ruben.schenk@inf.ethz.ch
+$$
+S_0 \to S_0 + S_1 \, | \, S_1 \\ S_1 \to S_2 * S_1 \, | \, S_2 \\ S_2 \to \text{number} \, | \, (S_0)
+$$
 
 # 8. LL & LR Parsing
 
@@ -1861,27 +1855,39 @@ The main problem is that we can't decide which $S$ production to apply until we 
 
 This means that we transform our example grammar
 
-$$S \to E + S \, | \, E \\ E \to \text{number} \, | \, (S)$$
+$$
+S \to E + S \, | \, E \\ E \to \text{number} \, | \, (S)
+$$
 
 to the following "left-factor" grammar:
 
-$$S \to ES' \\ S' \to \epsilon \\ S' \to + S \\ E \to \text{number} \, | \, (S)$$
+$$
+S \to ES' \\ S' \to \epsilon \\ S' \to + S \\ E \to \text{number} \, | \, (S)
+$$
 
 However, we also need to _eliminate left-recursion_ somehow. In general, this is done by rewriting the following left-recursive rule
 
-$$S \to S \alpha_1 \, | \, \cdots \, | \, S \alpha_n \, | \, \beta_1 \, | \, \cdots \, | \, \beta_m$$
+$$
+S \to S \alpha_1 \, | \, \cdots \, | \, S \alpha_n \, | \, \beta_1 \, | \, \cdots \, | \, \beta_m
+$$
 
 to a rule of the form:
 
-$$S \to \beta_1 S' \, | \, \cdots \, | \, \beta_m S' \\ S' \to \alpha_1 S' \, | \, \cdots \, | \, \alpha_n S' \, | \, \epsilon$$
+$$
+S \to \beta_1 S' \, | \, \cdots \, | \, \beta_m S' \\ S' \to \alpha_1 S' \, | \, \cdots \, | \, \alpha_n S' \, | \, \epsilon
+$$
 
 In our running example, this would mean to rewrite
 
-$$S \to S + E \, | \, E \\ E \to \text{number} \, | \, (S)$$
+$$
+S \to S + E \, | \, E \\ E \to \text{number} \, | \, (S)
+$$
 
 to the following left-recursion-eliminating grammar:
 
-$$S \to ES' \\ S' \to +ES' \, | \, \epsilon \\ E \to \text{number} \, | \, (S)$$
+$$
+S \to ES' \\ S' \to +ES' \, | \, \epsilon \\ E \to \text{number} \, | \, (S)
+$$
 
 ### 8.1.2 Predictive Parsing
 
@@ -1893,13 +1899,15 @@ Given an LL(1) grammar:
 
 _Example:_ Let us look at the following LL(1) grammar:
 
-$$T \to S\$ \\ S \to ES' \\ S' \to \epsilon \\ S' \to + S \\ E \to \text{number} \, | \, (S)$$
+$$
+T \to S\$ \\ S \to ES' \\ S' \to \epsilon \\ S' \to + S \\ E \to \text{number} \, | \, (S)
+$$
 
 We then propose the following **predictive parsing table:**
 
 |      | **number**          | **+**     | **(**     | **)**          | **$ (EOF)**    |
 | ---- | ------------------- | --------- | --------- | -------------- | -------------- |
-| $T$  | $\to S$ $           |           | $\to S$ $ |                |                |
+| $T$  | $\to S$           |           | $\to S$ |                |                |
 | $S$  | $\to ES'$           |           | $\to ES'$ |                |                |
 | $S'$ |                     | $\to + S$ |           | $\to \epsilon$ | $\to \epsilon$ |
 | E    | $\to \text{number}$ |           | $\to (S)$ |                |                |
@@ -1920,7 +1928,7 @@ _Note:_ If there are two different productions for a given entry, then the gramm
 
 _Example:_
 
-![](./Figures/CompDes_Fig6-1.PNG)
+![](./Figures/CompDes_Fig6-1.PNG){width=50%}
 
 ### 8.1.4 Converting The Parsing Table to Code
 
@@ -1961,9 +1969,9 @@ Then, each function `parse_A`:
 LR grammars are _more expressive_ than LL grammars:
 
 - They can handle left-recursive (and right-recursive) grammars (i.e. virtually all programming languages)
-- They make it easier to express programming language syntaxt (e.g. no left factoring)
+- They make it easier to express programming language syntax (e.g. no left factoring)
 
-The most common technqiue are **Shift-Reduce parsers:**
+The most common technique are **Shift-Reduce parsers:**
 
 - Work bottom up instead of top down
 - Construct the right-most derivation of a program in the grammar
@@ -1975,18 +1983,20 @@ In shift/reduce parsing, the parser has a **parser state** described as follows:
 
 - Stack of terminals and non-terminals
 - Unconsumed input is a string of terminals
-- The current derivation stepis `stack + input`
+- The current derivation step is `stack + input`
 
 **Parsing** is a sequence of `shif` and `reduce` operations:
 
 - Shift: Move lookahead token to the stack
-- Reduce: Repalce symbols $\gamma$ at the top of the stack with a non-terminal $X$ s.t. $X \to \gamma$ is aproduction, i.e. `pop gamma, push X`
+- Reduce: Replace symbols $\gamma$ at the top of the stack with a non-terminal $X$ s.t. $X \to \gamma$ is a production, i.e. `pop gamma, push X`
 
 _Example:_ We consider our previous example
 
-$$S \to S + E \, | \, E \\ E \to \text{number} \, | \, (S)$$
+$$
+S \to S + E \, | \, E \\ E \to \text{number} \, | \, (S)
+$$
 
-![](./Figures/CompDes_Fig6-2.PNG)
+![](./Figures/CompDes_Fig6-2.PNG){width=50%}
 
 ## 8.3 LR(0) Grammars
 
@@ -1997,15 +2007,17 @@ Our goal it is to know _what set of reductions are legal_ at any given point. Th
 - The parser state is computed by a DFA that reads the stack $\sigma$
 - Accept states of the DFA correspond to unique reductions that apply
 
-### 8.3.2 Example LR(0) Grammar: Tuples
+### 8.3.2 Example LR(0) Grammar: Tuples
 
 The following grammar is an example grammar for non-empty tuples and identifiers:
 
-$$S \to (L) \, | \, \text{id} \\ L \to S \, | \, L, \, S$$
+$$
+S \to (L) \, | \, \text{id} \\ L \to S \, | \, L, \, S
+$$
 
 Now, if we apply parsing as a sequence of shift and reduce operations, we end up with the following parse operation:
 
-![](./Figures/CompDes_Fig6-3.PNG)
+![](./Figures/CompDes_Fig6-3.PNG){width=50%}
 
 ### 8.3.3 Action Selection Problem
 
@@ -2018,40 +2030,44 @@ The main idea to solve this problem is to decide based on a prefix $\alpha$ of t
 
 ### 8.3.4 LR(0) States
 
-A **LR(0) state** consists of items to track progress on possible upcoming reductions. A **LR(0) item** is a production with an extra separator `.` in the RHS. Example items could be: $S \to .(L)$ or $S \to (.L)$ or $L \to S.$
+An **LR(0) state** consists of items to track progress on possible upcoming reductions. An **LR(0) item** is a production with an extra separator `.` in the RHS. Example items could be: $S \to .(L)$ or $S \to (.L)$ or $L \to S.$
 
 The intuition for the meaning of the dot is:
 
 - Stuff before the `.` is already on the stack
 - Stuff after the `.` is what might be seen next
 
-### 8.3.5 Constructing The DFA
+### 8.3.5 Constructing The DFA
 
 We will consider the following grammar:
 
-$$S' \to S \$ \\ S \to (L) \, | \, \text{id} \\ L \to S \, | \, L, \, S$$
+$$
+S' \to S \$ \\ S \to (L) \, | \, \text{id} \\ L \to S \, | \, L, \, S
+$$
 
-The first step when creating the DFA is to add a new production $S' \to S$$ to the grammar. The _start state_ of the DFA is the empty stack, so it contains the item $S' \to .S$$. We then proceed to add the **closure of the state** to our DFA:
+The first step when creating the DFA is to add a new production $S' \to S$ to the grammar. The _start state_ of the DFA is the empty stack, so it contains the item $S' \to .S$. We then proceed to add the **closure of the state** to our DFA:
 
-- Add items for all productions whose LHS non-terminal occurs in an item in the state just after the `.` (e.g. $S$ in $S' \to .S$$)
+- Add items for all productions whose LHS non-terminal occurs in an item in the state just after the `.` (e.g. $S$ in $S' \to .S$)
 - The added items have the `.` located at the beginning
 - Note that newly added items may cause yet more items to be added to the state, we keep iterating until a _fixed point_ is reached
 
 _Example:_
 
-$$\text{Closure}(\{S' \to .S \$ \}) = \{S' \to .S \$, \, S \to .(L), \, S \to .\text{id} \}$$
+$$
+\text{Closure}(\{S' \to .S \$ \}) = \{S' \to .S \$, \, S \to .(L), \, S \to .\text{id} \}
+$$
 
 Next we need to add the _transitions:_
 
 1. First, we see what terminals and non-terminals can appear after the `.` in the source state.
-2. The target state initially includes all items from the source state that have the edge-label symbol after the `.`, but we advance the `.` to simulate shifiting the item onto the stack.
+2. The target state initially includes all items from the source state that have the edge-label symbol after the `.`, but we advance the `.` to simulate shifting the item onto the stack.
 3. Finally, for each new state, we again take the closure of it.
 
-![](./Figures/CompDes_Fig6-4.PNG)
+![](./Figures/CompDes_Fig6-4.PNG){width=50%}
 
 By continuing the above approach, we will reach the following **full DFA** for our example:
 
-![](./Figures/CompDes_Fig6-5.PNG)
+![](./Figures/CompDes_Fig6-5.PNG){width=50%}
 
 ### 8.3.6 Using The DFA
 
@@ -2077,7 +2093,7 @@ Entries for the **action table** specify two kinds of actions:
 
 _Example:_
 
-![](./Figures/CompDes_Fig6-6.PNG)
+![](./Figures/CompDes_Fig6-6.PNG){width=50%}
 
 ### 8.3.8 LR(0) Limitations
 
@@ -2085,7 +2101,7 @@ An LR(0) machine only works if states with reduce actions have a _single_ reduce
 
 With more complex grammars, the DFA construction will yield states with _sift/reduce_ and _reduce/reduce_ problems:
 
-![](./Figures/CompDes_Fig6-7.PNG)
+![](./Figures/CompDes_Fig6-7.PNG){width=50%}
 
 ## 8.4 LR(1) Parsing
 
@@ -2103,11 +2119,11 @@ However, the **LR(1) closure** is a little more complex:
 
 ### 8.4.1 Example Closure in LR(1)
 
-![](./Figures/CompDes_Fig6-8.PNG)
+![](./Figures/CompDes_Fig6-8.PNG){width=50%}
 
 ### 8.4.2 Using The DFA
 
-![](./Figures/CompDes_Fig6-9.PNG)
+![](./Figures/CompDes_Fig6-9.PNG){width=50%}
 
 The behavior is determined if:
 
@@ -2118,19 +2134,17 @@ The behavior is determined if:
 
 Consider for example the following two LR(1) states:
 
-$$S_1: \quad \{[X \to \alpha., \, a], \, [Y \to \beta., \, c]\} \\ S_2: \quad \{[X \to \alpha., \, b], \, [Y \to \beta., \, d] \}$$
+$$
+S_1: \quad \{[X \to \alpha., \, a], \, [Y \to \beta., \, c]\} \\ S_2: \quad \{[X \to \alpha., \, b], \, [Y \to \beta., \, d] \}
+$$
 
 They have the same core and can therefore be _merged_. The merged state contains:
 
-$$\{[X \to \alpha., \, a/b], \, [Y \to \beta., \, c/d] \}$$
+$$
+\{[X \to \alpha., \, a/b], \, [Y \to \beta., \, c/d] \}
+$$
 
 These are so-called **LALR(1)** states. Typically, there are 10 times fewer LALR(1) states than LR(1). However, LALR(1) may introduce new reduce/reduce conflicts (but not new shift/reduce conflicts).
-
-**Compiler Design — Lecture notes week 7**
-
-- Author: Ruben Schenk
-- Date: 09.11.2021
-- Contact: ruben.schenk@inf.ethz.ch
 
 # 9. Menhir In Practice
 
@@ -2232,7 +2246,7 @@ Function application is interpreted by substitution:
 
 ## 10.4 Lambda Calculus Operational Semantics
 
-<img src="./Figures/CompDes_Fig7-1.PNG" style="zoom:33%;" />
+![](./Figures/CompDes_Fig7-1.PNG){width=50%}
 
 ## 10.5 Free Variables and Scoping
 
@@ -2298,7 +2312,7 @@ _Example:_
 
 ## 10.10 Operational Semantics
 
-<img src="./Figures/CompDes_Fig7-2.PNG" style="zoom:33%;" />
+![](./Figures/CompDes_Fig7-2.PNG){width=50%}
 
 ## 10.11 Adding Integers to Lambda Calculus
 
@@ -2376,7 +2390,7 @@ We can state the following _invariant:_ If $[[C \vdash e : t]] = \text{ ty, oper
 
 _Example:_ What is $[[C \vdash 341 + 5 : int]]$ ?
 
-<img src="./Figures/CompDes_Fig7-3.PNG" style="zoom: 50%;" />
+![](./Figures/CompDes_Fig7-3.PNG){width=50%}
 
 ### 11.2.4 Contexts
 
@@ -2384,48 +2398,42 @@ What is $[[C]]$ ? Source level $C$ has bindings like $x:\text{ int}, \, y:\text{
 
 The interpretation of a variable $[[x]]$ can is:
 
-<img src="./Figures/CompDes_Fig7-4.PNG" style="zoom:50%;" />
+![](./Figures/CompDes_Fig7-4.PNG){width=50%}
 
 ### 11.2.5 Other Judgements
 
 _Establish invariant for expressions:_
 
-<img src="./Figures/CompDes_Fig7-5.PNG" style="zoom:50%;" />
+![](./Figures/CompDes_Fig7-5.PNG){width=50%}
 
 _Statements:_
 
-<img src="./Figures/CompDes_Fig7-6.PNG" style="zoom: 50%;" />
+![](./Figures/CompDes_Fig7-6.PNG){width=50%}
 
-<img src="./Figures/CompDes_Fig7-7.PNG" style="zoom: 50%;" />
+![](./Figures/CompDes_Fig7-7.PNG){width=50%}
 
 _Declaration:_
 
-<img src="./Figures/CompDes_Fig7-8.PNG" style="zoom:50%;" />
+![](./Figures/CompDes_Fig7-8.PNG){width=50%}
 
 ## 11.3 Compiling Control
 
 ### 11.3.1 Translating while
 
-<img src="./Figures/CompDes_Fig7-9.PNG" style="zoom:50%;" />
+![](./Figures/CompDes_Fig7-9.PNG){width=50%}
 
 ### 11.3.2 Translating If-Then-Else
 
-<img src="./Figures/CompDes_Fig7-10.PNG" style="zoom:50%;" />
-
-**Compiler Design — Lecture notes week 8**
-
-- Author: Ruben Schenk
-- Date: 23.11.2021
-- Contact: ruben.schenk@inf.ethz.ch
+![](./Figures/CompDes_Fig7-10.PNG){width=50%}
 
 ## 11.4 Optimizing Control
 
-### 11.4.1 Standard Evaluation
+### 11.4.1 Standard Evaluation
 
 Consider compiling the following program fragment:
 
 ```c
-if(x & !y | !w) {
+if(x & !y | !w) {
     z = 3;
 } else {
     z = 4;
@@ -2460,23 +2468,24 @@ But, when the compiled expression appears in a test, the program jumps to one la
 
 ### 11.4.2 Short Circuit Boolean Compilation
 
-Instead of the usualy expression translation of the form:
+Instead of the usual expression translation of the form:
 
 $$[[C \vdash e : t]] = (\text{ty, operand, stream})$$
 
 we can use a _conditional branch translation of Booleans,_ without materializing the value:
 
-$$[[C \vdash e : \text{bool}@]] \text{ Itrue Ifalse} = \text{stream} \\ [[C, \, rt \vdash \text{if } (e) \text{ then } s_1 \text{ else } s_2 \Rightarrow C']] = [[C']]$$
+$$[[C \vdash e : \text{bool}@]] \text{ Itrue Ifalse} = \text{stream}$$
+$$[[C, \, rt \vdash \text{if } (e) \text{ then } s_1 \text{ else } s_2 \Rightarrow C']] = [[C']]$$
 
 This takes two extra arguments, namely the "true" branch label and the "false" branch label, and doesn't return a value.
 
 #### Expressions
 
-![](./Figures/CompDes_Fig8-1.PNG)
+![](./Figures/CompDes_Fig8-1.PNG){width=50%}
 
 #### Evaluation
 
-![](./Figures/CompDes_Fig8-2.PNG)
+![](./Figures/CompDes_Fig8-2.PNG){width=50%}
 
 If we reconsider our previous code example, we might translate it, using short circuit evaluation, into the following code fragment:
 
@@ -2507,10 +2516,10 @@ merge:
 
 ## 11.5 Closure Conversion
 
-As we have already seen, in functional languages such as ML, Haskell, Scheme, Python, etc, functiosn can be:
+As we have already seen, in functional languages such as ML, Haskell, Scheme, Python, etc, functions can be:
 
 - passed as arguments (such as `map` or `fold`)
-- returned as values (sucha s `compose`)
+- returned as values (such as `compose`)
 - nested, i.e. an inner function can refer to variables bound to an outer function
 
 We can show a simple example with the following code fragment:
@@ -2524,19 +2533,19 @@ let compose = fun f -> fun g -> fun x -> f (g x)
 let id = compose inc dec
 ```
 
-But how do we implement such functons in an interpreter or in a compiled language?
+But how do we implement such functions in an interpreter or in a compiled language?
 
 ### 11.5.1 Compiling First-class Functions
 
 To implement first-class functions on a processor, there are 2 main problems:
 
-- We must implemen substitution of free varaibles
+- We must implement substitution of free variables
 - We must separate "code" from "data"
 
 We can do those things by:
 
 - _Reify the substitution:_ Move the substitution from the meta language to the object language by making the data structure and lookup operation explicit
-- _Closure conversion:_ Eliminates free varaibles by packaging up the needed environment in the data structure
+- _Closure conversion:_ Eliminates free variables by packaging up the needed environment in the data structure
 - _Hoisting:_ Separates code from data, pulling closed code to the top level
 
 #### Closure Creation
@@ -2545,7 +2554,7 @@ Recall the `add` function `let add = fun x -> fun y -> x + y` and consider the i
 
 When we run the function application `add 4`, the program builds a closure and returns it (the **closure** is a pair of the _environment_ and a _code pointer_):
 
-![](./Figures/CompDes_Fig8-3.PNG)
+![](./Figures/CompDes_Fig8-3.PNG){width=50%}
 
 The code pointer takes a pair of parameters: `env` and `y`. The function code is essentially:
 
@@ -2561,15 +2570,15 @@ The simple closure conversion doesn't generate very efficient code:
 - It copies the environment values each time a nested closure is created
 - It uses a linked-list data structure for tuples
 
-There are many options to solve those short comings, such as:
+There are many options to solve those shortcomings, such as:
 
 - Store only the values for free variables in the body of the closure
 - Share subcomponents of the environment to avoid copying
-- Use vectors or arrays rather then linked structures
+- Use vectors or arrays rather than linked structures
 
 **Array-based closure with N-ary functions:**
 
-![](./Figures/CompDes_Fig8-4.PNG)
+![](./Figures/CompDes_Fig8-4.PNG){width=50%}
 
 # 12. Statically Ruling Out Partiality: Type Checking
 
@@ -2585,7 +2594,7 @@ We need to keep track of contextual information, such as:
 
 How do we describe this information?
 
-- In the compiler, there's a mapping from varaibles to information we know about them, i.e. the _context_
+- In the compiler, there's a mapping from variables to information we know about them, i.e. the _context_
 - The compiler has a collection of (mutually recursive) functions that follow the structure of the syntax
 
 ### 12.1.2 Type Judgements
@@ -2605,7 +2614,7 @@ What do we need to know to decide whether $\text{if } (b) \, 3 \text{ else } x$ 
 
 ### 12.1.3 Simply-typed Lambda Calculus
 
-![](./Figures/CompDes_Fig8-5.PNG)
+![](./Figures/CompDes_Fig8-5.PNG){width=50%}
 
 ### 12.1.4 Type Checking Derivations
 
@@ -2621,7 +2630,7 @@ _Example:_ Find a tree for the following code using the previously given inferen
 
 $$\vdash (\text{fun}(x : int) \to x + 3)5 : int$$
 
-![](./Figures/CompDes_Fig8-6.PNG)
+![](./Figures/CompDes_Fig8-6.PNG){width=50%}
 
 Notes:
 
@@ -2656,15 +2665,15 @@ _Note:_
 
 ### 12.2.1 Arrays
 
-![](./Figures/CompDes_Fig8-7.PNG)
+![](./Figures/CompDes_Fig8-7.PNG){width=50%}
 
 ### 12.2.2 Tuples
 
-![](./Figures/CompDes_Fig8-8.PNG)
+![](./Figures/CompDes_Fig8-8.PNG){width=50%}
 
 ### 12.2.3 References
 
-![](./Figures/CompDes_Fig8-9.PNG)
+![](./Figures/CompDes_Fig8-9.PNG){width=50%}
 
 ## 12.3 Types, More Generally
 
@@ -2691,7 +2700,7 @@ When introducing those new types, we also need to redefine the typing rules.
 
 Two cases are very easy:
 
-![](./Figures/CompDes_Fig8-10.PNG)
+![](./Figures/CompDes_Fig8-10.PNG){width=50%}
 
 But what if we don't know statically which branch will be taken? Consider the following type checking problem:
 
@@ -2705,17 +2714,17 @@ If we view types as sets of values, there is a natural _inclusion relation:_ $Po
 
 Such inclusions give rise to a **subtyping hierarchy:**
 
-![](./Figures/CompDes_Fig8-11.PNG)
+![](./Figures/CompDes_Fig8-11.PNG){width=50%}
 
-The subytping relation is a _partial order:_
+The subtyping relation is a _partial order:_
 
 - Reflexive: $T <: T$ for any type $T$
 - Transitive: $T:1 <: T_2$ and $T_2 <: T_3$ then $T_1 <: T_3$
 - Antisymmetric: $T_1 <: T_2$ and $T_2 <: T_1$ then $T_1 = T_2$
 
-A subtyping relation $T_1 <: T_2$ is **sound** if it approximates the underlying semantic subset relation. Formally, we write $[[T]]$ for the susbet of clsoed values of type $T$, i.e. $[[T]] = \{v \, | \, \vdash v : T \}$. If $T_1 <: T_2$ implies $[[T_1]] \subseteq [[T_2]]$, then $T_1 <: T_2$ is _sound._
+A subtyping relation $T_1 <: T_2$ is **sound** if it approximates the underlying semantic subset relation. Formally, we write $[[T]]$ for the subset of closed values of type $T$, i.e. $[[T]] = \{v \, | \, \vdash v : T \}$. If $T_1 <: T_2$ implies $[[T_1]] \subseteq [[T_2]]$, then $T_1 <: T_2$ is _sound._
 
-For types $T_1, \, T_2,$ we define teir **least upper bound** (LUB) w.r.t. the hierarchy. Examples: $\text{LUB}(\text{True, False}) = Bool, \, \text{LUB}(Int, \, Bool) = Any.$
+For types $T_1, \, T_2,$ we define their **least upper bound** (LUB) w.r.t. the hierarchy. Examples: $\text{LUB}(\text{True, False}) = Bool, \, \text{LUB}(Int, \, Bool) = Any.$
 
 _Note:_ The LUB of $T_1$ and $T_2$ is sometimes written as $T_1 \lor T_2$.
 
@@ -2723,13 +2732,13 @@ _Note:_ The LUB of $T_1$ and $T_2$ is sometimes written as $T_1 \lor T_2$.
 
 For statically unknown conditionals, we want the return value to be the LUB of the types of the branches:
 
-![](./Figures/CompDes_Fig8-12.PNG)
+![](./Figures/CompDes_Fig8-12.PNG){width=50%}
 
 ### 12.3.5 Subsumption Rule
 
-When we add subtyping judgments of the form $T <: S$, we can uniformly integrate it into the type system generically:
+When we add subtyping judgements of the form $T <: S$, we can uniformly integrate it into the type system generically:
 
-![](./Figures/CompDes_Fig8-13.PNG)
+![](./Figures/CompDes_Fig8-13.PNG){width=50%}
 
 **Subsumption** allows values of type $T$ to be treated as $S$ whenever $T <: S$.
 
@@ -2742,7 +2751,7 @@ What happens if we have an $Int$, but need something of type $Pos$?
 
 We can add a **checked downcast:**
 
-![](./Figures/CompDes_Fig8-14.PNG)
+![](./Figures/CompDes_Fig8-14.PNG){width=50%}
 
 At runtime, the $ifPos$ checks whether $e_1 > 0$.
 
@@ -2750,29 +2759,29 @@ At runtime, the $ifPos$ checks whether $e_1 > 0$.
 
 ### 12.4.1 Subtyping for Tuples
 
-Inuition: whenever a program expects something of type $S_1 * S_2$, it is sound to give it type $T_1 * T_2$, if $T_1 <: S_1$ and $T_2 <: S_2$:
+Intuition: whenever a program expects something of type $S_1 * S_2$, it is sound to give it type $T_1 * T_2$, if $T_1 <: S_1$ and $T_2 <: S_2$:
 
-![](./Figures/CompDes_Fig8-15.PNG)
+![](./Figures/CompDes_Fig8-15.PNG){width=50%}
 
-### 12.4.2 Subtying for Function Types
+### 12.4.2 Subtyping for Function Types
 
-On way to see it is exaplined by the following graph:
+On way to see it is explained by the following graph:
 
-![](./Figures/CompDes_Fig8-16.PNG)
+![](./Figures/CompDes_Fig8-16.PNG){width=50%}
 
 We need to convert an $S_1$ to a $T_1$ and $T_2$ to $S_2$, so the argument type is **contravariant** and the output type is **covariant:**
 
-![](./Figures/CompDes_Fig8-17.PNG)
+![](./Figures/CompDes_Fig8-17.PNG){width=50%}
 
 ### 12.4.3 Immutable Records
 
 The records type is given by: $\{lab_1:T_1: \, lab_2:T_2; \, ...; \, lab_n:T_n \}$. Each $lab_i$ is a label drawn from a set of identifiers.
 
-![](./Figures/CompDes_Fig8-18.PNG)
+![](./Figures/CompDes_Fig8-18.PNG){width=50%}
 
 We can do two different forms of _subtyping for immutable records:_
 
-![](./Figures/CompDes_Fig8-19.PNG)
+![](./Figures/CompDes_Fig8-19.PNG){width=50%}
 
 ## 12.5 Mutability & Subtyping
 
@@ -2794,7 +2803,7 @@ This requires a defined behavior when dereferencing `null` (e.g. Java's NullPoin
 
 What is the proper subtyping relationship for **references** and **arrays?**
 
-Covariant reference types are unsound, i.e. `(NonZero ref) <: (Int ref)` is unsoun! The contravariant reference types are also unsound, that is, if `T_1 <: T_2`, then `ref T_2 <: ref T_1` is unsound too.
+Covariant reference types are unsound, i.e. `(NonZero ref) <: (Int ref)` is unsound! The contravariant reference types are also unsound, that is, if `T_1 <: T_2`, then `ref T_2 <: ref T_1` is unsound too.
 
 In conclusion, mutable structures are **invariant** in the sens that: `T_1 ref <: T_2 ref` implies `T_1 = T_2`. The same holds for arrays, OCaml-style mutable records, object fields, etc.
 
@@ -2809,7 +2818,7 @@ type age   = int
 let foo (x:cents) (y:age) = x + y
 ```
 
-Type abbrevations as seen in this OCaml example are treated _structurally._ In contrast, `newtypes` (as seen in Haskell) are treated by _name._
+Type abbreviations as seen in this OCaml example are treated _structurally._ In contrast, `newtypes` (as seen in Haskell) are treated by _name._
 
 ## 12.7 OAT's Type System
 
@@ -2817,7 +2826,7 @@ Type abbrevations as seen in this OCaml example are treated _structurally._ In c
 
 - Primitive (i.e. non-reference) types: `int` and `bool`
 - Definitely non-null reference types: (named) mutable structs with width subtyping, strings, arrays (including length information)
-- Possibly-null reference types: `R?`, subtyping `R <: R?`, checked downcast syntaxt `if?`
+- Possibly-null reference types: `R?`, subtyping `R <: R?`, checked downcast syntax `if?`
 
 _Example:_
 
@@ -2864,23 +2873,17 @@ int sum(int[]? arr) {
 
 Objects contain a pointer to a **dispatch vector** (also called _virtual table_ or _vtable_) with pointers to method code.
 
-![](./Figures/CompDes_Fig8-20.PNG)
+![](./Figures/CompDes_Fig8-20.PNG){width=50%}
 
 Code receiving `set:IntSet` only knows that `set` has an initial dispatch vector pointer and the layout of that vector.
 
-![](./Figures/CompDes_Fig8-21.PNG)
-
-**Compiler Design — Lecture notes week 9**
-
-- Author: Ruben Schenk
-- Date: 29.11.2021
-- Contact: ruben.schenk@inf.ethz.ch
+![](./Figures/CompDes_Fig8-21.PNG){width=50%}
 
 ## 13.3 Multiple Inheritance
 
 ### 13.3.1 Overview
 
-A class may declare more than one sueprclass. This leads to a semantic problem: _ambiguity_
+A class may declare more than one superclass. This leads to a semantic problem: _ambiguity_
 
 _Example:_
 
@@ -2929,7 +2932,7 @@ The problem we encounter in the above shown example is that we cannot directly i
 
 - Option 1: Allow multiple D.V. tables (C++)
     - Choose which D.V. to use based on the static type
-    - Castin from/to a class may require runtime operations
+    - Casting from/to a class may require runtime operations
 - Option 2: Use a level of indirection
     - Map method identifiers to code pointers
     - Use a hash table
@@ -2942,7 +2945,7 @@ The problem we encounter in the above shown example is that we cannot directly i
 
 The idea is to duplicate the D.V. pointers in the object representation. The static type of the object determines which D.V. is used:
 
-![](./Figures/CompDes_Fig9-1.PNG)
+![](./Figures/CompDes_Fig9-1.PNG){width=50%}
 
 Another example:
 
@@ -2973,19 +2976,19 @@ A *pa = pc;
 // Three pointers to the same object, but different static types.
 ```
 
-![](./Figures/CompDes_Fig9-2.PNG)
+![](./Figures/CompDes_Fig9-2.PNG){width=50%}
 
 ### 13.4.3 Option 2: Search and Inline Cache
 
-The idea is that for each class/interface, we keep a talbe of the form `method names -> method code`. We then recursively walk up the hierarchy looking for the method name.
+The idea is that for each class/interface, we keep a table of the form `method names -> method code`. We then recursively walk up the hierarchy looking for the method name.
 
-![](./Figures/CompDes_Fig9-3.PNG)
+![](./Figures/CompDes_Fig9-3.PNG){width=50%}
 
-One optimization would be to store the class and code pointer at a call site in a cache. On a method call, we check whether ot not the class matches the cached value.
+One optimization would be to store the class and code pointer at a call site in a cache. On a method call, we check whether the class matches the cached value.
 
 Consider for example the following compilation: `Shape s = new Blob(); s.get();`
 
-![](./Figures/CompDes_Fig9-4.PNG)
+![](./Figures/CompDes_Fig9-4.PNG){width=50%}
 
 A **cached interface dispatch** could look as follows:
 
@@ -2999,14 +3002,14 @@ __miss434:
 
 ### 13.4.4 Option 3: Sparse D.V. Tables
 
-We have acces to the whole class hierarchy and must ensure that no two methods in the same class are allocated at the same D.V. offset:
+We have access to the whole class hierarchy and must ensure that no two methods in the same class are allocated at the same D.V. offset:
 
 - We allow holes in the D.V. just like in the hashtable variant for the search cache
 - Unlike the hashtable however, there is never a conflict
 
 The obvious advantage is that we have an identical dispatch and performance compared to a single-inheritance case. The disadvantage is that we must know the entire class hierarchy.
 
-![](./Figures/CompDes_Fig9-5.PNG)
+![](./Figures/CompDes_Fig9-5.PNG){width=50%}
 
 ## 13.5 Classes & Objects In LLVM
 
@@ -3027,9 +3030,9 @@ We then compile the class hierarchy to produce:
 
 ### 13.5.2 Method Arguments
 
-Method bodies are compile just like top-level procedures, except that they have an implicit extra argument: `this` or `self`:
+Method bodies are compiled just like top-level procedures, except that they have an implicit extra argument: `this` or `self`:
 
-![](./Figures/CompDes_Fig9-6.PNG)
+![](./Figures/CompDes_Fig9-6.PNG){width=50%}
 
 ### 13.5.3 LLVM Method Invocation Compilation
 
@@ -3038,7 +3041,7 @@ Consider the method invocation $$[[H;G;L \vdash e.m(e_1,...,e_n):t]]$ :
 1. Compile $[[H;G;L \vdash e : C]]$ to get a pointer to an object value of class type $C$. Call this value `obj_ptr`
 2. Use `getelementptr` to extract the vtable pointer from `obj_ptr`
 3. Load the vtable pointer
-4. Use `getelementptr` to extarct the function pointer's address from the vtable
+4. Use `getelementptr` to extract the function pointer's address from the vtable
 5. Load the function pointer
 6. Call through the function pointer, passing `obj_ptr` for `this`: `call (cmp_typ t) m(obj_ptr, [[e1]],...,[[e_n]])`
 
@@ -3046,7 +3049,7 @@ Consider the method invocation $$[[H;G;L \vdash e.m(e_1,...,e_n):t]]$ :
 
 ### 13.6.1 Compiling Static Methods
 
-Java supports _static_ methods, these are methods belongig to a class, not the instances of the class. They have no `this` parameter.
+Java supports _static_ methods, these are methods belonging to a class, not the instances of the class. They have no `this` parameter.
 
 They are compiled exactly like normal top-level procedures:
 
@@ -3106,11 +3109,11 @@ _foo:
 
 ### 14.1.2 When to Apply Optimization
 
-![](./Figures/CompDes_Fig9-7.PNG)
+![](./Figures/CompDes_Fig9-7.PNG){width=50%}
 
 ### 14.1.3 Where to Optimize?
 
-The usual goal is to improve the time performance. The problem ehre is that many optimizations trade space for time.
+The usual goal is to improve the time performance. The problem here is that many optimizations trade space for time.
 
 _Example:_ Consider **loop unrolling:**
 
@@ -3136,7 +3139,7 @@ This has the following tradeoffs:
 
 Whether an optimization is _safe_ depends on the language semantics. Languages with weaker guarantees permit more optimizations, but have more ambiguity in their behavior.
 
-_Example: Loop-invariant code motion (LICM)_ describes the idea of hositing invariant code out of a loop:
+_Example: Loop-invariant code motion (LICM)_ describes the idea of hoisting invariant code out of a loop:
 
 ```c
 while(b) {
@@ -3179,14 +3182,14 @@ if(2 > 3) S         -> ;
 
 ### 14.2.3 Algebraic Simplification
 
-A more general from of _cosntant folding_ is done by taking advantage of mathematically sound simplification rules.
+A more general from of _constant folding_ is done by taking advantage of mathematically sound simplification rules.
 
 _Identities:_
 
 ```bnf
 a * 1       -> 1
 a + 0       -> a
-b | false   -> b
+b | false   -> b
 a * 0       -> 0
 a - 0       -> a
 b & true    -> b
@@ -3211,7 +3214,7 @@ _Note:_ One must be careful with floating-point and integer arithmetic, e.g. rou
 
 ### 14.2.4 Constant Propagation
 
-**Constant propagation** describes the process of replacing all uses of a variable with a constant, if the variable's values is defined to be a constant. The value of the variable is propagated froward from the point of assignment.
+**Constant propagation** describes the process of replacing all uses of a variable with a constant, if the variable's values is defined to be a constant. The value of the variable is propagated forward from the point of assignment.
 
 _Example:_
 
@@ -3245,7 +3248,7 @@ This makes the first assignment to `x` so-called _dead code_ and can thus be eli
 
 ### 14.3.1 Dead Code Elimination (DCE)
 
-If side-effect free code can never be observed, it is safe to eliminate it. This process is called **dead code elimination** (DCE).
+If side effect free code can never be observed, it is safe to eliminate it. This process is called **dead code elimination** (DCE).
 
 _Example:_
 
@@ -3265,8 +3268,8 @@ A variable is therefore said to be **dead** if it's never used after it's define
 
 Basic blocks unreachable from the entry block can be deleted. This is usually done at the IR or assembly level.
 
-**Dead code** is similar to unreachable blocks. A value might be computed but never subsequently used, this means that the code used for computing the value can be droppped.
-However that's only possible if it's _pure,_ i.e. if it has no externally visible side effects.
+**Dead code** is similar to unreachable blocks. A value might be computed but never subsequently used, this means that the code used for computing the value can be dropped.
+However, that's only possible if it's _pure,_ i.e. if it has no externally visible side effects.
 
 _Note:_ Pure functional languages (e.g. Haskell) make reasoning about the safety of optimizations generally easier.
 
@@ -3323,7 +3326,7 @@ This optimization is _safe_ if the shared expression always have the same value 
 
 ### 14.4.1 Loop Invariant Code Motion - Revisited
 
-LICM is another form of redundancy elimination. If the result of a statement or expression doesn not change during the loop and it's pure, then it can be hoisted outside the loop body.
+LICM is another form of redundancy elimination. If the result of a statement or expression does not change during the loop, and it's pure, then it can be hoisted outside the loop body.
 
 _Example:_
 
@@ -3341,7 +3344,7 @@ for(i = 0; i < t; i++) {
 
 ### 14.4.2 Strength Reduction - Revisited
 
-Strength reduction can work for loops to by repalcing expensive operations, such as `*, /`, by cheaper ones, such as `+, -`.
+Strength reduction can work for loops to by replacing expensive operations, such as `*, /`, by cheaper ones, such as `+, -`.
 
 _Example:_
 
@@ -3360,7 +3363,7 @@ for(int i = 0; i < n; i++) {
 
 ### 14.4.3 Loop Unrolling - Revisited
 
-Branches can be very expensive, therefore it's a good practice to aboid them.
+Branches can be very expensive, therefore it's a good practice to avoid them.
 
 _Example:_
 
@@ -3374,3 +3377,987 @@ for(; i < n; i++) { S; }    // left over iterations
 ```
 
 With $k$ unrollings, we eliminate $\frac{k - 1}{k}$ conditional branches!
+
+## 14.5 Code Analysis
+
+### 14.5.1 Liveness
+
+We observe the following: If `%uid1` and `%uid2` will never be needed at the same time, then they can be assigned to the same register.
+
+If we mean that a variable is _needed,_ we mean that its contents will be used as a source operand in a later instruction. Such a variable is called **live.**
+
+Two variables can therefore share any register if they are never live at the same time.
+
+### 14.5.2 Scope vs. Liveness
+
+We can already get some coarse liveness information from _variable scoping._ Consider the following program:
+
+```c
+int f(int x) {
+    var a = 0;
+    if(x > 0) {
+        var b = x * x;
+        a = b + b;
+    }
+    var c = a * x;
+    return c;
+}
+```
+
+Due to OAT's scoping rules, `b` and `c` can never be live at the same time. So, we can assign `b` and  `c` to the same slot and potentially to the same register.
+
+However, scope is _too coarse._ Consider this program:
+
+```c
+int f(int x) {
+    int a = x + 2;  // -> x is live
+    int b = a * a;  // -> a and x are live
+    int c = b + x;  // -> b and x are live
+    return c;       // -> c is live
+}
+```
+
+The scopes of `a`, `b`, `c`, and `x` all overlap, they are all in the scope at the end of the block. But, `a`, `b`, and `c` are never live at the same time, so they can share the same stack slot or register.
+
+### 14.5.3 Live Variable Analysis
+
+We say that variable `v` is **live** at program point `L` if:
+
+- `v` is defined before `L`
+- `v` is used after `L`
+
+Liveness is therefore defined in terms of where variables are defined and used. **Liveness analysis** describes the process of computing the live variables between each statement. Liveness analysis is one example of _dataflow analysis._
+
+### 14.5.4 Control-Flow Graphs - Revisited
+
+For **dataflow analysis,** we use the _control-flow graph_ (CFG) intermediate form. Recall that a _basic block_ is a sequence of instructions such that:
+
+- There is a distinguished, labeled entry point (no jumps into the middle of a basic block)
+- There is a (possibly empty) sequence of non-control-flow instructions
+- A block ends with a single control-flow instruction, such as a jump, branch, return, etc.
+
+A _control-flow graph_ consists of:
+
+- Nodes are the basic blocks
+- An edge from `B1` to `B2` if `B1`'s control-flow instruction may jump to the entry label of `B2`
+- There are no "dangling" edges, i.e. there is a block for every jump target
+
+#### Liveness is Associated with Edges
+
+With an _exploded CFG,_ i.e. a CFG where we display each instruction as a block, we can put the information of which variable is live between each instruction onto the edge. This is useful as the same register can be used for different temporaries in the same statement.
+
+_Example:_
+
+![](./Figures/CompDes_Fig10-1.PNG){width=50%}
+
+### 14.5.5 Uses and Definitions
+
+Every instruction or statement _uses_ some set of variables, and also _defines_ some set of variables.
+
+For a node or statement `s` we define:
+
+- `use[s]` as the set of variables used by `s`
+- `def[s]` as the set of variables defined by `s`
+
+_Examples:_
+
+```bnf
+a = b + c  ->  use[s] = {b, c}  &  def[d] = {a}
+a = a + 1  ->  use[s] = {a}  &  def[s] = {a}
+```
+
+### 14.5.6 Liveness - Formally
+
+A variable `v` is said to be **live** if there is:
+
+- A node `n` in the CFG such that `use[n]` contains `v`, and
+- A directed path from `e` to `n` such that for every statement `s'` in the path, `def[s']` does not contain `v`
+
+The first clause says that `v` will be used on some path starting from edge `e`, and the second clause says that `v` wont be redefined on that path before its use.
+
+### 14.5.7 Simple Liveness Algorithm
+
+We can use a simple _backtracking algorithm_ to compute the above two conditions for a variable to be live:
+
+1. For each variable `v`
+2. Try all paths from each use of `v`, tracking backwards through the control-flow graph until either `v` is defined or a previously visited node is reached
+3. Mark the variable `v` live across each edge traversed
+
+This is very _inefficient_ since it explores the same paths many times for different uses and different variables!
+
+## 14.6 Dataflow Analysis
+
+### 14.6.1 Introduction
+
+The main idea of **dataflow analysis** is to compute the liveness information for all variables simultaneously. This is done by the following approach: define equations that must hold by any liveness determination, with equations based on "obvious" constraints.
+
+We then solve those equations by iteratively converging to a solution:
+
+- Start with a "rough" approximation to the answer
+- Refine the answer at each iteration
+- Keep going until no more refinement is possible, i.e. a _fixpoint_ has been reached
+
+### 14.6.2 Dataflow Value Set for Liveness
+
+Nodes in our CFG are statements, so:
+
+- `use[n]`: set of variables used by `n`
+- `def[n]`: set of variables defined by `n`
+- `in[n]`: set of variables live on entry to `n`
+- `out[n]`: set of variables live on exit from `n`
+
+#### Dataflow Constraints
+
+We can put some constraints on those dataflow value sets:
+
+$$\text{use}[n] \subseteq \text{in}[n]$$
+
+- A variable must be live on entry to `n` if it is used by `n`.
+
+$$\text{out}[n] \setminus \text{def}[n] \subseteq \text{in}[n]$$
+
+- If a variable is live on exit from `n`, and `n` doesn't define it, it is live on entry to `n`.
+
+$$\text{in}[n'] \subseteq \text{out}[n], \, \text{if } n' \in \text{succ}[n]$$
+
+- If a variable is live on entry to a successor node of `n`, it must be live on exit from `n`.
+
+### 14.6.3 Iterative Dataflow Analysis
+
+The idea to find a solution to those constraints is by starting from a rough guess. We simply say that $\text{in}[n] = \emptyset$ and $\text{out}[n] = \emptyset$.
+
+We then iteratively re-compute `in[n]` and `out[n]` where forced to by constraints. Each iteration will add variables to the two mentioned sets. We stop when `in[n]` and `out[n]` satisfy the following equations (which are derived from the constraints above):
+
+- $\text{in}[n] = \text{use}[n] \cup (\text{out}[n] - \text{def}[n])$
+- $\text{out}[n] = \bigcup_{n' \in \text{succ}[n]}\text{in}[n']$
+
+### 14.6.4 A Worklist Algorithm
+
+The idea here is to use a FIFO queue of nodes that might need to be updated:
+
+```pseudo
+for all n, in[n] := null, out[n] = null
+w = new queue with all nodes
+repeat until w is empty:
+    let n = w.pop()
+    old_in = in[n]
+    out[n] = union of in[n'] where n' is in succ[n]
+    in[n] = use[n] union (out[n] - def[n])
+    if(old_in != in[n]):
+        for all m in pred[n], w.push(m)
+```
+
+## 14.7 Register Allocation
+
+### 14.7.1 Register Allocation Problem
+
+Given an IR program using an unbounded number of termporaries, find a mapping from temporaries to machine registers such that:
+
+- program semantics are preserved
+- register usage is maximized
+- moves between registers are minimized
+- calling conventions and archtiecture requirements are obeyed
+
+_Stack spilling_ describes the following observation: If there are `k` available registers and `m > k` temporaries live at the same time, not all temporaries will fit into the registers. We therefore have to _spill_ the excess temporaries onto the stack.
+
+### 14.7.2 Linear-Scan Register Allocation
+
+We introduce a simple, greedy _register-allocation strategy:_
+
+1. Compute liveness information `live(x)`, which is the set of uids that are live on entry to `x`'s definition
+2. Let `pal` be the set of usable registers (we usually reserve a couple of registers for splii code, in our implementation those registers are `rax` and `rcx`)
+3. Maintain a layout `uid_loc` that maps uids to locations, those include registers and stack slots
+4. Scan through the program, for each isntruction that defines a uid `x`:
+    - `used = {r | reg r = uid_loc(y) s.t. y in live(x)}`
+    - `available = pal - used`
+    - If `available` is empty: `uid_loc(x) := slot n; n = n + 1`
+    - Otherwise, pick `r` in `available`: `uid_loc(x) = reg r`
+
+### 14.7.3 Graph Coloring
+
+#### Register Allocation
+
+The basic process for register allocation goes as follows:
+
+1. Compute liveness information for each temporary
+2. Create an _interference graph:_ nodes are temporaries and there is an edge between nodes `n` and `m` if they are live at the same time
+3. Try to color the graph, each color corresponds to a register
+4. If step 3 fails, spill a register to the stack and repeat from step 1
+5. Rewrite the program to use the allocated register
+
+#### Interference Graphs
+
+We build **interference graphs** in the following way:
+
+- Nodes of the graph are `%uids`
+- Edges connect variables that _interfere_ with each other, that is, if their live range intersects.
+
+Once we have build such a graph, register allocation becomes a _graph coloring problem._ A graph coloring assigns each nodein the graph a color (i.e. a register). Any two nodes connected by an edge must have different colors.
+
+_Example:_
+
+![](./Figures/CompDes_Fig10-2.PNG){width=50%}
+
+#### Coloring a Graph: Kempe's Algorithm
+
+Kempe provides a algorithm for K-coloring a graph. It's a recursive algorithm that works in three steps:
+
+1. Find a node with degree < K and cut it out of the graph. Remove the nodes and corresponding edges. This is called _simplifying_ the graph.
+2. Recursively K-color the remaining subgraph.
+3. When the remaining graph is colored, there must be at least one free color available for the deleted node (since its degree was < K).
+
+_Example:_ 3-color the following graph:
+
+![](./Figures/CompDes_Fig10-3.PNG){width=50%}
+
+![](./Figures/CompDes_Fig10-4.PNG){width=50%}
+
+#### Failure of the Algorithm
+
+If the graph cannot be colored, it will simplify to a graph where every node has >= K neighbors. However, this can also happen even when the graph is K-colorable! This is a symptom of NP-hardness.
+
+### 14.7.4 Spilling
+
+If we can't K-color a graph, we need to store one temporary on the stack. Which variable to we choose? Multiple options are possible:
+
+- One that isn't used frequently
+- One that isn't used in a deeply nested loop
+- One that has high interference
+
+In practice, some weighted combination of the above criteria is used. When coloring the graph, we simply mark a node as spilled, remove it from the graph, and then keep on recursively coloring.
+
+_Example:_
+
+![](./Figures/CompDes_Fig10-5.PNG){width=50%}
+
+#### Optimistic Coloring
+
+If we get lucky with the choices of colors made earlier, it is sometimes possible to color a node marked for spilling.
+
+_Example:_
+
+![](./Figures/CompDes_Fig10-6.PNG){width=50%}
+
+#### Accessing Spilled Registers
+
+If optimistic coloring fails, we need to generate code to move the spilled temporaries to and from memory.
+
+- Option 1: Reserve registers specifically for moving to and from memory. We need at least two registers, so we decrease the number of total available registers by 2, but we only need to color the graph once.
+- Option 2: Rewrite the program to use a new temporary with explicit move to and from memory. This allows us to reserve fewer register but introduces a change in live ranges, so we must recompute the liveness and recolor the graph.
+
+### 14.7.5 More On Coloring
+
+#### Precolored Nodes
+
+Some variables must be pre-assigned to register, e.g. on X86 the multiplication instruction `imul` must define `%rax`. To properly allocate temps, we treat registers as nodes in the interference graph with pre-assigned colors. A trick to handle this case when coloring the graph is to treat pre-colored nodes as having "infinite" degree in the interference graph to guarantee that they won't be simplified.
+
+#### Picking Good Colors
+
+When choosing colors during the coloring phase, any choice is semantically correct, but some choices are better for perfomance.
+
+_Example:_ `movq t1, t2`
+If `t1` and `t2` can be assigned to the same color, this move is redundant and can be eliminated.
+
+A simple color choosing strategy is to add a new kind of "move related" edge between `t1` and `t2` in the interference graph. When choosing a color for `t1` (or `t2`), if possible we pick a color of an already colored node, reachable by a move-related edge.
+
+#### Coalescing Interference Graphs
+
+A more agressive strategy is to _coalesce_ nodes of the interference graph if they are connected by move-related edges. Coalescing those nodes forces them to be assigned to the same register.
+
+![](./Figures/CompDes_Fig10-7.PNG){width=50%}
+
+The idea is to interleave simplification and coalescing to maximize the number of moves that can be eliminated. However, one problem introduced by coalescing is that it may increase the degree of a node.
+
+#### Conservative Coalescing
+
+There are two strategies for _conservative coalescing_ which guarantee to preserve the k-colorability of an interference graph:
+
+- _Briggs' strategy:_ It's safe to coalesce `x` and `y` if the resulting node will have fewer than K neighbors that have degree >= K, since the merged node `(x, y)` can still be removed.
+- _George's strategy:_ We can safely coalesce `x` and `y` if for every neighbor `t` of `x`, either `t` already interferes with `y` or has degree < K.
+
+In practice we use George's strategy if one of `x` and `y` is precolored and we use Briggs' strategy if both are temporaries.
+
+### 14.7.6 Complete Register Allocation Algorithm
+
+![](./Figures/CompDes_Fig10-8.PNG){width=50%}
+
+## 14.8 Other Dataflow Analyses
+
+### 14.8.1 `def` And `use` For SSA
+
+![](./Figures/CompDes_Fig10-9.PNG){width=50%}
+
+## 14.9 Reaching Definitions
+
+### 14.9.1 Reaching Definition Analysis
+
+The **reaching definition analysis** is used for constant propagation and copy propagation:
+
+- _Constant propagation:_ If only one definition reaches a particular use, we can replace the use by the definition
+- _Copy propagation:_ Additionally requires that the copied value still has its same value, computed using an available expression analysis
+
+The input to this analysis is a CFG and the output `in[n]` and `out[n]` are the sets of nodes defining some variable such that the definition may reach the beginning/end of node `n`.
+
+_Example:_
+
+![](./Figures/CompDes_Fig10-10.PNG){width=50%}
+
+### 14.9.2 Reaching Definitions Analyis - Algorithm
+
+#### Step 1
+
+Define the set of interest for the analysis. Let `defs[a]` be the set of nodes that define the variable `a`. Define `gen[n]` and `kill[n]` as follows:
+
+![](./Figures/CompDes_Fig10-11.PNG){width=50%}
+
+#### Step 2
+
+Define the cosntraints that a reaching definitions solution must satisfy:
+
+$$\text{gen}[n] \subseteq \text{out}[n]$$
+
+- Definitions reaching the end of a node at least include the definitions generated by the code.
+
+$$\text{if } n' \text{ is in pred}[n], \text{ then out}[n'] \subseteq \text{ in}[n]$$
+
+- Definitions reaching the beginning of a node include those that reach the exit of _any_ predecessor.
+
+$$\text{in}[n] \subseteq \text{out}[n] \cup \text{kill}[n]$$
+
+- Definitions coming into a node `n` either reach the end of `n` or are killed by it.
+
+#### Step 3
+
+We convert the constraints to iterated update equations:
+
+- $\text{in}[n] := \bigcup_{n' \in \text{pred}[n]} \text{out}[n']$
+- $\text{out}[n] := \text{gen}[n] \cup (\text{in}[n] \setminus \text{kill}[n])$
+
+The algorithm starts to initialize `in[n]` and `out[n]` to be empty. We iterate the update equations until a fixed point is reached.
+
+## 14.10 Available Expressions
+
+### 14.10.1 Available Expressions Analysis
+
+The idea is that we want to perform common subexpression elimination (CSE).
+
+_Example:_
+
+```bnf
+a = x + 1:
+b = x + 1;
+
+// After CSE
+a = x + 1;
+b = a;
+```
+
+We have the following dataflow values:
+
+- `in[n]` is the set of nodes whose values are available on entry to `n`
+- `out[n]` is the set of nodes whose values are available on exit of `n`
+
+### 14.10.2 Available Expressions Analysis - Algorithm
+
+#### Step 1
+
+Define the set of values and the sets `gen[n]` and `kill[n]` as follows:
+
+![](./Figures/CompDes_Fig10-12.PNG){width=50%}
+
+#### Step 2
+
+Define the constraints that an available expressions solution must satisfy:
+
+$$\text{gen}[n] \subseteq \text{out}[n]$$
+
+- Expressions made available by `n` reach the end of the node.
+
+$$\text{if } n' \text{ is in pred}[n], \text{ then in}[n] \subseteq \text{out}[n']$$
+
+- Expressions available at the beginning of a node include those that reach the exit of every predecessor.
+
+$$\text{in}[n] \subseteq \text{out}[n] \cup \text{kill}[n]$$
+
+- Expressions available on entry either reach the end of the node or are killed.
+
+#### Step 3
+
+Convert the cosntraints to iterated update equations:
+
+- $\text{in}[n] := \bigcap_{n' \in \text{pred}[n]}\text{out}[n']$
+- $\text{out}[n] := \text{gen}[n] \cup (\text{in}[n] \setminus \text{kill}[n])$
+
+The algorithm is to initialize `in[n]` and `out[n]` to the set of all nodes and then iterate the update equations until a fixed point is reached.
+
+## 14.11 Comparing Dataflow Analyses
+
+### 14.11.1 Overview
+
+![](./Figures/CompDes_Fig10-13.PNG){width=50%}
+
+### 14.11.2 Very Busy Expressions
+
+Expression `e` is said to be **very busy** at location `p` if every path from `p` must evaluate `e` before any variable in `e` is redefined.
+This is a _backward-must-analysis._
+
+### 14.11.3 Common Features
+
+All of these analyses have a _domain_ over which they solve constraints:
+
+- For liveness, the domain is sets of variables
+- For reaching definitions and available expressions, the domain is sets of nodes
+
+Each analysis has a notion of `gen[n]` and `kill[n]`.
+
+Each analysis propagates information either _forward_ or _backward:_
+
+- Forward: `in[n]` is defined in terms of predecessor nodes' `out[n]`
+- Backward: `out[n]` is defined in terms of predecessor nodes' `in[n]`
+
+Each analysis has a way of aggregating information:
+
+- Liveness and reaching definitions take the union
+- Available expressions use intersection
+- Union expresses a property that holds for some path (_may_)
+- Intersection expresses a property that holds for all paths (_must_)
+
+### 14.11.4 Data Flow Analysis Framework
+
+![](./Figures/CompDes_Fig10-14.PNG){width=50%}
+
+### 14.11.5 Generig Iterative Analysis
+
+```pseudo
+for all n, in[n] := T, out[n] := T
+repeat until no change:
+    for all n:
+        in[n] := \cap_{n' in pred[n]}out[n']
+        out[n] := F_n(in[n])
+    end
+end
+```
+
+`T` $\in \mathcal{L}$ (_top_) represents having the maximum amount if information.
+
+### 14.11.6 Structure of $\mathcal{L}$
+
+The domain has a structure that reflects the amount of information cotnained in each dataflow value. Some dataflow values are more informative than others:
+
+- Write $\mathcal{l}_1 \sqsubseteq \mathcal{l}_2$ whenever $\mathcal{l}_2$ provides at least as much information as $\mathcal{l}_1$.
+
+#### Meets and Joins
+
+The combining operator $\sqcap$ is called the _meet_ operator. It constructs the greates lower bound:
+
+- $l_1 \sqcap l_2 \sqsubseteq l_1$ and $l_1 \sqcap l_2 \sqsubseteq l_2$ (the meet is a lower bound)
+- If $l \sqsubseteq l_1$ and $l \sqsubseteq l_2$ then $l \sqsubseteq l_1 \sqcap l_2$ (there is no greater lower bound)
+
+Dually, the $\sqcup$ operator is called the _join_ operator, it constructs the least upper bound:
+
+- $l_1 \sqsubseteq l_1 \sqcup l_2$ and $l_2 \sqsubseteq l_1 \sqcup l2$ (the join is an upper bound)
+- If $l_1 \sqsubseteq l$ and $l_2 \sqsubseteq l$ then $l_1 \sqcup l_2 \sqsubseteq l$ (there is no smaller upper bound)
+
+### 14.11.7 Classic Constant Propagation
+
+_Constant propagation_ can be formulated as a dataflow analysis. The idea os to propagate and fold integer constants in one pass:
+
+```bnf
+x = 1;      -> x = 1
+y = 5 + x;  -> y = 6;
+z = y * y;  -> z = 36
+...
+```
+
+## 14.12 Quality of Dataflow Analysis Solutions
+
+### 14.12.1 Best Possible Solution
+
+Suppose we have some GFC. If there exists a path $p_1$ starting from the root node traversing the nodes $n_0, \, n_1, \, ..., \, n_k$, then the best possible information along $p_1$ is given by:
+
+$$l_{p1} = F_{nk}(...F_{n2}(F_{n1}(F_{n0}(T)))...)$$
+
+The best solution at the output is some $l \sqsubseteq l_p$ for all paths $p$.
+
+We can define the **meet-over-paths (MOP)** solution as:
+
+$$\sqcap_{p \in \text{paths-to}[n]}l_p$$
+
+The iterative solution computes the MOP solution if the flow functions distribute over $\sqcap$, that is, if $\sqcap_iF_n(l_i) = F_n(\sqcap_il_i)$.
+
+The Reaching Definitions analysis with iterative analysis always terminates with the MOP! In fact, the other three analyses (i.e. liveness, available expressions, and very busy expressions) are all MOP!
+
+### 14.12.2 Flow Functions
+
+Consider the node `x = y op z`. We define the following flow functions for this node:
+
+- $F(l_x,T,l_z) = (T,T,l_z)$ and $F(l_x,l_y,T) = (T,l_y,T)$ -> "if either input might have multiple values, the result of the operation might too"
+- $F(l_x,\bot,l_z) = (\bot,\bot, l_z)$ and $F(l_x,l_y,\bot) = (\bot,l_y,\bot)$ -> "if either input is undefined, the result of the operation is too"
+- $F(l_x,i,j) = (i \text{ op }j,i,j)$ -> "if the inputs are known constants, calculate the output statically"
+
+## 14.13 Dataflow Analysis: Summary
+
+Many dataflow analyses fit into a common framework. The key idea is to fond an iterative solution of a system of equations over a lattice:
+
+- The iteration terminates if the flow functions are monotonic
+- The solution is equivalent to the MOP answer if the flow functions distribute over the meet operator ($\sqcap$)
+
+# 15. Loops and Dominators
+
+## 15.1 Loops
+
+### 15.1.1 Introduction
+
+Taking into account loops is important for optimizations. The 90/10 rule applies, so optimizing loop bodies is important!
+
+But how do we identify loops in the control-flow graph?
+
+### 15.1.2 Definition Of A Loop
+
+A **loop** is a set of nodes in the CFG which have one distinguished entry: the _header._
+
+- Each node is reachable from the header
+- Header is reachable from each node
+- No edges enter a loop except the header
+- _Exit nodes_ are nodes with outgoing (in the sense of "out of the loop") edges
+
+![](./Figures/CompDes_Fig11-1.PNG){width=50%}
+
+Loops may contain other loops, so-called _nested loops._
+
+### 15.1.3 Goal of Control-flow Analysis
+
+The goal of the control-flow analysis is to identify loops and the nesting structure in a CFG.
+
+Control-flow analysis is based on the idea of _dominators:_
+
+- `A` **dominates** `B` if the only way to reach `B` from the start node is via `A`.
+
+An edge in the CFG is called a _back edge_ if its target dominates the source. A _loop_ contains >=1 back edge!
+
+![](./Figures/CompDes_Fig11-2.PNG){width=50%}
+
+## 15.2 Dominators
+
+### 15.2.1 Dominator Trees
+
+- Domination is _transitive:_ `A dom B, B dom C => A dom C`
+- Domination is ant-symmetric: `A dom B, B dom A => A = B`
+
+Every flow graph has a **dominator tree** which is equal to the Hasse diagram of the dominates relation:
+
+![](./Figures/CompDes_Fig11-3.PNG){width=50%}
+
+### 15.2.2 Dominator Dataflow Analysis
+
+We can define `Dom[n]` as a forward dataflow analysis:
+
+- `Dom[n]` is the set of all the nodes that dominate `n`
+- We can use the same framework as we've seen earlier: `Dom[n] = out[n]` where:
+    - `B` is dominated by `A` if `A` dominates _all_ of `B`'s predecessors: $\text{in}[n] := \bigcup_{n' \in \text{pred}[n]}out[n']$
+    - Every node dominates itself: $\text{out}[n] := \text{in}[n] \cup \{n\}$
+
+Formally, we can define our analysis as follows: $\mathcal{L}$ is the set of nodes ordered by $\subseteq$, and:
+
+- $T = \{\text{all the nodes}\}$
+- $F_n(x) = x \cup \{n\}$
+- $\sqcap$ is $\cap$
+
+### 15.2.3 Improving The Algorithm
+
+Instead of storing all those nodes along the path in a dominator tree from root to `b`, it is much more efficient to store only the immediate dominator of `b` in some set called `doms[b]`.
+
+To compute `Dom[b]`, we simply have to walk through `doms[b]`.
+
+### 15.2.4 Completing Control-flow Analysis
+
+Dominator analysis identifies _back edges:_
+
+- Edge `(n, h)` is a back edge if `h` dominates `n`
+
+Each back edge has a _natural loop:_
+
+- `h` is the header
+- All nodes dominated by `h` that also reach `n` without going through `h` are included in the loop body
+
+For each back edge `(n, h)` we can find a natural loop with:
+
+$$\{n' \, | \, h \text{ dom } n' \, \land \, n \text{ is reachable from } n' \text{ in } G \setminus \{h\} \} \cup \{h \}$$
+
+### 15.3 Example: Natural Loops
+
+![](./Figures/CompDes_Fig11-4.PNG){width=50%}
+
+# 16. Revisiting SSA
+
+## 16.1 Introduction
+
+### 16.1.1 Single Static Assignment (SSA)
+
+For example, LLVM IR names, via `%uids`, _all_ intermediate values. This makes the order of evaluation explicit. Each `%uid` is assigned only once.
+
+A naive backup implementation would be to map `%uids` to stack slots, however it would be much better to map as many `%uids` as possible to registers.
+
+### 16.1.2 Alloca vs. %UID
+
+The current compilation strategy looks as follows:
+
+![](./Figures/CompDes_Fig11-5.PNG){width=50%}
+
+But what happens if we directly map source variables into `%uids`?
+
+![](./Figures/CompDes_Fig11-6.PNG){width=50%}
+
+Does this always work? So, see the following if-then-else example.
+
+### 16.1.3 What About If-Then-Else?
+
+![](./Figures/CompDes_Fig11-7.PNG){width=50%}
+
+What do we put for `???` ?
+
+## 16.2 Phi Functions
+
+### 16.2.1 Introduction
+
+The solution to our problem in the previous chapter are so-called $\phi$ **functions:**
+
+- Those are fictitious operators, used only for the analysis
+- Choose versions of a variable by the path hwo control enters the phi node
+
+```
+%uid = phi <ty> v1, <label1>,..., vn, <labeln>
+```
+
+![](./Figures/CompDes_Fig11-8.PNG){width=50%}
+
+### 16.2.2 Phi Nodes and Loops
+
+Importantly, `%uids` on the RHS of phi nodes can be defined "later" in the CFG, meaning that `%uids` can hold values "around a loop". The scope of `%uids` is defined by the dominance.
+
+![](./Figures/CompDes_Fig11-9.PNG){width=50%}
+
+## 16.3 Alloc "Promotion"
+
+### 16.3.1 Introduction
+
+Not all source variables can be allocated to registers:
+
+1. If the address of the variable is taken
+
+```llvm
+entry:
+    %x = alloca i64             // %x cannot be promoted
+    %y = call malloc(i64 8)
+    %ptr = bitcast i8* %y to i64**
+    store i64** %ptr, %x        // store the pointer into the heap
+```
+
+2. If the address of the variable "escapes" by being passed to a function
+
+```llvm
+entry:
+    %x = alloca i64         // %x cannot be promoted
+    %y = call foo(i64* %x)  // foo may store the pointer into the heap
+```
+
+A `alloca` instruction is said to be **promotable** if neither of the above conditions hold. Luckily, mostlocal variables declared in source programs are promotable and therefore can be register allocated.
+
+### 16.3.2 Convertig to SSA
+
+To convert to SSA we proceed with the following steps:
+
+1. Start with the ordinary CFG that uses allocas, identify promotable allocas
+2. Compute dominator tree information
+3. Calculate def/use information for each such allocated variable
+4. Insert $\phi$ functions for each variable at necessary "join points"
+5. Replace loads/stores to alloc'ed variables with freshly-generated `%uids`
+6. Eliminate the now unneeded load/store/alloca instructions
+
+### 16.3.3 Where to Place $\phi$ Functions?
+
+To know where we need to place the $\phi$ functions we need to calculate the **dominance frontier.**
+
+- Node `A` _strictly dominates_ `B` if `A dom B & A != B`
+
+The _dominance frontier_ of a node `B` is the set of all CFG nodes `y` such that `B` dominates a predecessor of `y`, but does not strictly dominate `y`. We write `DF[n]` to denote the dominance frontier of node `n`.
+
+![](./Figures/CompDes_Fig11-10.PNG){width=50%}
+
+### 16.3.4 Algorithm For Computing `DF[n]`
+
+We assume that `doms[n]` store the dominator tree.
+
+The following algorithm adds each `B` to the DF set to which it belongs to:
+
+```pseudo
+for all nodes B
+    if #(pred[B]) >= 2:
+        for each p in pred[B]:
+            runner := p
+            while (runner != droms[B]):
+                DF[runner] := DF[runner] union {B}
+                runner := doms[runner]
+```
+
+### 16.3.5 Insert $\phi$ at Join Points
+
+Lift the `DF[n]` to a set of nodes `N` in the obvious way:
+
+$$DF[N] = \bigcup_{n \in N}DF[n]$$
+
+Suppose variable `x` is defined at a set of nodes `N` with
+
+- `DF_0[N] = DF[N]`
+- `DF_i+1[N] = DF[DF_i[N] union N]``
+
+Let `J[N]` be the _least fixed point_ of the sequence:
+
+$$DF_0[N] \subseteq DF_1[N] \subseteq DF_2[N] ...$$
+
+That is, `J[N] = DF_k[N]` for some `k` such that `DF_k[N] = DF_k+1[N]`.
+
+We insert $\phi$ **functions** for the variable `x` at each node in `J[N]`.
+
+_Example:_
+
+![](./Figures/CompDes_Fig11-11.PNG){width=50%}
+
+### 16.3.6 Phi Placement Alternative
+
+This alternative is less efficient, but easier to understand.
+
+The idea is to place phi nodes _maximally_, i.e. at every node with >= 2 predecessors.
+If all values flowing into the phi node are the same, we eliminate it.
+
+### 16.3.7 SSA Optimization Example
+
+![](./Figures/CompDes_Fig11-12.PNG){width=50%}
+
+![](./Figures/CompDes_Fig11-13.PNG){width=50%}
+
+# 17. Automatic Memory Management (GC)
+
+## 17.1 Why Automatic Memory Management (AMM)?
+
+### 17.1.1 Introduction
+
+Store mamangement is still a hard problem in modern programming. Especially C/C++ programs have many storage bugs:
+
+- forgetting to free unused memory
+- dereferencing a dangling pointer
+- overwriting parts of a data structure by accident
+
+Storage bugs are hard to find! A bug can manifest far away in time and program text from its source.
+
+### 17.1.2 Type Safety and Memory Management
+
+Some storage bugs can be prevented in a strongly typed language, e.g. we cannot overrun the array limits, dereference a null pointer, etc.
+
+However, if we want type safety, we typically must use AMM (GC).
+
+### 17.1.3 The Basic Idea
+
+The basic idea of AMM is as follows:
+
+1. When an object is created, unused space is automaticall allocated. 
+2. After a while there is no more unused space.
+3. Some space is occupied by objects that will never be used again.
+4. This space can be freed to be reused later.
+
+The main problem is: How do we tell whether an object will never be used again? In general, this is impossible to tell.
+One key idea is based on the following observation: A program can use only objects that it can find.
+
+_Example:_
+
+```bnf
+let x : A = new A in {x = y; ...}
+```
+
+After `x = y`, there is no way to access the newly allocated object.
+
+## 17.2 Garbage Collection
+
+### 17.2.1 Introduction
+
+An object `x` is called **reachable** if and only if:
+
+- A _register_ contains a pointer to `x`, or
+- Another reachable object `y` contains a pointer to `x`
+
+One can find all reachable objects by:
+
+- Starting from registers, and
+- Following all the pointers
+
+Unreachable objects can never be reference by the program. These objects are called **garbage.**
+
+### 17.2.2 Simple Example
+
+![](./Figures/CompDes_Fig11-14.PNG){width=50%}
+
+1. We start tracing from `acc` and `stack`, they are called the _roots_
+2. Note that `B` and `D` are not reachable from `acc` or `stack`
+3. Thus, we can reuse their storage
+
+### 17.2.3 Elements of Garbage Collection
+
+Every **garbage collection scheme** has the following steps:
+
+1. Allocate space as needed for new objects
+2. When space runs out:
+    1. Compute what objects might be used again (generally by tracing objects reachable from a set of root registers)
+    2. Free the sapce used by objects not found in the previous steps
+
+## 17.3 Three Different Techniques
+
+### 17.3.1 Mark and Sweep
+
+When memory runs out, GC executes two phases:
+
+- **Mark phase:** traces reachable objects
+- **Sweep phase:** collects garbage objects
+
+Every object has an extra bit, the _mark bit:_
+
+- reserved for memory management
+- initially the mark is set to 0
+- the bit is set to 1 for the reachable objects in the mark phase
+
+#### Example
+
+![](./Figures/CompDes_Fig11-15.PNG){width=50%}
+
+#### The Mark Phase
+
+```pseudo
+let todo = {all roots}
+while todo != empty do:
+    pick v in todo
+    todo = todo \ {v}
+    if mark(v) = 0 then:
+        matk(v) = 1
+        let v1,...,vn be the pointers contained in v
+        todo = todo union {v1,..., vn}
+```
+
+#### The Sweep Phase
+
+The sweep phase scans the heap for objects with a mark bit equal to 0, these objects have not been visited in the mark phase and are therefore garbage:
+
+- Any such object is added to the free list
+- The objects with a mark bit 1 have their mark bit reset to 0
+
+```pseudo
+p = bottom of heap
+while p < top of heap do:
+    if mark(p) = 1 then:
+        mark(p) = 0
+    else:
+        add block p...(p + sizeof(p)-1) to freelist
+    p = p + sizeof(p)
+```
+
+#### Details
+
+A serious problem with the mark phase is that it is invoked when we are out of space, yet we need space to construct the todo list!
+The size of the todo list is unbounded, so we cannot reserver space a riori.
+
+There is a trick to allow the auxiliary data (todo list) to be stored in the objects:
+
+- **pointer reversal:** when a pointer is followed, we reverse it to point to its parent
+
+Similarly, the free list is stored in the free objects themselves.
+
+### 17.3.2 Stop and Copy
+
+In this technique, memory is organized into two areas:
+
+- The _old space_, which is used for allocation
+- The _new space_, which is used as a reserve for GC
+
+The heap pointer points to the next free word in the old space. Allocation simply advances the heap pointer.
+
+#### Stop and Copy Process
+
+The garbage collection starts when the old space is full:
+
+1. It copies all reachable objects from the old space into the new space
+    - The garbage is left behind
+    - After the copy phase, new space uses less space than the old space before GC
+2. After the copy, the roles of the old and new spaces are reversed, and the program resumes
+
+#### Example
+
+![](./Figures/CompDes_Fig11-16.PNG){width=50%}
+
+#### Implementation
+
+We need to find all reachable objects, as it is the same for mark and sweep. As we find a reachable object, we copy it into the new space.
+After this, we need to fix _all_ the pointers pointing to it!
+
+As we copy an object:
+
+- We store in the old copy a _forwarding pointer_ to the new copy.
+- Any object reached later with a forwarding pointer was already copied.
+
+By partitioning the new space into three contiguous regions, we can solve the problem of implementing the traversal without using extra space:
+
+![](./Figures/CompDes_Fig11-17.PNG){width=50%}
+
+#### Algorithm
+
+```pseudo
+while scan <> alloc do:
+    let O be the object at scan pointer
+    for each pointer p in O do:
+        find O' that p points to
+        if O' is without a forwarding pointer:
+            copy O' to new space and update alloc pointer
+            set 1st word of old O' to point to the new copy
+            change p to point to the new copy of O'
+        else:
+            set p in O equal to the forwarding pointer
+    increment scan pointer to the next object
+```
+
+### 17.3.3 Reference Counting
+
+**Reference counting** is based on the idea that rather than wait for memory to run out, we try to collect an object when there are no more pointers to it.
+We store in each object the number of pointers to that object, this is called the _reference count._ Each assignment operation has to manipulate that reference count.
+
+#### Implementation
+
+`new` returns an object with a reference count of 1. If `x` points to an object, let `rc(x)` refer to the object's reference count.
+
+Every assignment `x := y` must be changed:
+
+```pseudo
+rc(y) = rc(y) + 1
+rc(x) = rc(x) - 1
+if(rc(x) == 0) { mark x as free}
+x := y
+```
+
+#### Evaluation
+
+Advantages:
+
+- Easy to implement
+- Collects garbage incrementally without large pauses in the execution
+
+Disadvantages:
+
+- Manipulating reference counts at each assignment is very slow
+- Cannot collect circular structures
+
+## 17.4 Garbage Collection: Evaluation
+
+Automatic memory management avoids some serious storage bugs. But, it takes away control from the programmer, e.g. layout of data in memory and when memory is allocated.
+Most GC implementations stop the execution during collection, which is not acceptable in real-time applications.
+
+There are already advanced garbage collection algorithms:
+
+- _Concurrent:_ allow the program to run while the collection is happening
+- _Generational:_ do not scan long-lived objects at every collection
+- _Parallel:_ several collector working in parallel
