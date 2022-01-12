@@ -137,8 +137,6 @@ We have gained the following insights:
 
 ## 6.2 Dedicated VLSI Architectures And How To Design Them
 
-### 6.2.1 Remodeling in the algorithmic domain
-
 Most processing algorithms must be reworked for hardware. Departures from some mathematically ideal algorithm are almost always necessary to arrive at an economically feasible solution:
 
 - _Digital filter:_ Tolerate a somewhat lower stopband suppression in exchange for a reduced computational burden.
