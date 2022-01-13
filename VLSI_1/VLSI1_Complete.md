@@ -1,5 +1,5 @@
 ---
-title: "VLSI 1 - Complete Summary (WIP)"
+title: "VLSI 1 - Complete Summary"
 author: Ruben Schenk, ruben.schenk@inf.ethz.ch
 date: January 11, 2022
 geometry: margin=2cm
