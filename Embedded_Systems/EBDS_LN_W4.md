@@ -107,7 +107,7 @@ Definitions:
 - $\Gamma$: denotes the set of all periodic subtasks
 - $\tau_i$: denotes a periodic task
 - $\tau_{i, \, j}$: denotes the $j$-th instance of task $i$
-- $r_{i_ \, j}, \, d_{i, \, j}$: denote the release time and absolute deadline of the $j$-th instance of task $i$
+- $r_{i, \, j}, \, d_{i, \, j}$: denote the release time and absolute deadline of the $j$-th instance of task $i$
 - $\Phi_i$: denotes the phase of task $i$ (release time of its first instance)
 - $D_i$: denotes the relative deadline of task $i$
 
